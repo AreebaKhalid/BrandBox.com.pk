@@ -43,9 +43,9 @@ namespace BrandBox.com
                 con.Open();
                 using (SqlDataAdapter sda = new SqlDataAdapter(SQL_Select_Qury))
                 {
-                    DataTable categoryData = new DataTable();
-                    sda.Fill(categoryData);
-                    return categoryData;
+                    DataTable toReturn = new DataTable();
+                    sda.Fill(toReturn);
+                    return toReturn;
                 }
             }
         }

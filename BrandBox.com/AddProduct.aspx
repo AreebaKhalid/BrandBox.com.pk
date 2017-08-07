@@ -21,7 +21,7 @@
 
             <div class="col-sm-12 mobile-pull">
               <article role="login">
-                <form class="signup" name="SignUpForm" method="post">
+                <div class="form">
 
                  
 
@@ -37,19 +37,19 @@
                   <div class="form-group">
                     <asp:TextBox runat="server" id="productPrice" CssClass="form-control" placeholder="Product Price" />
                     <asp:RequiredFieldValidator runat="server" id="reqPrice" ValidationGroup="Group1" controltovalidate="productPrice" CssClass="errors" errormessage="This field cannot be blank." Display="Dynamic" />
-                    <asp:RegularExpressionValidator ID="RegularExpressionValidator1" ValidationGroup="Group1" runat="server" ControlToValidate="productPrice" CssClass="errors" ErrorMessage="Please enter a valid price." Display="Dynamic"  ValidationExpression="[0-9]"></asp:RegularExpressionValidator> 
+                    <asp:RegularExpressionValidator ID="RegularExpressionValidator1" ValidationGroup="Group1" runat="server" ControlToValidate="productPrice" CssClass="errors" ErrorMessage="Please enter a valid price." Display="Dynamic"  ValidationExpression="^\d+$"></asp:RegularExpressionValidator> 
                   </div>
 
-                  <div class="form-group">
-                    <asp:dropdownlist id="productCat" runat="server" >
-                        <asp:listitem value="" selected="true"> -Category-</asp:listitem>
-                        <asp:listitem value="Pant">Pant</asp:listitem>
-                        <asp:listitem value="Shirt">Shirt</asp:listitem>
-                    </asp:dropdownlist>
-                  </div>
-
+                  <div class="form-group" >
+                   <asp:Label ID="Label4" runat="server" CssClass="col-md-2 control-label" Text="Category" ForeColor="Black"></asp:Label>
+                 
+                    <asp:DropDownList ID="productCategory" CssClass="form-control" runat="server"></asp:DropDownList>
+                    <asp:RequiredFieldValidator ID="PCatReq" CssClass="text-danger" runat="server" ErrorMessage="This field is Required !" ControlToValidate="productCategory" InitialValue="0"></asp:RequiredFieldValidator>
+                </div>
+                
                    <div class="form-group">
                        <asp:FileUpload ID="ProductImageFileUpload" runat="server" />
+                       <asp:Label ID="Fileuoploader" Text ="Please image of your product" runat="server"></asp:Label>
                        <asp:RequiredFieldValidator runat="server" id="RequiredProductImageFileUpload" ValidationGroup="Group1" controltovalidate="ProductImageFileUpload" CssClass="errors" errormessage="Please add image of the product." Display="Dynamic" />
                        <asp:Label ID="PImageUploadError" runat="server" Text=""></asp:Label>
                    </div>
@@ -60,23 +60,35 @@
                     <asp:RegularExpressionValidator Display = "Dynamic" ValidationGroup="Group1" ControlToValidate = "productDetails" ID="lengthDetails" CssClass="errors" ValidationExpression = "^[\s\S]{0,200}$" runat="server" ErrorMessage="Maximum length reached."></asp:RegularExpressionValidator>
                  </div>
 
-                 <div class="form-group">
-                      <asp:CheckBox  Text="Small" Value="Male" ID="chkSmall" runat ="server" ForeColor="Black"/>
-                      <asp:CheckBox  Text="Large" Value="Female" ID="chkLarge" runat="server" ForeColor="Black"/>
-                      <asp:CheckBox  Text="Medium" Value="Female" ID="chkMedium" runat="server" ForeColor="Black"/>
+                 
+                      <asp:CheckBox  Text="Small" Value="Small" ID="chkSmall" runat ="server" ForeColor="Black" float="left" width="50%"/>
+                  <div class="form-group">  
+                    <asp:TextBox runat="server" id="SproductQnty" CssClass="form-control" placeholder="Product Quantity" width="50%"/>
+                    <asp:RegularExpressionValidator ID="SchkValidPQnty" ValidationGroup="Group1" runat="server" ControlToValidate="SproductQnty" CssClass="errors" ErrorMessage="Please enter a valid Quantity" Display="Dynamic"  ValidationExpression="^\d+$"></asp:RegularExpressionValidator> 
+                   </div>
+                      <asp:CheckBox  Text="Large" Value="Large" ID="chkLarge" runat="server" ForeColor="Black"/>
+                    <div class="form-group">
+                     
+                    <asp:TextBox runat="server" id="LproductQnty" CssClass="form-control" placeholder="Product Quantity" />
+                   <asp:RegularExpressionValidator ID="LchkValidPQnty" ValidationGroup="Group1" runat="server" ControlToValidate="LproductQnty" CssClass="errors" ErrorMessage="Please enter a valid Quantity" Display="Dynamic"  ValidationExpression="^\d+$"></asp:RegularExpressionValidator> 
+                </div>
+                      <asp:CheckBox  Text="Medium" Value="Medium" ID="chkMedium" runat="server" ForeColor="Black"/>
+                     <div class="form-group">
+                    <asp:TextBox runat="server" id="MproductQnty" CssClass="form-control" placeholder="Product Quantity" />
+                     <asp:RegularExpressionValidator ID="MchkValidPQnty" ValidationGroup="Group1" runat="server" ControlToValidate="MproductQnty" CssClass="errors" ErrorMessage="Please enter a valid Quantity" Display="Dynamic"  ValidationExpression="^\d+$"></asp:RegularExpressionValidator> 
+                  
                 </div>
 
                 <div class="form-group">
-                    <asp:TextBox runat="server" id="productQnty" CssClass="form-control" placeholder="Product Price" />
-                    <asp:RequiredFieldValidator runat="server" id="PQntyReq" ValidationGroup="Group1" controltovalidate="productQnty" CssClass="errors" errormessage="This field cannot be blank." Display="Dynamic" />
-                    <asp:RegularExpressionValidator ID="chkValidPQnty" ValidationGroup="Group1" runat="server" ControlToValidate="productQnty" CssClass="errors" ErrorMessage="Please enter a valid Quantity" Display="Dynamic"  ValidationExpression="[0-9]"></asp:RegularExpressionValidator> 
-                  </div>
+                    <asp:Label ID="chkLabel" runat="server" CssClass="col-md-2 control-label" Text="Category"></asp:Label>
+                <div class="col-md-3">
+                </div>
                  
                   <div class="form-group">
-                      <asp:Button  Text="SUBMIT"  ValidationGroup="Group1" CssClass="btn btn-success btn-block" runat="server" />
+                      <asp:Button  Text="SUBMIT"  ValidationGroup="Group1" CssClass="btn btn-success btn-block" runat="server" OnClick="CreateProducts"/>
                   </div>
-                </form>
-
+                </div>
+                    </div>
               </article>
             </div>
 

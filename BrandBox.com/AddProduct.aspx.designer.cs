@@ -85,13 +85,31 @@ namespace BrandBox.com {
         protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator1;
         
         /// <summary>
-        /// productCat control.
+        /// Label4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList productCat;
+        protected global::System.Web.UI.WebControls.Label Label4;
+        
+        /// <summary>
+        /// productCategory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList productCategory;
+        
+        /// <summary>
+        /// PCatReq control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator PCatReq;
         
         /// <summary>
         /// ProductImageFileUpload control.
@@ -101,6 +119,15 @@ namespace BrandBox.com {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.FileUpload ProductImageFileUpload;
+        
+        /// <summary>
+        /// Fileuoploader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Fileuoploader;
         
         /// <summary>
         /// RequiredProductImageFileUpload control.
@@ -148,6 +175,24 @@ namespace BrandBox.com {
         protected global::System.Web.UI.WebControls.CheckBox chkSmall;
         
         /// <summary>
+        /// SproductQnty control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox SproductQnty;
+        
+        /// <summary>
+        /// SchkValidPQnty control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator SchkValidPQnty;
+        
+        /// <summary>
         /// chkLarge control.
         /// </summary>
         /// <remarks>
@@ -155,6 +200,24 @@ namespace BrandBox.com {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkLarge;
+        
+        /// <summary>
+        /// LproductQnty control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox LproductQnty;
+        
+        /// <summary>
+        /// LchkValidPQnty control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator LchkValidPQnty;
         
         /// <summary>
         /// chkMedium control.
@@ -166,30 +229,30 @@ namespace BrandBox.com {
         protected global::System.Web.UI.WebControls.CheckBox chkMedium;
         
         /// <summary>
-        /// productQnty control.
+        /// MproductQnty control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox productQnty;
+        protected global::System.Web.UI.WebControls.TextBox MproductQnty;
         
         /// <summary>
-        /// PQntyReq control.
+        /// MchkValidPQnty control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator PQntyReq;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator MchkValidPQnty;
         
         /// <summary>
-        /// chkValidPQnty control.
+        /// chkLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RegularExpressionValidator chkValidPQnty;
+        protected global::System.Web.UI.WebControls.Label chkLabel;
     }
 }

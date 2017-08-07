@@ -39,6 +39,7 @@ namespace BrandBox.com
 
         protected void Signin_Click(object sender, EventArgs e)
         {
+            int vid;
             String CS = ConfigurationManager.ConnectionStrings["BrandBoxDatabaseConnectionString"].ConnectionString.ToString();
             using (SqlConnection con = new SqlConnection(CS))
             {
@@ -49,10 +50,12 @@ namespace BrandBox.com
                 sda.Fill(dt);
                 if (dt.Rows.Count != 0)
                 {
+                    vid = Convert.ToInt32(dt.Rows[0]["VendorId"]);
                     if (RememberMeCheckBox.Checked)
                     {
                         Response.Cookies["VEMAIL"].Value = email.Text;
                         Response.Cookies["VPWD"].Value = password.Text;
+
 
                         Response.Cookies["VEMAIL"].Expires = DateTime.Now.AddDays(3);
                         Response.Cookies["VPWD"].Expires = DateTime.Now.AddDays(3);
@@ -63,6 +66,7 @@ namespace BrandBox.com
                         Response.Cookies["VPWD"].Expires = DateTime.Now.AddDays(-1);
                     }
                     Session["vendor"] = email.Text;
+                    Session["id"] = vid;
                    // lblError.Text = "";
                     Response.Redirect("~/SignUp.aspx");
                     Session.RemoveAll();

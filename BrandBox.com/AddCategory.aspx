@@ -30,11 +30,7 @@
                       <asp:RegularExpressionValidator ValidationGroup="vg" Display = "Dynamic" ControlToValidate = "catName" ID="minName" CssClass="errors" ValidationExpression = "^[\s\S]{3,}$" runat="server" ErrorMessage="Minimum 3 characters required."></asp:RegularExpressionValidator>
                   </div>
 
-                  <div class="form-group">
-                      <asp:CheckBox  Text="  Male" Value="Male" ID="chkmale" runat ="server" ForeColor="Black"/>
-                      <asp:CheckBox  Text="  Female" Value="Female" ID="chkfemale" runat="server" ForeColor="Black"/>
-               
-                </div>
+                  
 
                 <div class="form-group">
                     <asp:Label ID="lblError" runat="server" Text=""></asp:Label>
@@ -73,7 +69,6 @@
                             <tr>
                                 <th>#</th>
                                 <th>Categories</th>
-                                <th>Gender</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -82,7 +77,6 @@
                     <tr>
                         <th><%# Eval("PCID") %></th>
                         <td><%# Eval("ProductCatName") %></td>
-                        <td><%# Eval("Gender") %></td>
                     </tr>
                 </ItemTemplate>
                 <FooterTemplate>

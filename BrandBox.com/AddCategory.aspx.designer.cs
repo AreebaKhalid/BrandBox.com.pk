@@ -49,24 +49,6 @@ namespace BrandBox.com {
         protected global::System.Web.UI.WebControls.RegularExpressionValidator minName;
         
         /// <summary>
-        /// chkmale control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkmale;
-        
-        /// <summary>
-        /// chkfemale control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkfemale;
-        
-        /// <summary>
         /// lblError control.
         /// </summary>
         /// <remarks>

@@ -32,9 +32,7 @@ namespace BrandBox.com
 
         protected void Add_Category(object sender, EventArgs e)
         {
-            String MALE = "Male";
-            String FEMALE = "Female";
-            String BOTH = "Both";
+            
             String SQL_Insert="";
             if (checkCategory(catName.Text))
             {
@@ -43,32 +41,9 @@ namespace BrandBox.com
             }
             else {
                 lblError.Text = "";
-                if (chkfemale.Checked && chkmale.Checked)
-                {
-                    SQL_Insert = "INSERT INTO ProductCategory(Gender,ProductCatName) Values('" + BOTH + "','" + catName.Text + "')"; 
-                    successAdded(access.AddInDatabase(SQL_Insert));
-                    ClearFields();
-                }
-                else if (chkfemale.Checked || chkmale.Checked)
-                {
-                    if (chkfemale.Checked)
-                    {
-                        SQL_Insert = "INSERT INTO ProductCategory(Gender,ProductCatName) Values('" + FEMALE + "','" + catName.Text + "')";
-                        successAdded(access.AddInDatabase(SQL_Insert));
-                    }
-                    else
-                    {
-                        SQL_Insert = "INSERT INTO ProductCategory(Gender,ProductCatName) Values('" + MALE + "','" + catName.Text + "')";
-                        successAdded(access.AddInDatabase(SQL_Insert));
-                    }
-
-                    ClearFields();
-                }
-                else
-                {
-                    lblError.Text = "Please select at least one checkbox.";
-                    lblError.ForeColor = Color.Red;
-                }
+                SQL_Insert = "INSERT INTO ProductCategory(ProductCatName) Values('" + catName.Text + "')";
+                successAdded(access.AddInDatabase(SQL_Insert));
+                ClearFields();
 
             }
             
@@ -78,8 +53,6 @@ namespace BrandBox.com
         public void ClearFields()
         {
             catName.Text = String.Empty;
-            chkfemale.Checked = false;
-            chkmale.Checked = false;
         }
         public bool checkCategory(string cat)
         {
