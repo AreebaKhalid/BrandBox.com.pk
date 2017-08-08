@@ -19,23 +19,31 @@ namespace BrandBox.com
         protected void Page_Load(object sender, EventArgs e)
         {
             Accessible access = new Accessible();
-            if (Session["vendor"] == null)
-            {
-                Response.Redirect("~/AboutUs.aspx");
-            }
-            else
-            {
-               
+            if (!IsPostBack) {
+                if (Session["vendor"] == null)
+                {
+                    Response.Redirect("~/AboutUs.aspx");
+                }
+                else
+                {
+
                     BindCategoryRptr();
-              
 
 
+                }
             }
         }
 
         protected bool validateCheckbox()
         {
             bool ret=true;
+
+            if(!(chkSmall.Checked || chkLarge.Checked || chkMedium.Checked))
+            {
+                chkLabel.Text = "Please select at least one size";
+                return false;
+            }
+
             if(chkSmall.Checked)
             {
                 if(SproductQnty.Text == null)
@@ -121,12 +129,15 @@ namespace BrandBox.com
                 {
                     con.Open();
 
-                    SqlCommand cmd = new SqlCommand("INSERT INTO PDetails(VendorId,ProductPrice,ProductName,ProductDetails,PCID,ImageContentType,ImageData) VALUES(@VendorId,@ProductPrice,@ProductName,@ProductDetails,@PCID,@ImageContentType,@ImageData); SELECT SCOPE_IDENTITY()", con);
+                    SqlCommand cmd = new SqlCommand("INSERT INTO PDetails(VendorId,ProductPrice,ProductName," +
+                        "ProductDetails,CategoryId,ImageContentType,ImageData) VALUES(@VendorId,@ProductPrice," +
+                        "@ProductName,@ProductDetails,@PCID,@ImageContentType,@ImageData);" +
+                        " SELECT SCOPE_IDENTITY()", con);
                     cmd.Parameters.AddWithValue("@VendorId", currentVendorId);
                     cmd.Parameters.AddWithValue("@ProductPrice",productPrice.Text);
                     cmd.Parameters.AddWithValue("@ProductName", productName.Text);
                     cmd.Parameters.AddWithValue("@ProductDetails", productDetails.Text);
-                    cmd.Parameters.AddWithValue("@PCID", 1005);
+                    cmd.Parameters.AddWithValue("@PCID", Convert.ToInt32(productCategory.SelectedItem.Value));
                     cmd.Parameters.Add("@ImageContentType", SqlDbType.VarChar).Value = contenttype;
                     cmd.Parameters.Add("@ImageData", SqlDbType.Binary).Value = bytes;
 
@@ -139,6 +150,8 @@ namespace BrandBox.com
                         cmd2.Parameters.AddWithValue("@ProductQnty", SproductQnty.Text);
                         cmd2.Parameters.AddWithValue("@ProductSize", "Small");
                         cmd2.Parameters.AddWithValue("@ProductCode", ProductFK);
+                        cmd2.ExecuteNonQuery();
+
                     }
                     if (chkMedium.Checked)
                     {
@@ -146,6 +159,7 @@ namespace BrandBox.com
                         cmd2.Parameters.AddWithValue("@ProductQnty", MproductQnty.Text);
                         cmd2.Parameters.AddWithValue("@ProductSize", "Medium");
                         cmd2.Parameters.AddWithValue("@ProductCode", ProductFK);
+                        cmd2.ExecuteNonQuery();
                     }
                     if (chkLarge.Checked)
                     {
@@ -153,6 +167,7 @@ namespace BrandBox.com
                         cmd2.Parameters.AddWithValue("@ProductQnty", LproductQnty.Text);
                         cmd2.Parameters.AddWithValue("@ProductSize", "Large");
                         cmd2.Parameters.AddWithValue("@ProductCode", ProductFK);
+                        cmd2.ExecuteNonQuery();
                     }
 
 

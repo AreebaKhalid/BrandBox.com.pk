@@ -21,14 +21,14 @@
 
             <div class="col-sm-12 mobile-pull">
               <article role="login">
-                <div class="form">
+                <div class="form" >
 
                  
 
 
                   <div class="form-group">
                       <asp:TextBox runat="server" id="productName" CssClass="form-control" placeholder="Product Name" />
-                      <asp:Label ID="VNameErrorMessage" runat="server" Text=""></asp:Label>
+                      <asp:Label ID="VNameErrorMessage" runat="server" Text="" CssClass="errors"></asp:Label>
                       <asp:RequiredFieldValidator runat="server" id="reqName" controltovalidate="productName" CssClass="errors" errormessage="This field cannot be blank." Display="Dynamic"  ValidationGroup="Group1"/>
                       <asp:RegularExpressionValidator Display = "Dynamic" ControlToValidate = "productName" ID="maxName" CssClass="errors" ValidationExpression = "^[\s\S]{0,50}$" runat="server" ValidationGroup="Group1" ErrorMessage="Maximum 50 characters allowed."></asp:RegularExpressionValidator>
                       <asp:RegularExpressionValidator Display = "Dynamic" ControlToValidate = "productName" ID="minName" CssClass="errors" ValidationExpression = "^[\s\S]{5,}$" runat="server" ValidationGroup="Group1" ErrorMessage="Minimum 5 characters required."></asp:RegularExpressionValidator>
@@ -41,17 +41,17 @@
                   </div>
 
                   <div class="form-group" >
-                   <asp:Label ID="Label4" runat="server" CssClass="col-md-2 control-label" Text="Category" ForeColor="Black"></asp:Label>
+                   <asp:Label ID="Label4" runat="server" CssClass="col-md-2 control-label error" Text="Category" ForeColor="Black"></asp:Label>
                  
-                    <asp:DropDownList ID="productCategory" CssClass="form-control" runat="server"></asp:DropDownList>
-                    <asp:RequiredFieldValidator ID="PCatReq" CssClass="text-danger" runat="server" ErrorMessage="This field is Required !" ControlToValidate="productCategory" InitialValue="0"></asp:RequiredFieldValidator>
+                    <asp:DropDownList ID="productCategory" CssClass="form-control" AutoPostBack="true" runat="server"></asp:DropDownList>
+                    <asp:RequiredFieldValidator ID="PCatReq" ValidationGroup="Group1" CssClass="text-danger" runat="server" ErrorMessage="This field is Required !" ControlToValidate="productCategory" InitialValue="0"></asp:RequiredFieldValidator>
                 </div>
                 
                    <div class="form-group">
                        <asp:FileUpload ID="ProductImageFileUpload" runat="server" />
-                       <asp:Label ID="Fileuoploader" Text ="Please image of your product" runat="server"></asp:Label>
+                      
                        <asp:RequiredFieldValidator runat="server" id="RequiredProductImageFileUpload" ValidationGroup="Group1" controltovalidate="ProductImageFileUpload" CssClass="errors" errormessage="Please add image of the product." Display="Dynamic" />
-                       <asp:Label ID="PImageUploadError" runat="server" Text=""></asp:Label>
+                       <asp:Label ID="PImageUploadError" runat="server" Text="" CssClass="errors"></asp:Label>
                    </div>
 
                   
@@ -79,10 +79,8 @@
                   
                 </div>
 
-                <div class="form-group">
-                    <asp:Label ID="chkLabel" runat="server" CssClass="col-md-2 control-label" Text="Category"></asp:Label>
-                <div class="col-md-3">
-                </div>
+                    <asp:Label ID="chkLabel" runat="server" CssClass="col-md-2 control-label errors" Text=""></asp:Label>
+
                  
                   <div class="form-group">
                       <asp:Button  Text="SUBMIT"  ValidationGroup="Group1" CssClass="btn btn-success btn-block" runat="server" OnClick="CreateProducts"/>

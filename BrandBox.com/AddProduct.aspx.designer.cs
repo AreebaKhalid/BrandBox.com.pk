@@ -121,15 +121,6 @@ namespace BrandBox.com {
         protected global::System.Web.UI.WebControls.FileUpload ProductImageFileUpload;
         
         /// <summary>
-        /// Fileuoploader control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Fileuoploader;
-        
-        /// <summary>
         /// RequiredProductImageFileUpload control.
         /// </summary>
         /// <remarks>
