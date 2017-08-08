@@ -67,7 +67,6 @@
                                     <li><a href="AddCategory.aspx">Add Category</a></li>
                                 </ul>
                             </li>
-        `            <li><a href="/AboutUs.aspx#team">Add Products</a></li>
                 <%} %>
   <!--         <form class="navbar-form navbar-left">
      <div class="input-group">
@@ -82,7 +81,7 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <% if (Session["vendor"] == null) { %>
-                    <li><a href="/AboutUs.aspx#signup"><i class="fa fa-user" aria-hidden="true"></i> My Account</a></li>
+                    <li><a href="/Login.aspx"><i class="fa fa-user" aria-hidden="true"></i> My Account</a></li>
                      <li><a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Shopping Cart</a></li>
                 <% } else if (Session["vendor"] != null){ %>
                     <li><asp:LinkButton OnClick="LogOutBtn" runat="server"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</asp:LinkButton></li>

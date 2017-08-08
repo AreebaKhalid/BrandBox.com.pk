@@ -30,7 +30,8 @@
         <div class="carousel-caption">
           <h3 class="wow bounceInLeft" data-wow-delay="0.8s"><b>BrandBox</b></h3>
           <p class="wow bounceInRight" data-wow-delay="0.8s">Because every month deserve to be awsimely styled!<br>Want to add your brand for maximum benefit!</p>
-          <button type="button" class="btn btnCustom wow fadeInUp" data-wow-delay="0.8s" >Sign Up</button>
+            <asp:LinkButton runat="server" CssClass="btn btnCustom wow fadeInUp"  data-wow-delay="0.8s" OnClick="Signup_Now" Text="Sign Up Now" />
+        
         </div>
       </div>
     
@@ -96,66 +97,21 @@
 </div>
 
 <!--End Brands-->
-
+    <hr />
+    <br />
 <!--Featured Products-->
+   <div class="container" width="90px" float="center">
+        <p> Latest products here</p>
 
 
+    </div>
 
+    <hr />
 <!--End featured products-->
 
 
 
-<!--Sign In-->
 
-
-<div id="signup" class="signup">
-  <div class="container">
-    <div class="row">
-     <h2 class="wow fadeInUp">Sign In</h2>
-     <div class="col-lg-2 col-md-2"></div>
-      <div class="col-lg-8 col-md-8">
-        <div class="input-group input-group-lg wow fadeInUp" data-wow-delay="1.2s">
-          <span class="input-group-addon" id="sizing-addon1"><i class="fa fa-envelope" aria-hidden="true"></i></span>
-            <asp:textbox id="email" runat="server" class="form-control" placeholder="Email address" ></asp:textbox> 
-        </div>
-        <div class="input-group input-group-lg">
-          <asp:RequiredFieldValidator runat="server" id="reqEmail" controltovalidate="email" CssClass="errors" errormessage="This field cannot be blank." Display="Dynamic" ValidationGroup="Group1"/>
-          <asp:RegularExpressionValidator id="validEmail" ControlToValidate="email" Text="Invalid email address." CssClass="errors" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" Runat="server" Display="Dynamic" ValidationGroup="Group1"/>        
-        </div>
-        <div class="input-group input-group-lg wow fadeInUp" data-wow-delay="1.6s">
-          <span class="input-group-addon" id="sizing-addon2"><i class="fa fa-key" aria-hidden="true"></i></span>
-          <asp:TextBox ID="password" runat="server" class="form-control" placeholder="Password" TextMode="Password"></asp:TextBox>
-
-
-         </div>
-         <div class="input-group input-group-lg">
-           <asp:RequiredFieldValidator runat="server" id="reqpass" controltovalidate="password" ValidationGroup="Group1" CssClass="errors" errormessage="Please enter password." Display="Dynamic" />
-         </div>
-         <div>
-
-        <div class="form-group" style="clear: left">                       
-           <asp:Label ID="lblError" runat="server" CssClass="errors"></asp:Label>
-         </div>
-
-        <div class="form-group">                   
-           <asp:CheckBox ID="RememberMeCheckBox" CssClass="control-label wow fadeInUp" data-wow-delay="2.4s" runat="server" />
-           <asp:Label ID="Label3" runat="server" CssClass="control-label wow fadeInUp" data-wow-delay="2.4s" Text="Remember me ?"></asp:Label>
-                   
-        </div>
-             
-          <asp:Button runat="server" CssClass="btn btn-lg btnCustom wow fadeInUp"  data-wow-delay="2.4s" ValidationGroup="Group1" Text="Sign In" OnClick="Signin_Click"/>
-         </div>
-          <br/>
-          <p class="wow fadeInDown" data-wow-delay="2.4s">Don't have an account?</p>
-          <asp:LinkButton runat="server" CssClass="btn btn-lg btnCustom wow fadeInUp"  data-wow-delay="2.4s" OnClick="Signup_Now" Text="Sign Up Now" />
-        
-        </div>
-        <div class="col-lg-2 col-md-2"></div>
-  </div>
-</div>
-</div>
-
-<!--end SignUp-->
 
 <!--reviews -->
 <div class="container reviews">

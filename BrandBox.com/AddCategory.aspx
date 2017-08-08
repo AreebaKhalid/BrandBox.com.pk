@@ -8,7 +8,7 @@
        <div class="row">
         <div class="col-sm-12 nav-tab-holder">
             <ul class="nav nav-tabs row" role="tablist">
-                 <li role="presentation" class="active col-sm-12"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Add Products</a></li>  
+                 <li role="presentation" class="active col-sm-12"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Add Category</a></li>  
             </ul>
         </div>
         </div>

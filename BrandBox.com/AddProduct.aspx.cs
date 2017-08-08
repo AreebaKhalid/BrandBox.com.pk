@@ -34,6 +34,36 @@ namespace BrandBox.com
             }
         }
 
+        protected void small_CheckedChanged(object sender, EventArgs e)
+        {
+           if (SproductQnty.Enabled)
+            {
+                SproductQnty.Enabled = false;
+            }
+           else
+                SproductQnty.Enabled = true;
+
+        }
+
+        protected void medium_CheckedChanged(object sender, EventArgs e)
+        {
+            if (MproductQnty.Enabled)
+            {
+                MproductQnty.Enabled = false;
+            }
+            else
+                MproductQnty.Enabled = true;
+        }
+
+        protected void large_CheckedChanged(object sender, EventArgs e)
+        {
+            if (LproductQnty.Enabled)
+            {
+                LproductQnty.Enabled = false;
+            }
+            else
+                LproductQnty.Enabled = true;
+        }
         protected bool validateCheckbox()
         {
             bool ret=true;
@@ -130,14 +160,15 @@ namespace BrandBox.com
                     con.Open();
 
                     SqlCommand cmd = new SqlCommand("INSERT INTO PDetails(VendorId,ProductPrice,ProductName," +
-                        "ProductDetails,CategoryId,ImageContentType,ImageData) VALUES(@VendorId,@ProductPrice," +
-                        "@ProductName,@ProductDetails,@PCID,@ImageContentType,@ImageData);" +
+                        "ProductDetails,CategoryId,Gender,ImageContentType,ImageData) VALUES(@VendorId,@ProductPrice," +
+                        "@ProductName,@ProductDetails,@PCID,@Gender,@ImageContentType,@ImageData);" +
                         " SELECT SCOPE_IDENTITY()", con);
                     cmd.Parameters.AddWithValue("@VendorId", currentVendorId);
                     cmd.Parameters.AddWithValue("@ProductPrice",productPrice.Text);
                     cmd.Parameters.AddWithValue("@ProductName", productName.Text);
                     cmd.Parameters.AddWithValue("@ProductDetails", productDetails.Text);
                     cmd.Parameters.AddWithValue("@PCID", Convert.ToInt32(productCategory.SelectedItem.Value));
+                    cmd.Parameters.AddWithValue("@Gender", ddlGender.SelectedItem.Text);
                     cmd.Parameters.Add("@ImageContentType", SqlDbType.VarChar).Value = contenttype;
                     cmd.Parameters.Add("@ImageData", SqlDbType.Binary).Value = bytes;
 
