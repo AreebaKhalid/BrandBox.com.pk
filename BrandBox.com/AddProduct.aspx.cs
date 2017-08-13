@@ -14,11 +14,18 @@ namespace BrandBox.com
 {
     public partial class WebForm2 : System.Web.UI.Page
     {
+        int currentVendorId;
+        Accessible access = new Accessible();
         String CS = ConfigurationManager.ConnectionStrings["BrandBoxDatabaseConnectionString"].ConnectionString.ToString();
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Accessible access = new Accessible();
+            //getting current vendor id from tabe
+            if (Session["id"] != null)
+            {
+                currentVendorId = Convert.ToInt32(Session["id"]);
+            }
+
             if (!IsPostBack) {
                 if (Session["vendor"] == null)
                 {
@@ -215,24 +222,21 @@ namespace BrandBox.com
 
         private void BindCategoryRptr()
         {
-            using (SqlConnection con = new SqlConnection(CS))
-            {
-                SqlCommand cmd = new SqlCommand("select * from ProductCategory", con);
-                con.Open();
-                SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                sda.Fill(dt);
+            DataTable categoryData = new DataTable();
+            SqlCommand cmd = new SqlCommand(" SELECT p.PCID, p.ProductCatName FROM ProductCategory p JOIN VendorCatAssociation v ON(p.PCID = v.CategoryId) AND v.VendorId = @VId");
+            cmd.Parameters.AddWithValue("@VId", currentVendorId);
+            categoryData = access.SelectFromDatabase(cmd);
 
-                if (dt.Rows.Count != 0)
+            if (categoryData.Rows.Count != 0)
                 {
-                    productCategory.DataSource = dt;
+                    productCategory.DataSource = categoryData;
                     productCategory.DataTextField = "ProductCatName";
                     productCategory.DataValueField = "PCID";
                     productCategory.DataBind();
                     productCategory.Items.Insert(0, new ListItem("-Select-", "0"));
                    
                 }
-            }
+            
             
         }
         

@@ -14,8 +14,7 @@
                  <li role="presentation" class="col-sm-6"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">User</a></li>
             </ul>
         </div>
-
-         </div>
+       </div>
 
 
       <div class="tab-content">
@@ -84,14 +83,12 @@
                   </div>
                 </form>
 
-              </article>
-            </div>
-
-           
+            </article>
+          </div>
 
           </div>
           <!-- end of row -->
-        </div>
+         </div>
         <!-- end of home -->
 
       <div role="tabpanel" class="tab-pane" id="profile">
@@ -152,24 +149,17 @@
        </div>
     
        </div>
-  </div>
-  </div>
-  </div>
+
+      </div>
+ </div>
+ </div>
 </div>
 
 <!--form1 end-->
     <div style="margin: 0px 40% 10px" class="container">
 	<div class="row">
 		<span style="color:  #585858">Already have an account. </span>
-      <asp:LinkButton style="color:#f4511e" Text="Login." PostBackUrl="~/AboutUs.aspx" runat="server"/> 
-
-	</div> 
-
-    </div>
-           
- 
-
-
-    
-   
+        <asp:LinkButton style="color:#f4511e" Text="Login." PostBackUrl="~/AboutUs.aspx" runat="server"/> 
+	</div>    
+  </div>
 </asp:Content>

@@ -16,7 +16,6 @@ namespace BrandBox.com
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Accessible access = new Accessible();
 
             if (Request.Cookies["VEMAIL"] != null && Request.Cookies["VPWD"] != null)
             {
@@ -60,7 +59,7 @@ namespace BrandBox.com
                     }
                     Session["vendor"] = email.Text;
                     Session["id"] = vid;
-                    // lblError.Text = "";
+                   
                     Response.Redirect("~/SignUp.aspx");
                     Session.RemoveAll();
                 }

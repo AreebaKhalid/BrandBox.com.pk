@@ -13,39 +13,85 @@ namespace BrandBox.com
 {
     public partial class WebForm3 : System.Web.UI.Page
     {
+        int currentVendorId;
+        int cat_id;
         Accessible access = new Accessible();
         protected void Page_Load(object sender, EventArgs e)
         {
-           
-            if (Session["vendor"] == null)
+            //getting current vendor id from tabe
+            if (Session["id"] != null)
             {
-                Response.Redirect("~/AboutUs.aspx");
+                currentVendorId = Convert.ToInt32(Session["id"]);
             }
-            else
+            if (!IsPostBack)
             {
-                //nothing
-             BindCategoriesRptr();
+                if (Session["vendor"] == null)
+                {
+                    Response.Redirect("~/AboutUs.aspx");
+                }
+                else
+                {
 
-
+                    BindCategoriesRptr();
+                }
             }
+        }
+
+        protected void Add_Cat_in_Asso(int catId, int currentVendorId)
+        {
+            
+           String SQL_Insert = "INSERT INTO VendorCatAssociation(VendorId,CategoryId) Values('" + currentVendorId + "','"+ catId +"')";
+            successAdded(access.AddInDatabase(SQL_Insert));
+            ClearFields();
         }
 
         protected void Add_Category(object sender, EventArgs e)
         {
+            DataTable dt = new DataTable();
+            int key;
             
-            String SQL_Insert="";
-            if (checkCategory(catName.Text))
+            // checking if the category already exist
+            dt = checkCategory(catName.Text);
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    cat_id = Convert.ToInt32(row["PCID"]);
+                }
+               // checkCatAssociation(cat_id, currentVendorId);
+           if (checkCatAssociation(cat_id, currentVendorId))
+                   {
+                       lblError.Text = "Category Already exist";
+                       lblError.ForeColor = Color.Red;
+                   }
+               else { Add_Cat_in_Asso(cat_id, currentVendorId); }
+            }
+            else
+            {
+                lblError.Text = "";
+                String CS = ConfigurationManager.ConnectionStrings["BrandBoxDatabaseConnectionString"].ConnectionString.ToString();
+                using (SqlConnection con = new SqlConnection(CS))
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand("INSERT INTO ProductCategory(ProductCatName) Values(@Catname); SELECT SCOPE_IDENTITY()", con);
+                    cmd.Parameters.AddWithValue("@CatName", catName.Text);
+                    key= Convert.ToInt32(cmd.ExecuteScalar());
+                    
+                }
+                
+                Add_Cat_in_Asso(key, currentVendorId);
+                ClearFields();
+            }
+
+           /* if ()
             {
                 lblError.Text = "Category Already exist";
                 lblError.ForeColor = Color.Red;
             }
             else {
-                lblError.Text = "";
-                SQL_Insert = "INSERT INTO ProductCategory(ProductCatName) Values('" + catName.Text + "')";
-                successAdded(access.AddInDatabase(SQL_Insert));
-                ClearFields();
+               
 
-            }
+            }*/
             
             BindCategoriesRptr();
         }
@@ -54,31 +100,51 @@ namespace BrandBox.com
         {
             catName.Text = String.Empty;
         }
-        public bool checkCategory(string cat)
-        {
-            bool retval;
-            DataTable dt = new DataTable();
-            SqlCommand cmd = new SqlCommand("SELECT ProductCatName FROM ProductCategory WHERE ProductCatName='"+cat+"'");
-            dt = access.SelectFromDatabase(cmd);  
-            
-                if (dt.Rows.Count  > 0)
-                {
-                    retval = true;
-                }
-                else
-                {
-                    retval = false;
-                }
 
-                return retval;
+        public DataTable checkCategory(string cat)
+        {
+            DataTable dt = new DataTable();
+            SqlCommand cmd = new SqlCommand("SELECT * FROM ProductCategory WHERE ProductCatName='"+cat+"'");
+            dt = access.SelectFromDatabase(cmd);
+            return dt;
+                
+        }
+
+        public bool checkCatAssociation(int Cat_Id,int VId)
+        {
+            bool retval=false;
+            DataTable dt = new DataTable();
+            SqlCommand cmd = new SqlCommand("SELECT * FROM VendorCatAssociation WHERE CategoryId=@CId");
+            cmd.Parameters.AddWithValue("@CId", Cat_Id);
+            dt = access.SelectFromDatabase(cmd);
+
+            if (dt.Rows.Count > 0)
+            {
+                //lblError.Text = Cat_Id + "Hey";
+
+                 foreach (DataRow row in dt.Rows)
+                 {
+                    if (VId == Convert.ToInt32(row["VendorId"]))
+                     {
+                        retval = true;
+                       //lblError.Text = Cat_Id + " Ba Hey";
+                        break;
+                     }
+                  //  lblError.Text = Cat_Id + " Ba Hey" + VId + "  " + row["VendorId"];
+                }
             }
+
+
+          return retval;
+        }
 
 
         private void BindCategoriesRptr()
         {
             DataTable categoryData = new DataTable();
-            SqlCommand cmd = new SqlCommand("select * from ProductCategory");
-            categoryData  = access.SelectFromDatabase(cmd);
+            SqlCommand cmd = new SqlCommand(" SELECT p.PCID, p.ProductCatName FROM ProductCategory p JOIN VendorCatAssociation v ON(p.PCID = v.CategoryId) AND v.VendorId = @VId");
+            cmd.Parameters.AddWithValue("@VId", currentVendorId);
+            categoryData = access.SelectFromDatabase(cmd);
                 
              CatRptr.DataSource = categoryData;
              CatRptr.DataBind();

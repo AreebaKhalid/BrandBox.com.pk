@@ -17,7 +17,6 @@
       <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="home">
           <div class="row">
-
             <div class="col-sm-12 mobile-pull">
               <article role="login">
                 <div class="form">
@@ -29,28 +28,21 @@
                       <asp:RegularExpressionValidator ValidationGroup="vg" Display = "Dynamic" ControlToValidate = "catName" ID="maxName" CssClass="errors" ValidationExpression = "^[\s\S]{0,50}$" runat="server" ErrorMessage="Maximum 50 characters allowed."></asp:RegularExpressionValidator>
                       <asp:RegularExpressionValidator ValidationGroup="vg" Display = "Dynamic" ControlToValidate = "catName" ID="minName" CssClass="errors" ValidationExpression = "^[\s\S]{3,}$" runat="server" ErrorMessage="Minimum 3 characters required."></asp:RegularExpressionValidator>
                   </div>
-
-                  
-
-                <div class="form-group">
-                    <asp:Label ID="lblError" runat="server" Text=""></asp:Label>
-                </div>
+                  <div class="form-group">
+                    <asp:Label ID="lblError" runat="server" Text="" ForeColor="Black"></asp:Label>
+                  </div>
                  
                   <div class="form-group">
                       <asp:Button  Text="SUBMIT" CssClass="btn btn-success btn-block" ValidationGroup="vg" runat="server" OnClick="Add_Category"/>
                   </div>
+
                 </div>
 
               </article>
             </div>
-
-           
-
           </div>
-          <!-- end of row -->
         </div>
- 
-  </div>
+    </div>
   </div>
 </div>
 
@@ -81,7 +73,7 @@
                 </ItemTemplate>
                 <FooterTemplate>
                     </tbody>
-            </table>
+                    </table>
                 </FooterTemplate>
             </asp:Repeater>
         </div>
