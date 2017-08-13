@@ -41,7 +41,7 @@ namespace BrandBox.com
         {
             
            String SQL_Insert = "INSERT INTO VendorCatAssociation(VendorId,CategoryId) Values('" + currentVendorId + "','"+ catId +"')";
-            successAdded(access.AddInDatabase(SQL_Insert));
+            successAdded(access.AddAndDelInDatabase(SQL_Insert));
             ClearFields();
         }
 

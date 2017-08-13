@@ -18,6 +18,7 @@ namespace BrandBox.com
         protected void LogOutBtn(object sender, EventArgs e)
         {
             Session["vendor"] = null;
+            Session["id"] = null;
             Response.Redirect("~/AboutUs.aspx");
         }
 

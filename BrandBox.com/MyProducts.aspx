@@ -5,9 +5,10 @@
      <div class="container">
         <div class =" row" style="margin:50px 0">
             <h1> My Products </h1>
+            <asp:Label runat="server" ID="lblDel"></asp:Label>
         </div>
         <div class="row">
-            <asp:Repeater ID="MyProductsRptr" runat="server">
+            <asp:Repeater ID="MyProductsRptr" runat="server" onitemcommand="Repeater_ItemCommand">
                 <HeaderTemplate>
                     <table class="table">
                         <thead>    
@@ -26,7 +27,8 @@
                             </div>
                             <h3><a href="shop-item.html"></a><%# Eval("ProductName") %></h3>
                             <div class="pi-price"><%# Eval("ProductPrice") %></div>
-                            <a href="javascript:;" class="btn add2cart">Edit</a>
+                            <asp:LinkButton runat="server" CssClass="btn add2cart">Edit</asp:LinkButton>
+                            <asp:LinkButton runat="server" CssClass="btn add2cart" CommandArgument='<%#Eval("ProductCode") %>' CommandName="Delete"  OnClientClick="deletealert(this, event);" >Delete</asp:LinkButton>
                         </div>
                     </div>
               </ItemTemplate>
@@ -39,5 +41,36 @@
         </div>
 
      </div>
-
+    <script>
+        function deletealert(ctl, event) {
+            // STORE HREF ATTRIBUTE OF LINK CTL (THIS) BUTTON
+            var defaultAction = $(ctl).prop("href");
+            // CANCEL DEFAULT LINK BEHAVIOUR
+            event.preventDefault();
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this imaginary file!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "Cancel!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        swal({ title: "Deleted!", text: "Your product has been deleted.", type: "success", confirmButtonText: "OK!", closeOnConfirm: false },
+                            function () {
+                                // RESUME THE DEFAULT LINK ACTION
+                               window.location.href = defaultAction;
+                                return true;
+                            });
+                    } else {
+                        swal("Cancelled", "Your product is not deleted! ", "error");
+                        return false;
+                    }
+                });
+        }
+    </script>
 </asp:Content>

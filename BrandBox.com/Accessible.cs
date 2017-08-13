@@ -15,7 +15,7 @@ namespace BrandBox.com
         {
             return "data:image/jpg;base64," + Convert.ToBase64String((byte[])img);
         }
-        public bool AddInDatabase(String SQL_Insert)
+        public bool AddAndDelInDatabase(String SQL_Insert)
         {
             int x;
             String CS = ConfigurationManager.ConnectionStrings["BrandBoxDatabaseConnectionString"].ConnectionString.ToString();
@@ -33,6 +33,8 @@ namespace BrandBox.com
                 return false;
 
         }
+       
+
         public DataTable SelectFromDatabase(SqlCommand SQL_Select_Qury)
         {
             String CS = ConfigurationManager.ConnectionStrings["BrandBoxDatabaseConnectionString"].ConnectionString.ToString();
