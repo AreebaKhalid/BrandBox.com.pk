@@ -13,14 +13,12 @@ namespace BrandBox.com
 {
     public partial class WebForm5 : System.Web.UI.Page
     {
+        WebForm2 obj = new WebForm2();
         int currentVendorId;
         Accessible access = new Accessible();
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["id"] != null)
-            {
-                currentVendorId = Convert.ToInt32(Session["id"]);
-            }
+           
             if (!IsPostBack)
             {
                 if (Session["vendor"] == null)
@@ -29,7 +27,10 @@ namespace BrandBox.com
                 }
                 else
                 {
-
+                    if (Session["id"] != null)
+                    {
+                        currentVendorId = Convert.ToInt32(Session["id"]);
+                    }
                     BindMyProductsRptr();
                 }
             }
@@ -56,8 +57,16 @@ namespace BrandBox.com
                 case ("Delete"):
                     DeleteRepeaterData(id);
                     break;
+                case ("Edit"):
+                    EditProduct(id);
+                    Response.Redirect("~/AddProduct.aspx");
+                    break;
                
             }
+        }
+        private void EditProduct(String id)
+        {
+            Session["pid"] = id;
         }
         private void DeleteRepeaterData(string id)
         {
@@ -79,5 +88,6 @@ namespace BrandBox.com
 
             }
         }
+
     }
 }

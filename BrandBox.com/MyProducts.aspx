@@ -27,7 +27,7 @@
                             </div>
                             <h3><a href="shop-item.html"></a><%# Eval("ProductName") %></h3>
                             <div class="pi-price"><%# Eval("ProductPrice") %></div>
-                            <asp:LinkButton runat="server" CssClass="btn add2cart">Edit</asp:LinkButton>
+                            <asp:LinkButton runat="server" CssClass="btn add2cart" CommandArgument='<%#Eval("ProductCode") %>' CommandName="Edit" >Edit</asp:LinkButton>
                             <asp:LinkButton runat="server" CssClass="btn add2cart" CommandArgument='<%#Eval("ProductCode") %>' CommandName="Delete"  OnClientClick="deletealert(this, event);" >Delete</asp:LinkButton>
                         </div>
                     </div>

@@ -17,13 +17,13 @@ namespace BrandBox.com
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            if (Request.Cookies["VEMAIL"] != null && Request.Cookies["VPWD"] != null)
+          /*  if (Request.Cookies["VEMAIL"] != null && Request.Cookies["VPWD"] != null)
             {
                 email.Text = Request.Cookies["VEMAIL"].Value;
                 password.Attributes["value"] = Request.Cookies["VPWD"].Value;
                 RememberMeCheckBox.Checked = true;
-                Response.Redirect("~/AboutUs.aspx#signup");
-            }
+               // Response.Redirect("~/Login.aspx");
+            }*/
         }
         protected void Signup_Now(object sender, EventArgs e)
         {
