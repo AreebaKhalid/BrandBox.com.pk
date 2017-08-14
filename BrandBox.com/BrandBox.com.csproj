@@ -131,7 +131,6 @@
     <Content Include="AddCategory.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="MyProducts.aspx" />
-    <Content Include="EditProduct.aspx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -240,13 +239,6 @@
     </Compile>
     <Compile Include="MyProducts.aspx.designer.cs">
       <DependentUpon>MyProducts.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="EditProduct.aspx.cs">
-      <DependentUpon>EditProduct.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="EditProduct.aspx.designer.cs">
-      <DependentUpon>EditProduct.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
