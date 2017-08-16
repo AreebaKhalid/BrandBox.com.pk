@@ -77,7 +77,7 @@ Licensed under MIT
     font-size: 12px;
 }
 .product-item .btn:hover {
-    background: #e84d1c;
+    background: #f4511e;
     border-color: #f4511e;
 }
 
@@ -91,10 +91,10 @@ Licensed under MIT
     color: #3e4d5c;
 }
 .product-item h3 a:hover {
-    color: #E02222;
+    color: #f4511e ;
 }
 .pi-price {
-    color: #e84d1c;
+    color: #f4511e;
     font-size: 18px;
     float: left;
     padding-top: 1px;

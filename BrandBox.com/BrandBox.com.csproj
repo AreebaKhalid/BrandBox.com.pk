@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\productStyle.css" />
+    <Content Include="css\sideBar.css" />
     <Content Include="css\sweetalert.css" />
     <Content Include="js\signUpValidate.js" />
     <Content Include="js\sweetalert.min.js" />
@@ -131,6 +132,7 @@
     <Content Include="AddCategory.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="MyProducts.aspx" />
+    <Content Include="AllProducts.aspx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -239,6 +241,13 @@
     </Compile>
     <Compile Include="MyProducts.aspx.designer.cs">
       <DependentUpon>MyProducts.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AllProducts.aspx.cs">
+      <DependentUpon>AllProducts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AllProducts.aspx.designer.cs">
+      <DependentUpon>AllProducts.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
