@@ -133,6 +133,7 @@
     <Content Include="Login.aspx" />
     <Content Include="MyProducts.aspx" />
     <Content Include="AllProducts.aspx" />
+    <Content Include="ViewProduct.aspx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -248,6 +249,13 @@
     </Compile>
     <Compile Include="AllProducts.aspx.designer.cs">
       <DependentUpon>AllProducts.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ViewProduct.aspx.cs">
+      <DependentUpon>ViewProduct.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ViewProduct.aspx.designer.cs">
+      <DependentUpon>ViewProduct.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

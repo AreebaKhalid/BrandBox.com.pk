@@ -37,7 +37,7 @@
                                 <asp:Image runat="server" ID="img" alt="image" CssClass="img-responsive zoom" ImageUrl='<%# BrandBox.com.Accessible.GetImage(Eval("ImageData")) %>' />    
                                 <div>
                                   <a href="#" class="btn">Zoom</a>
-                                  <a href="#" class="btn">View</a>
+                                  <a href="ViewProduct.aspx?ProductCode=<%# Eval("ProductCode") %>" class="btn">View</a>
                                 </div>
                             </div>
                             <h3><a href="shop-item.html"></a><%# Eval("ProductName") %></h3>
