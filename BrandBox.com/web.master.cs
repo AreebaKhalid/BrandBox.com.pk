@@ -19,7 +19,6 @@ namespace BrandBox.com
         {
             Session["vendor"] = null;
             Session["id"] = null;
-            Session["pid"] = null;
             Response.Redirect("~/AboutUs.aspx");
         }
 

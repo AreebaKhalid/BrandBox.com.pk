@@ -35,131 +35,22 @@ namespace BrandBox.com
                     Response.Redirect("~/AboutUs.aspx");
                 }
                 
-                else if(Session["pid"] != null)
+                else if(Request.QueryString["ProductCode"] != null)
                 {
-                    BindCategoryRptr();
-                    editProduct(Session["pid"].ToString());
-                    
+                    if(Session["id"]==null)
+                        Response.Redirect("~/AboutUs.aspx");
+                    else
+                    {
+                        BindCategoryRptr();
+                        editProduct(Request.QueryString["ProductCode"].ToString());
+                    }
+                   
+
                 }
                else
-                {
+               {
                     BindCategoryRptr();
-                }
-                    
-
-
-                
-            }
-        }
-
-        protected void small_CheckedChanged(object sender, EventArgs e)
-        {
-           if (SproductQnty.Enabled)
-            {
-                SproductQnty.Enabled = false;
-            }
-           else
-                SproductQnty.Enabled = true;
-
-        }
-
-        protected void medium_CheckedChanged(object sender, EventArgs e)
-        {
-            if (MproductQnty.Enabled)
-            {
-                MproductQnty.Enabled = false;
-            }
-            else
-                MproductQnty.Enabled = true;
-        }
-
-        protected void large_CheckedChanged(object sender, EventArgs e)
-        {
-            if (LproductQnty.Enabled)
-            {
-                LproductQnty.Enabled = false;
-            }
-            else
-                LproductQnty.Enabled = true;
-        }
-
-        protected bool validateCheckbox()
-        {
-            bool ret=true;
-
-            if(!(chkSmall.Checked || chkLarge.Checked || chkMedium.Checked))
-            {
-                chkLabel.Text = "Please select at least one size";
-                return false;
-            }
-
-            if(chkSmall.Checked)
-            {
-                if(SproductQnty.Text == null)
-                {
-                    chkLabel.Text = "Please enter product Qnty";
-                    chkLabel.ForeColor = Color.Red;
-                    ret = false;
-                }
-            }
-            if (chkLarge.Checked)
-            {
-                if (LproductQnty.Text == null)
-                {
-                    chkLabel.Text = "Please enter product Qnty";
-                    chkLabel.ForeColor = Color.Red;
-                    ret = false;
-                }
-            }
-            if (chkMedium.Checked)
-            {
-                if (MproductQnty.Text == null)
-                {
-                    chkLabel.Text = "Please enter product Qnty";
-                    chkLabel.ForeColor = Color.Red;
-                    ret = false;
-                }
-            }
-            return ret;
-
-        }
-
-        public void checkImage()
-        {
-            // Read the file and convert it to Byte Array
-            string filePath = ProductImageFileUpload.PostedFile.FileName;
-            string filename = Path.GetFileName(filePath);
-            string ext = Path.GetExtension(filename);
-
-
-            //getting current vendor id from tabe
-            if (Session["id"] != null)
-            {
-                currentVendorId = Convert.ToInt32(Session["id"]);
-            }
-
-
-            //Set the contenttype based on File Extension
-            switch (ext)
-            {
-                case ".jpg":
-                    contenttype = "image/jpg";
-                    break;
-                case ".png":
-                    contenttype = "image/png";
-                    break;
-                case ".gif":
-                    contenttype = "image/gif";
-                    break;
-                case ".pdf":
-                    contenttype = "application/pdf";
-                    break;
-                default:
-                    {
-                        PImageUploadError.Text = "Invalid Image";
-                        PImageUploadError.ForeColor = Color.Red;
-                        break;
-                    }
+               }               
             }
         }
 
@@ -178,14 +69,14 @@ namespace BrandBox.com
                 else if (size.ToLower().Trim().Equals("large"))
                     cmd2.Parameters.AddWithValue("@ProductQnty", LproductQnty.Text);
 
-                cmd2.Parameters.AddWithValue("@ProductCode", Session["pid"].ToString());
+                cmd2.Parameters.AddWithValue("@ProductCode", Request.QueryString["ProductCode"].ToString());
                 cmd2.Parameters.AddWithValue("ProductSize", size);
 
                 cmd2.ExecuteNonQuery();
             }
         }
 
-        protected void addDetail(int ProductFK, String size,char s)
+        protected void addDetail(Int64 ProductFK, String size,char s)
         {
             using (SqlConnection con = new SqlConnection(CS))
             {
@@ -209,7 +100,7 @@ namespace BrandBox.com
         protected bool checkingForPUpdate(int n)
         {
             SqlCommand cmd2 = new SqlCommand(" SELECT * FROM Product where ProductCode=@ProductCode and ProductSize=@Size");
-            cmd2.Parameters.AddWithValue("@ProductCode", Session["pid"].ToString());
+            cmd2.Parameters.AddWithValue("@ProductCode", Request.QueryString["ProductCode"].ToString());
             cmd2.Parameters.AddWithValue("@Size", size[n]);
 
             DataTable productDetailData = access.SelectFromDatabase(cmd2);
@@ -219,125 +110,131 @@ namespace BrandBox.com
                 return false;
         }
 
-        protected void CreateProducts(object sender, EventArgs e)
+        private void AddProduct()
         {
+            checkImage();
 
-            if(Session["pid"] == null)
+            if (contenttype != String.Empty && currentVendorId != 0 && validateCheckbox())
             {
-                checkImage();
+                Stream fs = ProductImageFileUpload.PostedFile.InputStream;
+                BinaryReader br = new BinaryReader(fs);
+                Byte[] bytes = br.ReadBytes((Int32)fs.Length);
 
-                if (contenttype != String.Empty && currentVendorId != 0 && validateCheckbox())
+                using (SqlConnection con = new SqlConnection(CS))
                 {
-                    Stream fs = ProductImageFileUpload.PostedFile.InputStream;
-                    BinaryReader br = new BinaryReader(fs);
-                    Byte[] bytes = br.ReadBytes((Int32)fs.Length);
+                    con.Open();
 
-                   using (SqlConnection con = new SqlConnection(CS))
-                   {
-                        con.Open();
+                    SqlCommand cmd = new SqlCommand("INSERT INTO PDetails(VendorId,ProductPrice,ProductName," +
+                        "ProductDetails,CategoryId,Gender,ImageContentType,ImageData) VALUES(@VendorId,@ProductPrice," +
+                        "@ProductName,@ProductDetails,@PCID,@Gender,@ImageContentType,@ImageData);" +
+                        " SELECT SCOPE_IDENTITY()", con);
+                    cmd.Parameters.AddWithValue("@VendorId", currentVendorId);
+                    cmd.Parameters.AddWithValue("@ProductPrice", productPrice.Text);
+                    cmd.Parameters.AddWithValue("@ProductName", productName.Text);
+                    cmd.Parameters.AddWithValue("@ProductDetails", productDetails.Text);
+                    cmd.Parameters.AddWithValue("@PCID", Convert.ToInt32(productCategory.SelectedItem.Value));
+                    cmd.Parameters.AddWithValue("@Gender", ddlGender.SelectedItem.Text);
+                    cmd.Parameters.Add("@ImageContentType", SqlDbType.VarChar).Value = contenttype;
+                    cmd.Parameters.Add("@ImageData", SqlDbType.Binary).Value = bytes;
 
-                        SqlCommand cmd = new SqlCommand("INSERT INTO PDetails(VendorId,ProductPrice,ProductName," +
-                            "ProductDetails,CategoryId,Gender,ImageContentType,ImageData) VALUES(@VendorId,@ProductPrice," +
-                            "@ProductName,@ProductDetails,@PCID,@Gender,@ImageContentType,@ImageData);" +
-                            " SELECT SCOPE_IDENTITY()", con);
-                        cmd.Parameters.AddWithValue("@VendorId", currentVendorId);
-                        cmd.Parameters.AddWithValue("@ProductPrice", productPrice.Text);
-                        cmd.Parameters.AddWithValue("@ProductName", productName.Text);
-                        cmd.Parameters.AddWithValue("@ProductDetails", productDetails.Text);
-                        cmd.Parameters.AddWithValue("@PCID", Convert.ToInt32(productCategory.SelectedItem.Value));
-                        cmd.Parameters.AddWithValue("@Gender", ddlGender.SelectedItem.Text);
-                        cmd.Parameters.Add("@ImageContentType", SqlDbType.VarChar).Value = contenttype;
-                        cmd.Parameters.Add("@ImageData", SqlDbType.Binary).Value = bytes;
+                    Int64 ProductFK = Convert.ToInt64(cmd.ExecuteScalar());
 
-                        int ProductFK = Convert.ToInt32(cmd.ExecuteScalar());
-                        
-                        if (chkSmall.Checked)
-                            addDetail(ProductFK,size[0],'s');
+                    if (chkSmall.Checked)
+                        addDetail(ProductFK, size[0], 's');
 
-                        if (chkMedium.Checked)
-                            addDetail(ProductFK,size[1],'m');  
-                        if (chkLarge.Checked)
-                            addDetail(ProductFK,size[2],'l');
+                    if (chkMedium.Checked)
+                        addDetail(ProductFK, size[1], 'm');
+                    if (chkLarge.Checked)
+                        addDetail(ProductFK, size[2], 'l');
 
-                        Response.Redirect("~/AboutUs.aspx#signup");
+                    Response.Redirect("~/AboutUs.aspx#signup");
 
-                   }
                 }
-            }
-            else
-            {
-                checkImage();
-
-                if (contenttype != String.Empty && currentVendorId != 0 && validateCheckbox())
-                {
-                    Stream fs = ProductImageFileUpload.PostedFile.InputStream;
-                    BinaryReader br = new BinaryReader(fs);
-                    Byte[] bytes = br.ReadBytes((Int32)fs.Length);
-
-                    using (SqlConnection con = new SqlConnection(CS))
-                    {
-                        con.Open();
-
-                        SqlCommand cmd = new SqlCommand("procUpdateProducts", con);
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@VendorId", currentVendorId);
-                        cmd.Parameters.AddWithValue("@ProductPrice", productPrice.Text);
-                        cmd.Parameters.AddWithValue("@ProductName", productName.Text);
-                        cmd.Parameters.AddWithValue("@ProductDetails", productDetails.Text);
-                        cmd.Parameters.AddWithValue("@CategoryId", Convert.ToInt32(productCategory.SelectedItem.Value));
-                        cmd.Parameters.AddWithValue("@Gender", ddlGender.SelectedItem.Text);
-                        cmd.Parameters.Add("@ImageContentType", SqlDbType.VarChar).Value = contenttype;
-                        cmd.Parameters.Add("@ImageData", SqlDbType.Binary).Value = bytes;
-                        cmd.Parameters.AddWithValue("@ProductCode", Session["pid"].ToString());
-
-                        cmd.ExecuteNonQuery();
-
-                        if (chkSmall.Checked)
-                        {
-                            if (checkingForPUpdate(0))
-                               updateDetail(size[0]);
-                            else 
-                              addDetail(Convert.ToInt32(Session["pid"]), size[0], 's');
-                        }
-                        else       
-                            if (checkingForPUpdate(0))
-                                access.AddAndDelInDatabase("delete from Product where ProductCode=" + Session["pid"].ToString() + " and ProductSize='" + size[0]+"'");
-
-                        if (chkMedium.Checked)
-                         { 
-                            if (checkingForPUpdate(1))
-                                updateDetail(size[1]);
-                            else
-                                addDetail(Convert.ToInt32(Session["pid"]),size[1],'m');
-                         }
-                        else
-                            if (checkingForPUpdate(1))
-                                access.AddAndDelInDatabase("delete from Product where ProductCode=" + Session["pid"].ToString() + " and ProductSize='" + size[1]+"'");
-
-                        if (chkLarge.Checked)
-                         { 
-                            if (checkingForPUpdate(2))
-                                updateDetail(size[2]);
-                            else
-                                addDetail(Convert.ToInt32(Session["pid"]),size[2],'l');
-                        }
-                        else
-                            if (checkingForPUpdate(2))
-                            {
-                                access.AddAndDelInDatabase("delete from Product where ProductCode = " + Session["pid"].ToString() + " AND ProductSize = '" + size[2] + "'");
-                            }
-
-                        Session["pid"] = null;
-
-                        Response.Redirect("~/AboutUs.aspx#signup");
-
-                    }
-                }
-
             }
         }
 
-       
+        private void UpdateProduct()
+        {
+            checkImage();
+
+            if (contenttype != String.Empty && currentVendorId != 0 && validateCheckbox())
+            {
+                Stream fs = ProductImageFileUpload.PostedFile.InputStream;
+                BinaryReader br = new BinaryReader(fs);
+                Byte[] bytes = br.ReadBytes((Int32)fs.Length);
+
+                using (SqlConnection con = new SqlConnection(CS))
+                {
+                    con.Open();
+
+                    SqlCommand cmd = new SqlCommand("procUpdateProducts", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@VendorId", currentVendorId);
+                    cmd.Parameters.AddWithValue("@ProductPrice", productPrice.Text);
+                    cmd.Parameters.AddWithValue("@ProductName", productName.Text);
+                    cmd.Parameters.AddWithValue("@ProductDetails", productDetails.Text);
+                    cmd.Parameters.AddWithValue("@CategoryId", Convert.ToInt32(productCategory.SelectedItem.Value));
+                    cmd.Parameters.AddWithValue("@Gender", ddlGender.SelectedItem.Text);
+                    cmd.Parameters.Add("@ImageContentType", SqlDbType.VarChar).Value = contenttype;
+                    cmd.Parameters.Add("@ImageData", SqlDbType.Binary).Value = bytes;
+                    cmd.Parameters.AddWithValue("@ProductCode", Convert.ToInt64(Request.QueryString["ProductCode"]));
+
+                    cmd.ExecuteNonQuery();
+
+                    if (chkSmall.Checked)
+                    {
+                        if (checkingForPUpdate(0))
+                            updateDetail(size[0]);
+                        else
+                            addDetail(Convert.ToInt64(Request.QueryString["ProductCode"]), size[0], 's');
+                    }
+                    else
+                        if (checkingForPUpdate(0))
+                        access.AddAndDelInDatabase("delete from Product where ProductCode=" + Request.QueryString["ProductCode"].ToString() + " and ProductSize='" + size[0] + "'");
+
+                    if (chkMedium.Checked)
+                    {
+                        if (checkingForPUpdate(1))
+                            updateDetail(size[1]);
+                        else
+                            addDetail(Convert.ToInt64(Request.QueryString["ProductCode"]), size[1], 'm');
+                    }
+                    else
+                        if (checkingForPUpdate(1))
+                        access.AddAndDelInDatabase("delete from Product where ProductCode=" + Request.QueryString["ProductCode"].ToString() + " and ProductSize='" + size[1] + "'");
+
+                    if (chkLarge.Checked)
+                    {
+                        if (checkingForPUpdate(2))
+                            updateDetail(size[2]);
+                        else
+                            addDetail(Convert.ToInt64(Request.QueryString["ProductCode"]), size[2], 'l');
+                    }
+                    else
+                        if (checkingForPUpdate(2))
+                    {
+                        access.AddAndDelInDatabase("delete from Product where ProductCode = " + Request.QueryString["ProductCode"].ToString() + " AND ProductSize = '" + size[2] + "'");
+                    }
+
+                   // Session["pid"] = null;
+
+                    Response.Redirect("~/AboutUs.aspx#signup");
+
+                }
+            }
+
+
+        }
+
+        protected void CreateProducts(object sender, EventArgs e)
+        {
+
+            if(Request.QueryString["ProductCode"] == null)
+               AddProduct();
+            
+            else
+               UpdateProduct();
+        }       
 
         private void BindCategoryRptr()
         {
@@ -408,6 +305,117 @@ namespace BrandBox.com
                     }
                 }
             }         
+        }
+
+        protected void small_CheckedChanged(object sender, EventArgs e)
+        {
+            if (SproductQnty.Enabled)
+            {
+                SproductQnty.Enabled = false;
+            }
+            else
+                SproductQnty.Enabled = true;
+
+        }
+
+        protected void medium_CheckedChanged(object sender, EventArgs e)
+        {
+            if (MproductQnty.Enabled)
+            {
+                MproductQnty.Enabled = false;
+            }
+            else
+                MproductQnty.Enabled = true;
+        }
+
+        protected void large_CheckedChanged(object sender, EventArgs e)
+        {
+            if (LproductQnty.Enabled)
+            {
+                LproductQnty.Enabled = false;
+            }
+            else
+                LproductQnty.Enabled = true;
+        }
+
+        protected bool validateCheckbox()
+        {
+            bool ret = true;
+
+            if (!(chkSmall.Checked || chkLarge.Checked || chkMedium.Checked))
+            {
+                chkLabel.Text = "Please select at least one size";
+                return false;
+            }
+
+            if (chkSmall.Checked)
+            {
+                if (SproductQnty.Text == null)
+                {
+                    chkLabel.Text = "Please enter product Qnty";
+                    chkLabel.ForeColor = Color.Red;
+                    ret = false;
+                }
+            }
+            if (chkLarge.Checked)
+            {
+                if (LproductQnty.Text == null)
+                {
+                    chkLabel.Text = "Please enter product Qnty";
+                    chkLabel.ForeColor = Color.Red;
+                    ret = false;
+                }
+            }
+            if (chkMedium.Checked)
+            {
+                if (MproductQnty.Text == null)
+                {
+                    chkLabel.Text = "Please enter product Qnty";
+                    chkLabel.ForeColor = Color.Red;
+                    ret = false;
+                }
+            }
+            return ret;
+
+        }
+
+        public void checkImage()
+        {
+            // Read the file and convert it to Byte Array
+            string filePath = ProductImageFileUpload.PostedFile.FileName;
+            string filename = Path.GetFileName(filePath);
+            string ext = Path.GetExtension(filename);
+
+
+            //getting current vendor id from tabe
+            if (Session["id"] != null)
+            {
+                currentVendorId = Convert.ToInt32(Session["id"]);
+            }
+
+
+            //Set the contenttype based on File Extension
+            switch (ext)
+            {
+                case ".jpg":
+                    contenttype = "image/jpg";
+                    break;
+                case ".png":
+                    contenttype = "image/png";
+                    break;
+                case ".gif":
+                    contenttype = "image/gif";
+                    break;
+                case ".pdf":
+                    contenttype = "application/pdf";
+                    break;
+                default:
+                    {
+                        PImageUploadError.Text = "Invalid Image";
+                        PImageUploadError.ForeColor = Color.Red;
+                        break;
+                    }
+            }
         }
     }
 }

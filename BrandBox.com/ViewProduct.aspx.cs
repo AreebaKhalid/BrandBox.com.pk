@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace BrandBox.com
@@ -15,12 +17,15 @@ namespace BrandBox.com
         protected void Page_Load(object sender, EventArgs e)
         {
 
+
             if (Request.QueryString["ProductCode"] != null)
             {
                 if (!IsPostBack)
                 {
                     
                     BindProductDetails();
+                    
+                  
                 }
             }
             else
@@ -46,9 +51,9 @@ namespace BrandBox.com
            // cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@ProductCode", ProductID);
             DetProduct = access.SelectFromDatabase(cmd);
-
+            
             DataTable sizeDet = new DataTable();
-            SqlCommand cmd2 = new SqlCommand("SELECT ProductQnty,ProductSize  FROM Product WHERE ProductCode = @ProductCode");
+            SqlCommand cmd2 = new SqlCommand("SELECT ProductQnty,ProductSize,PID  FROM Product WHERE ProductCode = @ProductCode");
            // cmd2.CommandType = CommandType.StoredProcedure;
             cmd2.Parameters.AddWithValue("@ProductCode", ProductID);
             sizeDet = access.SelectFromDatabase(cmd2);
@@ -74,5 +79,69 @@ namespace BrandBox.com
                productQnty.Enabled = true;
 
         }*/
+      /*  protected void sizeBinding(object sender, RepeaterItemEventArgs e)
+        {
+
+            foreach (RepeaterItem item in SizeRptr.Items)
+            {
+                CheckBox check = (CheckBox)item.FindControl("chkBox") as CheckBox;
+                (check).Attributes.Add("onchange", "ShowHideDiv(this)");
+                if (check.Checked)
+                {
+                    HtmlGenericControl div = e.Item.FindControl("productQntyDiv") as HtmlGenericControl;
+                    div.Attributes.Add("style", "display: block;");
+                }
+                else
+                {
+                    HtmlGenericControl div = e.Item.FindControl("productQntyDiv") as HtmlGenericControl;
+                    div.Attributes.Add("style", "display: none;");
+                }
+
+            }
+        }*/
+        protected void AddCart(object sender,System.EventArgs e)
+        {
+            //RepeaterItem item = e.Item;
+            foreach (RepeaterItem item in SizeRptr.Items)
+            {
+               CheckBox chk = (CheckBox) item.FindControl("chkBox") as CheckBox;
+                TextBox txt = (TextBox)item.FindControl("productQnty") as TextBox;
+                //DataRow dr = ((DataRowView)item.DataItem).Row;
+                if (chk != null)
+                    if (chk.Checked)
+                        if (txt.Enabled)
+                        {
+                                if (txt.Text == null)
+                                {
+                                    lblErr.Text = "Please enter quantity";
+                                    lblErr.ForeColor = Color.Red;
+                                }
+                                else
+                                {
+                                    lblErr.Text = "la";
+                                    lblErr.ForeColor = Color.Black;
+                                }
+                            
+                        }
+
+                        else
+                        {
+                            txt.Enabled = false;
+                            txt.Text = "be";
+                            txt.ForeColor = Color.Black;
+                            lblErr.Text = "ka";
+                            lblErr.ForeColor = Color.Black;
+                        }
+
+
+                    else
+                        txt.Enabled = false;
+                else
+                {
+                    lblErr.Text = "n";
+                    lblErr.ForeColor = Color.Black;
+                }
+            }
+        }
     }
 }

@@ -84,13 +84,17 @@
                                                         <asp:Label ID="Label7" runat="server" CssClass="col-md-2 control-label" Text="Size "></asp:Label>
                                                         </ItemTemplate>
                                                        </asp:Repeater>
-                                                          <asp:Repeater runat="server" ID="SizeRptr">
-                                                              <ItemTemplate>
-                                                        <div class="col-md-2">
-                                                        <asp:CheckBox  Text=<%#Eval("ProductSize") %>  ID="chkBox" runat ="server" AutoPostBack="true"/>
-                                                        <asp:TextBox runat="server" id="productQnty" CssClass="form-control" />
+                                                          <asp:Repeater runat="server" ID="SizeRptr" >
+                                                              <ItemTemplate >
+                                                        <div class="col-md-3">
+                                                            <input type="checkbox" runat="server" id="chk" onclick='ShowHideDiv(this)' value='<%#Eval("ProductSize") %>' /><%#Eval("ProductSize") %>
+                                                           
+                                                        <div id="productQntyDiv" style="display: none" runat="server">
+                                                        <asp:TextBox runat="server" id="productQnty" CssClass="form-control" ForeColor="Black"/>
+                                                        </div>
                                                         <asp:RegularExpressionValidator ID="SchkValidPQnty" ValidationGroup="Group1" runat="server" ControlToValidate="productQnty" CssClass="text-danger" ErrorMessage="Please enter a valid Quantity" Display="Dynamic"  ValidationExpression="^\d+$"></asp:RegularExpressionValidator> 
                                                         </div>
+                                                         
                                                             </ItemTemplate>
                                                               </asp:Repeater>
                                                       </div>
@@ -105,8 +109,8 @@
                                                   <div class="col-xs-12 col-sm-12">
                                                     <div  >
                                                       
-                                                        <asp:Button ID="btnAddToCart" ValidationGroup="Group1" runat="server" Text="ADD TO CART" class="btn btnAddToCart btn-lg " style="padding-right: 110px;padding-left: 110px;"/>
-                                                                                                                                                                     
+                                                        <asp:Button ID="btnAddToCart" ValidationGroup="Group1" runat="server" Text="ADD TO CART" class="btn btnAddToCart btn-lg " OnClick="AddCart" style="padding-right: 110px;padding-left: 110px;"/>
+                                                        <asp:Label runat="server" ID ="lblErr"></asp:Label>                                                                                                             
 
                                                     </div>
                                                    </div> 
@@ -118,8 +122,14 @@
 
                                 </div>
 
-                          </div>
+                          
                           </section>
-                         
+       <script>
+          
+               function ShowHideDiv(chkBox) {
+                   var dvqnty = document.getElementByClassName("productQntyDiv");
+                    dvqnty.style.display = chkBox.checked ? "block" : "none";
+        }
+    </script>
 
 </asp:Content>
