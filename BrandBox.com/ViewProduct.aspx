@@ -53,7 +53,7 @@
                 <div class="container" style ="margin-top:80px;">
                        <div class = "row">
                           
-                              <asp:Repeater ID="rptrImages" runat="server">
+                              <asp:Repeater ID="rptrImages" runat="server" >
                 
                                <ItemTemplate>
                               <div class = " col-xs-12 col-sm-offset-1 col-sm-6 col-md-offset-1 col-md-6 pic-size " style="height: 400px;width:530px;">
@@ -70,35 +70,27 @@
                                          <div class="container-fluid">
                                                 <div class="row">
                                                   <div class="col-xs-12 col-sm-12">
-                                                     <asp:Repeater ID="rptrProductDetails"  runat="server">
-                                                     <ItemTemplate>
-                                                    <div class="panel panel-default" style="width: 347px;height: 340px;">
-                                                      <div class="panel-heading text-center" >
-                                                        <h3><%#Eval("ProductName") %></h3>
-                                                      </div>
-                                                      <div class="panel-body">
-                                                      <p><strong>Category</strong>  <%#Eval("ProductCatName") %></p>
-                                                        <p><strong>Brand:</strong>  <%#Eval("VendorName") %></p>
-                                                        <p><strong>Price:</strong> <%#Eval("ProductPrice") %></p>
-                                                        <p><strong>Description:</strong> <%#Eval("ProductDetails") %></p>
-                                                        <asp:Label ID="Label7" runat="server" CssClass="col-md-2 control-label" Text="Size "></asp:Label>
+                                                     <asp:Repeater ID="rptrProductDetails"  runat="server" OnItemDataBound="rptrProductDetails_ItemDataBound">
+                                                        <ItemTemplate>
+                                                            <div class="panel panel-default" style="width: 347px;height: 340px;">
+                                                            <div class="panel-heading text-center" >
+                                                            <h3><%#Eval("ProductName") %></h3>
+                                                            </div>
+                                                            <div class="panel-body">
+                                                            <p><strong>Category</strong>  <%#Eval("ProductCatName") %></p>
+                                                            <p><strong>Brand:</strong>  <%#Eval("VendorName") %></p>
+                                                            <p><strong>Price:</strong> <%#Eval("ProductPrice") %></p>
+                                                            <p><strong>Description:</strong> <%#Eval("ProductDetails") %></p>
+                                                            <asp:Label ID="Label7" runat="server" CssClass="col-md-2 control-label" Text="Size "></asp:Label>
+                                                            <div>
+                                                            <asp:RadioButtonList runat="server" ID="rblSize" RepeatDirection="Horizontal" RepeatLayout="Flow">
+                                                            </asp:RadioButtonList>
+                                                            </div>
+                                                            <asp:TextBox runat="server" id="productQnty" CssClass="form-control" ForeColor="Black"/>
+                                                            <asp:RegularExpressionValidator ID="SchkValidPQnty" ValidationGroup="Group1" runat="server" ControlToValidate="productQnty" CssClass="text-danger" ErrorMessage="Please enter a valid Quantity" Display="Dynamic"  ValidationExpression="^\d+$"></asp:RegularExpressionValidator>                                                                                                               
+                                                            </div>
                                                         </ItemTemplate>
                                                        </asp:Repeater>
-                                                          <asp:Repeater runat="server" ID="SizeRptr" >
-                                                              <ItemTemplate >
-                                                        <div class="col-md-3">
-                                                            <input type="checkbox" runat="server" id="chk" onclick='ShowHideDiv(this)' value='<%#Eval("ProductSize") %>' /><%#Eval("ProductSize") %>
-                                                           
-                                                        <div id="productQntyDiv" style="display: none" runat="server">
-                                                        <asp:TextBox runat="server" id="productQnty" CssClass="form-control" ForeColor="Black"/>
-                                                        </div>
-                                                        <asp:RegularExpressionValidator ID="SchkValidPQnty" ValidationGroup="Group1" runat="server" ControlToValidate="productQnty" CssClass="text-danger" ErrorMessage="Please enter a valid Quantity" Display="Dynamic"  ValidationExpression="^\d+$"></asp:RegularExpressionValidator> 
-                                                        </div>
-                                                         
-                                                            </ItemTemplate>
-                                                              </asp:Repeater>
-                                                      </div>
-                                                       
                                                       
                                                       <br/><br/>
                                                     </div> 

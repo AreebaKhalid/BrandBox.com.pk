@@ -43,6 +43,45 @@ namespace BrandBox.com
             rptrImages.DataSource = categoryData;
             rptrImages.DataBind();*/
         }
+        protected void rptrProductDetails_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                Int64 ProductID = Convert.ToInt64(Request.QueryString["ProductCode"]);
+
+                RadioButtonList rblSize = e.Item.FindControl("rblSize") as RadioButtonList;
+
+                DataTable sizeDet = new DataTable();
+                SqlDataAdapter sda = new SqlDataAdapter();
+                SqlCommand cmd2 = new SqlCommand("SELECT ProductQnty,ProductSize,PID  FROM Product WHERE ProductCode = @ProductCode");
+                // cmd2.CommandType = CommandType.StoredProcedure;
+                cmd2.Parameters.AddWithValue("@ProductCode", ProductID);
+                sizeDet = access.SelectFromDatabase(cmd2);
+                foreach(DataRow rows in sizeDet.Rows)
+                {
+                    if(Convert.ToUInt32(rows["ProductQnty"])==0)
+                        rows.Delete();
+                }
+
+                rblSize.DataSource = sizeDet;
+                rblSize.DataTextField = "ProductSize";
+                rblSize.DataValueField = "ProductSize";
+                rblSize.DataBind();
+
+                if (rblSize.Items.Count == 0)
+                {
+                    TextBox txt = (TextBox)e.Item.FindControl("productQnty") as TextBox;
+                    lblErr.Text = "Item not in stock";
+                    lblErr.ForeColor = Color.Red;
+                    btnAddToCart.Enabled = false;
+                    txt.Enabled = false;
+                }
+
+
+
+
+            }
+        }
         private void BindProductDetails()
         {
             Int64 ProductID = Convert.ToInt64(Request.QueryString["ProductCode"]);
@@ -52,7 +91,7 @@ namespace BrandBox.com
             cmd.Parameters.AddWithValue("@ProductCode", ProductID);
             DetProduct = access.SelectFromDatabase(cmd);
             
-            DataTable sizeDet = new DataTable();
+           /* DataTable sizeDet = new DataTable();
             SqlCommand cmd2 = new SqlCommand("SELECT ProductQnty,ProductSize,PID  FROM Product WHERE ProductCode = @ProductCode");
            // cmd2.CommandType = CommandType.StoredProcedure;
             cmd2.Parameters.AddWithValue("@ProductCode", ProductID);
@@ -60,7 +99,7 @@ namespace BrandBox.com
 
             SizeRptr.DataSource = sizeDet;
             SizeRptr.DataBind();
-
+            */
             rptrProductDetails.DataSource = DetProduct;
             rptrProductDetails.DataBind();
             rptrImages.DataSource = DetProduct;
@@ -69,77 +108,35 @@ namespace BrandBox.com
 
             BindProductImages();
         }
-        /*protected void CheckedChanged(object sender, EventArgs e)
-        {
-            if (productQnty.Enabled)
-            {
-                productQnty.Enabled = false;
-            }
-            else
-               productQnty.Enabled = true;
-
-        }*/
-      /*  protected void sizeBinding(object sender, RepeaterItemEventArgs e)
-        {
-
-            foreach (RepeaterItem item in SizeRptr.Items)
-            {
-                CheckBox check = (CheckBox)item.FindControl("chkBox") as CheckBox;
-                (check).Attributes.Add("onchange", "ShowHideDiv(this)");
-                if (check.Checked)
-                {
-                    HtmlGenericControl div = e.Item.FindControl("productQntyDiv") as HtmlGenericControl;
-                    div.Attributes.Add("style", "display: block;");
-                }
-                else
-                {
-                    HtmlGenericControl div = e.Item.FindControl("productQntyDiv") as HtmlGenericControl;
-                    div.Attributes.Add("style", "display: none;");
-                }
-
-            }
-        }*/
+        
         protected void AddCart(object sender,System.EventArgs e)
         {
             //RepeaterItem item = e.Item;
-            foreach (RepeaterItem item in SizeRptr.Items)
+            string x=string.Empty;
+            string qnty =string.Empty;
+            foreach (RepeaterItem item in rptrProductDetails.Items)
             {
-               CheckBox chk = (CheckBox) item.FindControl("chkBox") as CheckBox;
-                TextBox txt = (TextBox)item.FindControl("productQnty") as TextBox;
-                //DataRow dr = ((DataRowView)item.DataItem).Row;
-                if (chk != null)
-                    if (chk.Checked)
-                        if (txt.Enabled)
-                        {
-                                if (txt.Text == null)
-                                {
-                                    lblErr.Text = "Please enter quantity";
-                                    lblErr.ForeColor = Color.Red;
-                                }
-                                else
-                                {
-                                    lblErr.Text = "la";
-                                    lblErr.ForeColor = Color.Black;
-                                }
-                            
-                        }
-
-                        else
-                        {
-                            txt.Enabled = false;
-                            txt.Text = "be";
-                            txt.ForeColor = Color.Black;
-                            lblErr.Text = "ka";
-                            lblErr.ForeColor = Color.Black;
-                        }
-
-
-                    else
-                        txt.Enabled = false;
-                else
+                if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem)
                 {
-                    lblErr.Text = "n";
-                    lblErr.ForeColor = Color.Black;
+                    var sizelst = item.FindControl("rblSize") as RadioButtonList;
+                    TextBox txt = (TextBox)item.FindControl("productQnty") as TextBox;
+                    x = sizelst.SelectedValue;
+                    
+                }         
+            }
+
+            if(x=="")
+            {
+                lblErr.Text = "Please select size for your product";
+                lblErr.ForeColor = Color.Red;
+            }
+            else
+            {
+                
+                if (qnty == "")
+                {
+                    lblErr.Text = "Please add quantity for your product";
+                    lblErr.ForeColor = Color.Red;
                 }
             }
         }

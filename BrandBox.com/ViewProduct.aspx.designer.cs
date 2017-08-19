@@ -31,15 +31,6 @@ namespace BrandBox.com {
         protected global::System.Web.UI.WebControls.Repeater rptrProductDetails;
         
         /// <summary>
-        /// SizeRptr control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater SizeRptr;
-        
-        /// <summary>
         /// btnAddToCart control.
         /// </summary>
         /// <remarks>
