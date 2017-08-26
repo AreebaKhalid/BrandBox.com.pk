@@ -30,7 +30,7 @@ namespace BrandBox.com
         {
             if (Request.Cookies["OrderID"] != null)
             {
-                string CookieData = Request.Cookies["OrderID"]["OrderID"].Split('=')[0];
+                string CookieData = Request.Cookies["OrderID"]["ProductID"].Split('=')[0];
                 string[] CookieDataArray = CookieData.Split(',');
 
                 
@@ -56,28 +56,11 @@ namespace BrandBox.com
                         string ProductID = CookieDataArray[i].ToString().Split('-')[0];
 
                         SqlCommand cmd = new SqlCommand("Select * from PDetails where ProductCode="+ProductID);
-
-                        //DataTable dt = new DataTable();
-
                         
-                        //DataRow dr = dt.NewRow();
-                      //  DataRow ds = cartitems.NewRow();
-
-                        
-
-                       // dt.Rows.Add(dr);
-
-                       // det.Merge(dt);
-                        //cartitems.Rows.AsParallel(dt);                        
                         cartitems.Merge(access.SelectFromDatabase(cmd));
 
                         cartitems.Rows[i]["ProductQnty"] = CookieQuantityArray[i].ToString().Split('-')[0];
                         cartitems.Rows[i]["ProductSize"] = CookieSizeArray[i].ToString().Split('-')[0];
-
-                        /*foreach(DataRow d in cartitems.Rows)
-                        {
-                            cartitems.Rows.Add(ds);
-                        }*/
 
                         CartTotal += Convert.ToInt64(cartitems.Rows[i]["ProductPrice"]);
                         Discount = (CartTotal * 10) / 100;
@@ -117,16 +100,31 @@ namespace BrandBox.com
         }
         protected void btnRemoveItem_Click(object sender, EventArgs e)
         {
-            string CookiePID = Request.Cookies["OrderID"].Value.Split('=')[1];
+            string CookiePID = Request.Cookies["OrderID"]["ProductID"].Split('=')[0];
+            string CookieQuantity = Request.Cookies["OrderID"]["Quantity"].Split('=')[0];
+            string CookieSize = Request.Cookies["OrderID"]["Size"].Split('=')[0];
             LinkButton btn = (LinkButton)sender;
             string PID = btn.CommandArgument;
             List<String> CookiePIDList = CookiePID.Split(',').Select(i => i.Trim()).Where(i => i != string.Empty).ToList();
-            CookiePIDList.Remove(PID);
+            List<String> CookieQuantityList = CookieQuantity.Split(',').Select(i => i.Trim()).Where(i => i != string.Empty).ToList();
+            List<String> CookieSizeList = CookieSize.Split(',').Select(i => i.Trim()).Where(i => i != string.Empty).ToList();
+            Int32 ind = CookiePIDList.IndexOf(PID);
+
+
+            CookieQuantityList.RemoveAt(ind);
+            CookieSizeList.RemoveAt(ind);
+            CookiePIDList.RemoveAt(ind);
+
             string CookiePIDUpdated = String.Join(",", CookiePIDList.ToArray());
+            string CookieQntyUpdated = String.Join(",", CookieQuantityList.ToArray());
+            string CookieSizeUpdated = String.Join(",", CookieSizeList.ToArray());
+
             if (CookiePIDUpdated == "")
             {
                 HttpCookie CartProducts = Request.Cookies["OrderID"];
-                CartProducts.Values["OrderID"] = null;
+                CartProducts.Values["ProductID"] = null;
+                CartProducts.Values["Quantity"] = null;
+                CartProducts.Values["Size"] = null;
                 CartProducts.Expires = DateTime.Now.AddDays(-1);
                 Response.Cookies.Add(CartProducts);
 
@@ -134,7 +132,9 @@ namespace BrandBox.com
             else
             {
                 HttpCookie CartProducts = Request.Cookies["OrderID"];
-                CartProducts.Values["OrderID"] = CookiePIDUpdated;
+                CartProducts.Values["ProductID"] = CookiePIDUpdated;
+                CartProducts.Values["Quantity"] = CookieQntyUpdated;
+                CartProducts.Values["Size"] = CookieSizeUpdated;
                 CartProducts.Expires = DateTime.Now.AddDays(30);
                 Response.Cookies.Add(CartProducts);
 

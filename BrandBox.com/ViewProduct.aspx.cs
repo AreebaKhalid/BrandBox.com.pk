@@ -42,7 +42,7 @@ namespace BrandBox.com
             {
                 if (Request.Cookies["OrderID"] != null)
                 {
-                    string CookiePID = Request.Cookies["OrderID"]["OrderID"].Split('=')[0];
+                    string CookiePID = Request.Cookies["OrderID"]["ProductID"].Split('=')[0];
                     CookiePID = CookiePID + "," + ProductID;
 
                     HttpCookie Order = new HttpCookie("OrderID");
@@ -65,17 +65,17 @@ namespace BrandBox.com
                 {
                     HttpCookie Order = new HttpCookie("OrderID");
                     //Order.Values["Customer"] = Session["Customer"].ToString();
-                    Order.Values["OrderID"] = ProductID.ToString();
+                    Order.Values["ProductID"] = ProductID.ToString();
                     Order.Values["Quantity"] = quantity;
                     Order.Values["Size"] = size;
                     Order.Expires = DateTime.Now.AddDays(30);
                     Response.Cookies.Add(Order);
                 }
-                // Response.Redirect("~/Description.aspx?ProductID=" + ProductID);
+                 Response.Redirect("~/Cart.aspx");
             }
             else
             {
-                Response.Redirect("~/CustLogin.aspx?rurl=products");
+                Response.Redirect("~/CustLogin.aspx?rurl=ViewProduct.aspx");
             }
         }
         protected void rptrProductDetails_ItemDataBound(object sender, RepeaterItemEventArgs e)
