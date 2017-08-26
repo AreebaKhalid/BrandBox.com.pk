@@ -15,6 +15,20 @@ namespace BrandBox.com
         {
             return "data:image/jpg;base64," + Convert.ToBase64String((byte[])img);
         }
+        public String genCode()
+        {
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var stringChars = new char[8];
+            var random = new Random();
+
+            for (int i = 0; i < stringChars.Length; i++)
+            {
+                stringChars[i] = chars[random.Next(chars.Length)];
+            }
+
+            var finalString = new String(stringChars);
+            return finalString;
+        }
         public bool AddAndDelInDatabase(String SQL_Insert)
         {
             int x;
@@ -33,7 +47,26 @@ namespace BrandBox.com
                 return false;
 
         }
-       
+        public bool checkifAlreadyVerified(string email)
+        {
+            DataTable dt = new DataTable();
+            SqlCommand cmd = new SqlCommand("SELECT VerifiedEmail FROM Vendor WHERE VendorEmail=@Email");
+            cmd.Parameters.AddWithValue("@Email", email);
+            dt = SelectFromDatabase(cmd);
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    return (bool)dr["VerifiedEmail"];
+                }
+
+            }
+            else
+            {
+                return false;
+            }
+            return false;
+        }
 
         public DataTable SelectFromDatabase(SqlCommand SQL_Select_Qury)
         {

@@ -10,6 +10,7 @@ using System.Data.Common;
 using System.Drawing;
 using System.IO;
 using System.Data;
+using System.Net.Mail;
 
 namespace BrandBox.com
 {
@@ -79,10 +80,13 @@ namespace BrandBox.com
             }
             else if(contenttype != String.Empty)
             {
+
                 Stream fs = VendorFileUpload.PostedFile.InputStream;
                 BinaryReader br = new BinaryReader(fs);
                 Byte[] bytes = br.ReadBytes((Int32)fs.Length);
 
+                string randomVCode = access.genCode();
+                sendMsg(vendorEmail.Text, vendorName.Text, vendorPassword.Text, randomVCode);
 
 
                 String CS = ConfigurationManager.ConnectionStrings["BrandBoxDatabaseConnectionString"].ConnectionString.ToString();
@@ -95,9 +99,9 @@ namespace BrandBox.com
                     cmd.Parameters.AddWithValue("@VProfit", 0);
 
                     int VendorPaymentFK = Convert.ToInt32(cmd.ExecuteScalar());
+                    
 
-
-                    SqlCommand cmd2 = new SqlCommand("INSERT INTO Vendor(VendorEmail, VendorPassword, VendorLocation, VendorPhoneNo,VendorName,VendorDetails,VPaymentNo,ImageContentType,ImageData) VALUES(@VendorEmail,@VendorPassword,@VendorLocation,@VendorPhoneNo,@VendorName,@VendorDetails,@VPaymentNo,@ImageContentType,@ImageData)", con);
+                    SqlCommand cmd2 = new SqlCommand("INSERT INTO Vendor(VendorEmail, VendorPassword, VendorLocation, VendorPhoneNo,VendorName,VendorDetails,VPaymentNo,ImageContentType,ImageData,VerifiedEmail,VerificationCode) VALUES(@VendorEmail,@VendorPassword,@VendorLocation,@VendorPhoneNo,@VendorName,@VendorDetails,@VPaymentNo,@ImageContentType,@ImageData,@VerifiedEmail,@VerificationCode)", con);
                     cmd2.Parameters.AddWithValue("@VendorEmail", vendorEmail.Text);
                     cmd2.Parameters.AddWithValue("@VendorPassword", vendorPassword.Text);
                     cmd2.Parameters.AddWithValue("@VendorLocation", vendorLocation.Text);
@@ -107,14 +111,60 @@ namespace BrandBox.com
                     cmd2.Parameters.AddWithValue("@VPaymentNo", VendorPaymentFK);
                     cmd2.Parameters.Add("@ImageContentType", SqlDbType.VarChar).Value = contenttype;
                     cmd2.Parameters.Add("@ImageData", SqlDbType.Binary).Value = bytes;
-
+                    cmd2.Parameters.AddWithValue("@VerifiedEmail",0);
+                    cmd2.Parameters.AddWithValue("@VerificationCode", randomVCode);
                     cmd2.ExecuteNonQuery();
 
+                    
 
-                    Response.Redirect("~/Login.aspx");
+                    Response.Redirect("~/Activation.aspx");
 
                 }
             }           
+        }
+        //Send Mail
+        public static void sendMsg(string Email, string User, string Pass, string random)
+        {
+
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = "smtp.gmail.com";
+            smtp.Port = 587;
+            smtp.Credentials = new System.Net.NetworkCredential("brandbox.com.pk@gmail.com", "AreebaYamna");
+            smtp.EnableSsl = true;
+
+            MailMessage msg = new MailMessage();
+            msg.Subject = "Account Verification";
+            msg.Body = "Hello " + User + "Thanks for Registering in BrandBox...\n Your Account Details are given below:";
+            msg.Body += "<tr>";
+            msg.Body += "<td>User Name :" + User + "</td>";
+            msg.Body += "</tr>";
+            msg.Body += "<tr>";
+            msg.Body += "<td>Password :" + Pass + "</td>";
+            msg.Body += "</tr>";
+            msg.Body += "<tr>";
+            msg.Body += "<td>Activation Number :" + random + "</td>";
+            msg.Body += "</tr>";
+
+            msg.Body += "<tr>";
+            msg.Body += "<td>Thanking</td><td>Team BrandBox</td>";
+            msg.Body += "</tr>";
+
+            string toAddress = Email; // Add Recepient address
+            msg.To.Add(toAddress);
+
+            string fromAddress = "\"BrandBox.com.pk \" <brandbox.com.pk@gmail.com>";
+            msg.From = new MailAddress(fromAddress);
+            msg.IsBodyHtml = true;
+
+            try
+            {
+                smtp.Send(msg);
+
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }

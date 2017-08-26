@@ -75,7 +75,8 @@ namespace BrandBox.com
             }
             else
             {
-                Response.Redirect("~/CustLogin.aspx?rurl=ViewProduct.aspx");
+                Response.Redirect("/CustLogin.aspx?rurl=view");
+               
             }
         }
         protected void rptrProductDetails_ItemDataBound(object sender, RepeaterItemEventArgs e)

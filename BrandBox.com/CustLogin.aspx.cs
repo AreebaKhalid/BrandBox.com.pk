@@ -31,28 +31,20 @@ namespace BrandBox.com
                 dt = access.SelectFromDatabase(cmd);
                 if (dt.Rows.Count != 0)
                 {
-                Session["Customer"] = email.Text;
-                /*if (Request.QueryString["rurl"] != null)
-                {
-                    if (Request.QueryString["rurl"]=="view")
-                    {
-                       Response.Redirect("~/ViewProduct.aspx");
-                    }
-                }*/
-                var returnUrl = Request.QueryString["rurl"];
-                if (returnUrl.Equals(""))
-                {
-                    Response.Redirect("~/AboutUs.aspx");
-                }
-                else
-                {
-                    Context.RedirectLocal(returnUrl);
-                }
-                   /* else
-                    {
-                         Response.Redirect("~/AboutUs.aspx"); 
-                    }
-                    */
+                    Session["Customer"] = email.Text;
+                    if(Request.QueryString["rurl"]!=null)
+                        {                
+                        if (Request.QueryString["rurl"] == "view")
+                        {
+                            Response.Redirect("~/ViewProduct.aspx");
+                        
+                        }
+                       }
+                    else
+                        {
+                            Response.Redirect("~/AllProducts.aspx"); 
+ 
+                        }
                     Session.RemoveAll();
                 }
                 else

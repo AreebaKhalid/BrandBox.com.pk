@@ -25,9 +25,6 @@
                 <h3 class="text-center"><i class="fa fa-lock"></i>&nbspCreate Vendor Account</h3>
                 <form class="signup" name="SignUpForm" method="post">
 
-                 
-
-
                   <div class="form-group">
                       <asp:TextBox runat="server" id="vendorName" CssClass="form-control" placeholder="Vendor Brand Name" />
                       <asp:Label ID="VNameErrorMessage" runat="server" Text=""></asp:Label>
@@ -76,9 +73,10 @@
                     <asp:TextBox runat="server" id="vendorLocation" CssClass="form-control" placeholder="Address"/>
                     <asp:RequiredFieldValidator runat="server" id="reqLocation" ValidationGroup="Group1" controltovalidate="vendorLocation" CssClass="errors" errormessage="This field cannot be blank." Display="Dynamic" />
                   </div>
-                 
+
+                  
                   <div class="form-group">
-                      <asp:Button  Text="SUBMIT" CssClass="btn btn-success btn-block" ValidationGroup="Group1" runat="server" OnClick="SignUpSuccessful" />
+                      <asp:Button ID="Submit" Text="SUBMIT" CssClass="btn btn-success btn-block" ValidationGroup="Group1" runat="server" OnClick="SignUpSuccessful" />
                   </div>
                 </form>
 

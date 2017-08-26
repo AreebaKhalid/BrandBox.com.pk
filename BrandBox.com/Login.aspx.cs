@@ -14,6 +14,7 @@ namespace BrandBox.com
 {
     public partial class WebForm4 : System.Web.UI.Page
     {
+        Accessible access = new Accessible();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["id"] != null)
@@ -34,45 +35,51 @@ namespace BrandBox.com
         }
         protected void Signin_Click(object sender, EventArgs e)
         {
-            int vid;
-            String CS = ConfigurationManager.ConnectionStrings["BrandBoxDatabaseConnectionString"].ConnectionString.ToString();
-            using (SqlConnection con = new SqlConnection(CS))
+            if (access.checkifAlreadyVerified(email.Text))
             {
-                SqlCommand cmd = new SqlCommand("select * from Vendor where VendorEmail='" + email.Text + "' and VendorPassword='" + password.Text + "'", con);
-                con.Open();
-                SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                sda.Fill(dt);
-                if (dt.Rows.Count != 0)
+                int vid;
+                String CS = ConfigurationManager.ConnectionStrings["BrandBoxDatabaseConnectionString"].ConnectionString.ToString();
+                using (SqlConnection con = new SqlConnection(CS))
                 {
-                    vid = Convert.ToInt32(dt.Rows[0]["VendorId"]);
-                    if (RememberMeCheckBox.Checked)
+                    SqlCommand cmd = new SqlCommand("select * from Vendor where VendorEmail='" + email.Text + "' and VendorPassword='" + password.Text + "'", con);
+                    con.Open();
+                    SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    sda.Fill(dt);
+                    if (dt.Rows.Count != 0)
                     {
-                        Response.Cookies["VEMAIL"].Value = email.Text;
-                        Response.Cookies["VPWD"].Value = password.Text;
+                        vid = Convert.ToInt32(dt.Rows[0]["VendorId"]);
+                        if (RememberMeCheckBox.Checked)
+                        {
+                            Response.Cookies["VEMAIL"].Value = email.Text;
+                            Response.Cookies["VPWD"].Value = password.Text;
 
 
-                        Response.Cookies["VEMAIL"].Expires = DateTime.Now.AddDays(3);
-                        Response.Cookies["VPWD"].Expires = DateTime.Now.AddDays(3);
+                            Response.Cookies["VEMAIL"].Expires = DateTime.Now.AddDays(3);
+                            Response.Cookies["VPWD"].Expires = DateTime.Now.AddDays(3);
+                        }
+                        else
+                        {
+                            Response.Cookies["VEMAIL"].Expires = DateTime.Now.AddDays(-1);
+                            Response.Cookies["VPWD"].Expires = DateTime.Now.AddDays(-1);
+                        }
+                        Session["vendor"] = email.Text;
+                        Session["id"] = vid;
+
+                        Response.Redirect("~/SignUp.aspx");
+                        Session.RemoveAll();
                     }
                     else
                     {
-                        Response.Cookies["VEMAIL"].Expires = DateTime.Now.AddDays(-1);
-                        Response.Cookies["VPWD"].Expires = DateTime.Now.AddDays(-1);
+                        lblError.Text = "Invalid Username or password";
+                        lblError.ForeColor = Color.Red;
                     }
-                    Session["vendor"] = email.Text;
-                    Session["id"] = vid;
-                   
-                    Response.Redirect("~/SignUp.aspx");
-                    Session.RemoveAll();
-                }
-                else
-                {
-                    lblError.Text = "Invalid Username or password";
-                    lblError.ForeColor = Color.Red;
                 }
             }
-
+            else
+            {
+                Response.Redirect("/Activation.aspx?rurl=notVerified");
+            }
         }
     }
 }
