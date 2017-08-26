@@ -10,8 +10,7 @@
        <div class="row">
         <div class="col-sm-12 nav-tab-holder">
             <ul class="nav nav-tabs row" role="tablist">
-                 <li role="presentation" class="active col-sm-6"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Vendor</a></li>
-                 <li role="presentation" class="col-sm-6"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">User</a></li>
+                 <li role="presentation" class="active col-sm-12"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Sign Up</a></li>
             </ul>
         </div>
        </div>
@@ -23,7 +22,7 @@
 
             <div class="col-sm-12 mobile-pull">
               <article role="login">
-                <h3 class="text-center"><i class="fa fa-lock"></i>Create Vendor Account</h3>
+                <h3 class="text-center"><i class="fa fa-lock"></i>&nbspCreate Vendor Account</h3>
                 <form class="signup" name="SignUpForm" method="post">
 
                  
@@ -90,68 +89,8 @@
           <!-- end of row -->
          </div>
         <!-- end of home -->
-
-      <div role="tabpanel" class="tab-pane" id="profile">
-        <div class="row">
-
-          <div class="col-sm-12 mobile-pull">
-            <article role="login">
-
-              <h3 class="text-center"><i class="fa fa-lock"></i> Create User Account</h3>
-              <form action="index.html" method="post">
-
-                <div class="form-group">
-                  <input type="text" class="form-control" placeholder="UserName">
-                </div>
-
-                <div class="form-group">
-                  <input type="email" class="form-control" placeholder="Email Address">
-                </div>
-        
-                <div class="form-group">
-                    <select  class="form-control" name="country" >
-                      <option value=""> -city-</option>
-                      <option value="Faisalabad">Faisalabad</option>
-                      <option value="Hyderabad">Hyderabad</option>
-                      <option value="Islamabad">Islamabad</option>
-                      <option value="Karachi">Karachi</option>
-                      <option value="Lahore">Lahore</option>
-                      <option value="Multan">Multan</option>
-                      <option value="Peshawar">Peshawar</option>
-                      <option value="Quetta">Quetta</option>
-                      <option value="Rawalpindi">Rawalpindi</option>
-                    </select>
-               </div>
-        
-               <div class="form-group">
-                  <input type="password" class="form-control" placeholder="Password">
-               </div>
-
-               <div class="form-group">
-                  <input type="password" class="form-control" placeholder="Confirm Password">
-               </div>
-
-               <div class="form-group">
-                 <input type="text" class="form-control" placeholder="Address">
-               </div>
-                  
-               <div class="form-group">
-                 <input type="text" class="form-control" placeholder="Phone Number">
-               </div>
-               
-                <div class="form-group">
-                  <input type="submit" class="btn-success btn-block"  value="SUBMIT" aria-controls="profile" role="tab" data-toggle="tab">
-                </div>
-              </form>
-              
-
-            </article>
-       </div>
-    
-       </div>
-
-      </div>
- </div>
+        </div>
+         </div>
  </div>
 </div>
 
@@ -159,7 +98,7 @@
     <div style="margin: 0px 40% 10px" class="container">
 	<div class="row">
 		<span style="color:  #585858">Already have an account. </span>
-        <asp:LinkButton style="color:#f4511e" Text="Login." PostBackUrl="~/AboutUs.aspx" runat="server"/> 
+        <asp:LinkButton style="color:#f4511e" Text="Login." PostBackUrl="~/Login.aspx" runat="server"/> 
 	</div>    
   </div>
 </asp:Content>

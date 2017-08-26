@@ -31,7 +31,7 @@
                 <asp:Label ID="Label3" runat="server" CssClass="col-md-2 control-label" Text="Choose Category:"></asp:Label>
                 <div class="col-md-3">
                     <asp:DropDownList ID="productCategory" CssClass="form-control" AutoPostBack="true" runat="server"></asp:DropDownList>
-                    <asp:RequiredFieldValidator ID="PCatReq" ValidationGroup="Group1" CssClass="text-danger" runat="server" ErrorMessage="This field is Required !" ControlToValidate="productCategory" InitialValue="0"></asp:RequiredFieldValidator>
+                    <asp:RequiredFieldValidator ID="PCatReq" ValidationGroup="Group1" CssClass="errors" runat="server" ErrorMessage="This field is Required !" ControlToValidate="productCategory" InitialValue="0"></asp:RequiredFieldValidator>
                 </div>
            </div>
 

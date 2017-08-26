@@ -30,18 +30,53 @@ namespace BrandBox.com
             }
             else
             {
-                Response.Redirect("~/AboutUs.aspx");
+                Response.Redirect("~/AllProducts.aspx");
             }
         }
-        private void BindProductImages()
+        private void AddToCart(string quantity,string size)
         {
-           /* Int64 ProductID = Convert.ToInt64(Request.QueryString["ProductID"]);
-            DataTable categoryData = new DataTable();
-            SqlCommand cmd = new SqlCommand("SELECT ImageData,ProductName,ProductCode From PDetails");
-            categoryData = access.SelectFromDatabase(cmd);
+            Int64 ProductID = Convert.ToInt64(Request.QueryString["ProductCode"]);
 
-            rptrImages.DataSource = categoryData;
-            rptrImages.DataBind();*/
+            
+            if (Session["Customer"] != null)
+            {
+                if (Request.Cookies["OrderID"] != null)
+                {
+                    string CookiePID = Request.Cookies["OrderID"]["OrderID"].Split('=')[0];
+                    CookiePID = CookiePID + "," + ProductID;
+
+                    HttpCookie Order = new HttpCookie("OrderID");
+                    Order.Values["OrderID"] = CookiePID;
+
+                    string CookieQnty= Request.Cookies["OrderID"]["Quantity"].Split('=')[0];
+                    CookieQnty = CookieQnty + "," + quantity;
+                    Order.Values["Quantity"] = CookieQnty;
+                    
+
+                    string CookieSize= Request.Cookies["OrderID"]["Size"].Split('=')[0];
+                    CookieSize = CookieSize + "," + size;
+                    Order.Values["Size"] = CookieSize;
+
+
+                    Order.Expires = DateTime.Now.AddDays(30);
+                    Response.Cookies.Add(Order);
+                }
+                else
+                {
+                    HttpCookie Order = new HttpCookie("OrderID");
+                    //Order.Values["Customer"] = Session["Customer"].ToString();
+                    Order.Values["OrderID"] = ProductID.ToString();
+                    Order.Values["Quantity"] = quantity;
+                    Order.Values["Size"] = size;
+                    Order.Expires = DateTime.Now.AddDays(30);
+                    Response.Cookies.Add(Order);
+                }
+                // Response.Redirect("~/Description.aspx?ProductID=" + ProductID);
+            }
+            else
+            {
+                Response.Redirect("~/CustLogin.aspx?rurl=products");
+            }
         }
         protected void rptrProductDetails_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
@@ -76,10 +111,6 @@ namespace BrandBox.com
                     btnAddToCart.Enabled = false;
                     txt.Enabled = false;
                 }
-
-
-
-
             }
         }
         private void BindProductDetails()
@@ -89,29 +120,16 @@ namespace BrandBox.com
             SqlCommand cmd = new SqlCommand("	SELECT d.ProductName,d.ProductPrice,d.ProductDetails,d.ImageData,v.VendorName,c.ProductCatName FROM   PDetails d JOIN   Vendor v ON     d.VendorId = v.VendorId JOIN   ProductCategory c ON     c.PCID = d.CategoryId AND d.ProductCode = @ProductCode");
            // cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@ProductCode", ProductID);
-            DetProduct = access.SelectFromDatabase(cmd);
-            
-           /* DataTable sizeDet = new DataTable();
-            SqlCommand cmd2 = new SqlCommand("SELECT ProductQnty,ProductSize,PID  FROM Product WHERE ProductCode = @ProductCode");
-           // cmd2.CommandType = CommandType.StoredProcedure;
-            cmd2.Parameters.AddWithValue("@ProductCode", ProductID);
-            sizeDet = access.SelectFromDatabase(cmd2);
-
-            SizeRptr.DataSource = sizeDet;
-            SizeRptr.DataBind();
-            */
+            DetProduct = access.SelectFromDatabase(cmd);      
+         
             rptrProductDetails.DataSource = DetProduct;
             rptrProductDetails.DataBind();
             rptrImages.DataSource = DetProduct;
             rptrImages.DataBind();
-
-
-            BindProductImages();
         }
         
         protected void AddCart(object sender,System.EventArgs e)
         {
-            //RepeaterItem item = e.Item;
             string x=string.Empty;
             string qnty =string.Empty;
             foreach (RepeaterItem item in rptrProductDetails.Items)
@@ -120,6 +138,7 @@ namespace BrandBox.com
                 {
                     var sizelst = item.FindControl("rblSize") as RadioButtonList;
                     TextBox txt = (TextBox)item.FindControl("productQnty") as TextBox;
+                    qnty = txt.Text;
                     x = sizelst.SelectedValue;
                     
                 }         
@@ -133,10 +152,20 @@ namespace BrandBox.com
             else
             {
                 
-                if (qnty == "")
+                if (qnty.Equals("0") || qnty==string.Empty)
                 {
                     lblErr.Text = "Please add quantity for your product";
                     lblErr.ForeColor = Color.Red;
+                }
+                else
+                {
+                    lblErr.Text = "";
+                    if (Session["Customer"] == null)
+                    {
+                        Response.Redirect("~/CustLogin.aspx");
+                    }
+                    else AddToCart(qnty,x);
+                      
                 }
             }
         }

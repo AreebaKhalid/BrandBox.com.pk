@@ -45,8 +45,8 @@
 
                                          <p>Don't have an account?</p>
                                          <asp:Button runat="server" CssClass="btn btn-success btn-block"  OnClick="Signup_Now" Text="Sign Up Now" />
-        
-
+                                         
+                                         <a href="CustLogin.aspx" style="color:#f4511e">Login as Customer</a>
                                     </form>
                             </article>
                         </div>

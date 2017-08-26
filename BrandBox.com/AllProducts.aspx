@@ -42,7 +42,7 @@
                             </div>
                             <h3><a href="shop-item.html"></a><%# Eval("ProductName") %></h3>
                             <div class="pi-price"><%# Eval("ProductPrice") %></div>
-                            <asp:LinkButton runat="server" CssClass="btn add2cart" >Add to cart</asp:LinkButton>
+                            <a href="ViewProduct.aspx?ProductCode=<%# Eval("ProductCode") %>" class="btn add2cart">Add to cart</a>
                         </div>
                     </div>
               </ItemTemplate>

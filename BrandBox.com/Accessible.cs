@@ -51,5 +51,50 @@ namespace BrandBox.com
                 }
             }
         }
+        public bool checkEmail(string email,char t)
+        {
+            DataTable dt = new DataTable();
+            SqlCommand cmd;
+            bool retval;
+            if(t=='c')
+            {
+                cmd = new SqlCommand("SELECT CustomerEmailAddress FROM CustomerDetails WHERE CustomerEmailAddress=@Email");
+                cmd.Parameters.AddWithValue("@Email", email);
+                dt = SelectFromDatabase(cmd);
+            }
+            else if(t=='v')
+            {
+                cmd = new SqlCommand("SELECT VendorEmail FROM Vendor WHERE VendorEmail=@Email");
+                cmd.Parameters.AddWithValue("@Email", email);
+                dt = SelectFromDatabase(cmd);
+            }
+           
+            if (dt.Rows.Count > 0)
+            {
+                retval = true;
+            }
+            else
+            {
+                retval = false;
+            }
+            return retval;
+        }
+        public bool checkBrandName(string brandName)
+        {
+            bool retval;
+            DataTable dt = new DataTable();
+            SqlCommand cmd = new SqlCommand("SELECT VendorName FROM Vendor WHERE VendorName=@brandName");
+            cmd.Parameters.AddWithValue("@brandName", brandName);
+            dt = SelectFromDatabase(cmd);
+            if (dt.Rows.Count > 0)
+            {
+                retval = true;
+            }
+            else
+            {
+                retval = false;
+            }
+            return retval;
+        }
     }
 }

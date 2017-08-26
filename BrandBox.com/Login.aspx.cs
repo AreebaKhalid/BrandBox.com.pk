@@ -16,6 +16,9 @@ namespace BrandBox.com
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["id"] != null)
+                Response.Redirect("AboutUs.aspx");
+
 
           /*  if (Request.Cookies["VEMAIL"] != null && Request.Cookies["VPWD"] != null)
             {

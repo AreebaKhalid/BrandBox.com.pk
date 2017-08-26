@@ -67,12 +67,12 @@ namespace BrandBox.com
 
 
 
-            if (checkEmail(vendorEmail.Text))
+            if (access.checkEmail(vendorEmail.Text,'v'))
             {
                 VEmailErrorMessage.Text = "Email address not available.";
                 VEmailErrorMessage.ForeColor = Color.Red;
             }
-            else if (checkBrandName(vendorName.Text))
+            else if (access.checkBrandName(vendorName.Text))
             {
                 VNameErrorMessage.Text = "This brand name has already been registered.";
                 VNameErrorMessage.ForeColor = Color.Red;
@@ -111,56 +111,10 @@ namespace BrandBox.com
                     cmd2.ExecuteNonQuery();
 
 
-                    Response.Redirect("~/AboutUs.aspx#signup");
+                    Response.Redirect("~/Login.aspx");
 
                 }
-            }
-            
-            
-             
+            }           
         }
-        public bool checkEmail(string email)
-        {
-            DataTable dt = new DataTable();
-            bool retval;
-            SqlCommand cmd = new SqlCommand("SELECT VendorEmail FROM Vendor WHERE VendorEmail=@Email");
-            cmd.Parameters.AddWithValue("@Email", email);
-            dt = access.SelectFromDatabase(cmd);
-            if (dt.Rows.Count > 0)
-            {
-                retval = true;
-            }
-            else
-            {
-                retval = false;
-            }
-            return retval;
-        }
-            
-  
-            
-        
-
-        public bool checkBrandName(string brandName)
-        {
-            bool retval;
-            DataTable dt = new DataTable();
-            SqlCommand cmd = new SqlCommand("SELECT VendorName FROM Vendor WHERE VendorName=@brandName");
-            cmd.Parameters.AddWithValue("@brandName", brandName);
-            dt = access.SelectFromDatabase(cmd);
-            if (dt.Rows.Count > 0)
-            {
-                retval = true;
-            }
-            else
-            {
-                retval = false;
-            }
-            return retval;
-        }
-
-
-
-        
     }
 }

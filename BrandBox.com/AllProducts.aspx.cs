@@ -52,5 +52,6 @@ namespace BrandBox.com
             MyProductsRptr.DataSource = categoryData;
             MyProductsRptr.DataBind();
         }
+        
     }
 }
