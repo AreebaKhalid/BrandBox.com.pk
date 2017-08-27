@@ -34,20 +34,20 @@ namespace BrandBox.com
             Response.Redirect("SignUp.aspx");
         }
         protected void Signin_Click(object sender, EventArgs e)
-        {
-            if (access.checkifAlreadyVerified(email.Text))
+        {        
+            int vid;
+            String CS = ConfigurationManager.ConnectionStrings["BrandBoxDatabaseConnectionString"].ConnectionString.ToString();
+            using (SqlConnection con = new SqlConnection(CS))
             {
-                int vid;
-                String CS = ConfigurationManager.ConnectionStrings["BrandBoxDatabaseConnectionString"].ConnectionString.ToString();
-                using (SqlConnection con = new SqlConnection(CS))
+                SqlCommand cmd = new SqlCommand("select * from Vendor where VendorEmail='" + email.Text + "' and VendorPassword='" + password.Text + "'", con);
+                con.Open();
+                SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                sda.Fill(dt);
+                if (dt.Rows.Count != 0)
                 {
-                    SqlCommand cmd = new SqlCommand("select * from Vendor where VendorEmail='" + email.Text + "' and VendorPassword='" + password.Text + "'", con);
-                    con.Open();
-                    SqlDataAdapter sda = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    sda.Fill(dt);
-                    if (dt.Rows.Count != 0)
-                    {
+                    if (access.checkifAlreadyVerified(email.Text))
+                    { 
                         vid = Convert.ToInt32(dt.Rows[0]["VendorId"]);
                         if (RememberMeCheckBox.Checked)
                         {
@@ -69,17 +69,19 @@ namespace BrandBox.com
                         Response.Redirect("~/SignUp.aspx");
                         Session.RemoveAll();
                     }
+
                     else
                     {
-                        lblError.Text = "Invalid Username or password";
-                        lblError.ForeColor = Color.Red;
+                        Response.Redirect("/Activation.aspx?rurl=notVerified");
                     }
                 }
+                else
+                {
+                    lblError.Text = "Invalid Username or password";
+                    lblError.ForeColor = Color.Red;
+                }
             }
-            else
-            {
-                Response.Redirect("/Activation.aspx?rurl=notVerified");
-            }
+            
         }
     }
 }

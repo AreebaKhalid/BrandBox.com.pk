@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -9,6 +11,8 @@ namespace BrandBox.com
 {
     public partial class web : System.Web.UI.MasterPage
     {
+        Int64 cId;
+        Accessible access = new Accessible();
         protected void Page_Load(object sender, EventArgs e)
         {
             BindCartNumber();
@@ -18,9 +22,17 @@ namespace BrandBox.com
         {
             if (Session["Customer"] != null)
             {
-                if (Request.Cookies["OrderID"] != null)
+                DataTable idTab = new DataTable();
+                SqlCommand cmd2 = new SqlCommand("SELECT CustomerID  FROM CustomerDetails WHERE CustomerEmailAddress = @email");
+                cmd2.Parameters.AddWithValue("@email", Session["Customer"].ToString());
+                idTab = access.SelectFromDatabase(cmd2);
+                foreach (DataRow rows in idTab.Rows)
                 {
-                    string CookiePID = Request.Cookies["OrderID"].Value.Split('=')[1];
+                    cId = Convert.ToInt64(rows["CustomerID"]);
+                }
+                if (Request.Cookies["OrderID" + cId.ToString()] != null)
+                {
+                    string CookiePID = Request.Cookies["OrderID" + cId.ToString()]["ProductID"].Split('=')[0];
                     string[] ProductArray = CookiePID.Split(',');
                     int ProductCount = ProductArray.Length;
                     pCount.InnerText = ProductCount.ToString();

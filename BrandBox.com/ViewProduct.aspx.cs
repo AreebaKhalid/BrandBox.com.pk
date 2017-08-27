@@ -36,24 +36,33 @@ namespace BrandBox.com
         private void AddToCart(string quantity,string size)
         {
             Int64 ProductID = Convert.ToInt64(Request.QueryString["ProductCode"]);
-
+            Int64 cId=0;
             
             if (Session["Customer"] != null)
             {
-                if (Request.Cookies["OrderID"] != null)
+                DataTable idTab = new DataTable();
+                SqlCommand cmd2 = new SqlCommand("SELECT CustomerID  FROM CustomerDetails WHERE CustomerEmailAddress = @email");
+                cmd2.Parameters.AddWithValue("@email", Session["Customer"].ToString());
+                idTab = access.SelectFromDatabase(cmd2);
+                foreach (DataRow rows in idTab.Rows)
                 {
-                    string CookiePID = Request.Cookies["OrderID"]["ProductID"].Split('=')[0];
+                    cId = Convert.ToInt64(rows["CustomerID"]);
+                }
+
+                if (Request.Cookies["OrderID"+cId.ToString()] != null)
+                {
+                    string CookiePID = Request.Cookies["OrderID" + cId.ToString()]["ProductID"].Split('=')[0];
                     CookiePID = CookiePID + "," + ProductID;
 
-                    HttpCookie Order = new HttpCookie("OrderID");
-                    Order.Values["OrderID"] = CookiePID;
+                    HttpCookie Order = new HttpCookie("OrderID" + cId.ToString());
+                    Order.Values["ProductID"] = CookiePID;
 
-                    string CookieQnty= Request.Cookies["OrderID"]["Quantity"].Split('=')[0];
+                    string CookieQnty= Request.Cookies["OrderID" + cId.ToString()]["Quantity"].Split('=')[0];
                     CookieQnty = CookieQnty + "," + quantity;
                     Order.Values["Quantity"] = CookieQnty;
                     
 
-                    string CookieSize= Request.Cookies["OrderID"]["Size"].Split('=')[0];
+                    string CookieSize= Request.Cookies["OrderID" + cId.ToString()]["Size"].Split('=')[0];
                     CookieSize = CookieSize + "," + size;
                     Order.Values["Size"] = CookieSize;
 
@@ -63,7 +72,7 @@ namespace BrandBox.com
                 }
                 else
                 {
-                    HttpCookie Order = new HttpCookie("OrderID");
+                    HttpCookie Order = new HttpCookie("OrderID" + cId.ToString());
                     //Order.Values["Customer"] = Session["Customer"].ToString();
                     Order.Values["ProductID"] = ProductID.ToString();
                     Order.Values["Quantity"] = quantity;
@@ -88,14 +97,14 @@ namespace BrandBox.com
                 RadioButtonList rblSize = e.Item.FindControl("rblSize") as RadioButtonList;
 
                 DataTable sizeDet = new DataTable();
-                SqlDataAdapter sda = new SqlDataAdapter();
+                //SqlDataAdapter sda = new SqlDataAdapter();
                 SqlCommand cmd2 = new SqlCommand("SELECT ProductQnty,ProductSize,PID  FROM Product WHERE ProductCode = @ProductCode");
                 // cmd2.CommandType = CommandType.StoredProcedure;
                 cmd2.Parameters.AddWithValue("@ProductCode", ProductID);
                 sizeDet = access.SelectFromDatabase(cmd2);
                 foreach(DataRow rows in sizeDet.Rows)
                 {
-                    if(Convert.ToUInt32(rows["ProductQnty"])==0)
+                    if(Convert.ToInt32(rows["ProductQnty"])==0)
                         rows.Delete();
                 }
 

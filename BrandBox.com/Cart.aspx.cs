@@ -13,96 +13,117 @@ namespace BrandBox.com
 {
     public partial class WebForm10 : System.Web.UI.Page
     {
+        
         Accessible access = new Accessible();
         protected void Page_Load(object sender, EventArgs e)
         {
-           
+
             if (!IsPostBack)
             {
                 if (Session["Customer"] != null)
+                {
+                    
                     BindCartProducts();
+                }
                 else
                     Response.Redirect("~/Login.aspx");
-            }
-
-        }
-        private void BindCartProducts()
-        {
-            if (Request.Cookies["OrderID"] != null)
-            {
-                string CookieData = Request.Cookies["OrderID"]["ProductID"].Split('=')[0];
-                string[] CookieDataArray = CookieData.Split(',');
-
                 
-                string CookieQuantity = Request.Cookies["OrderID"]["Quantity"].Split('=')[0];
-                string[] CookieQuantityArray = CookieQuantity.Split(',');
 
-                string CookieSize = Request.Cookies["OrderID"]["Size"].Split('=')[0];
-                string[] CookieSizeArray = CookieSize.Split(',');
+            }
+        }
 
-                if (CookieDataArray.Length > 0)
+        private Int64 getCId()
+        {
+            Int64 cId=0;
+            DataTable idTab = new DataTable();
+            SqlCommand cmd2 = new SqlCommand("SELECT CustomerID  FROM CustomerDetails WHERE CustomerEmailAddress = @email");
+            cmd2.Parameters.AddWithValue("@email", Session["Customer"].ToString());
+            idTab = access.SelectFromDatabase(cmd2);
+            foreach (DataRow rows in idTab.Rows)
+            {
+                cId = Convert.ToInt64(rows["CustomerID"]);
+            }
+            return cId;
+        }
+
+        private void BindCartProducts()
+            {
+            Int64 cId = getCId();
+            if (Request.Cookies["OrderID" + cId.ToString()] != null)
                 {
-                    h2NoItems.InnerText = "MY CART (" + CookieDataArray.Length + " Items)";
-                    DataTable cartitems = new DataTable();
-                    cartitems.Columns.Add("ProductQnty");
-                    cartitems.Columns.Add("ProductSize");
+                    string CookieData = Request.Cookies["OrderID" + cId.ToString()]["ProductID"].Split('=')[0];
+                    string[] CookieDataArray = CookieData.Split(',');
 
-                    DataTable det = new DataTable();
-                    Int64 CartTotal = 0;
-                    Int64 Total = 0;
-                    Int64 Discount = 0;
-                    for (int i = 0; i < CookieDataArray.Length; i++)
+
+                    string CookieQuantity = Request.Cookies["OrderID" + cId.ToString()]["Quantity"].Split('=')[0];
+                    string[] CookieQuantityArray = CookieQuantity.Split(',');
+
+                    string CookieSize = Request.Cookies["OrderID" + cId.ToString()]["Size"].Split('=')[0];
+                    string[] CookieSizeArray = CookieSize.Split(',');
+
+                    if (CookieDataArray.Length > 0)
                     {
-                        string ProductID = CookieDataArray[i].ToString().Split('-')[0];
+                        h2NoItems.InnerText = "MY CART (" + CookieDataArray.Length + " Items)";
+                        DataTable cartitems = new DataTable();
+                        cartitems.Columns.Add("ProductQnty");
+                        cartitems.Columns.Add("ProductSize");
 
-                        SqlCommand cmd = new SqlCommand("Select * from PDetails where ProductCode="+ProductID);
-                        
-                        cartitems.Merge(access.SelectFromDatabase(cmd));
+                        DataTable det = new DataTable();
+                        Int64 CartTotal = 0;
+                        Int64 Total = 0;
+                        Int64 Discount = 0;
+                        for (int i = 0; i < CookieDataArray.Length; i++)
+                        {
+                            string ProductID = CookieDataArray[i].ToString().Split('-')[0];
 
-                        cartitems.Rows[i]["ProductQnty"] = CookieQuantityArray[i].ToString().Split('-')[0];
-                        cartitems.Rows[i]["ProductSize"] = CookieSizeArray[i].ToString().Split('-')[0];
+                            SqlCommand cmd = new SqlCommand("Select * from PDetails where ProductCode=" + ProductID);
 
-                        CartTotal += Convert.ToInt64(cartitems.Rows[i]["ProductPrice"]);
-                        Discount = (CartTotal * 10) / 100;
+                            cartitems.Merge(access.SelectFromDatabase(cmd));
+
+                            cartitems.Rows[i]["ProductQnty"] = CookieQuantityArray[i].ToString().Split('-')[0];
+                            cartitems.Rows[i]["ProductSize"] = CookieSizeArray[i].ToString().Split('-')[0];
+
+                            CartTotal += Convert.ToInt64(cartitems.Rows[i]["ProductPrice"]) * Convert.ToInt64(cartitems.Rows[i]["ProductQnty"]);
+                            Discount = (CartTotal * 10) / 100;
+
+                        }
+
+                        rptrCartProducts.DataSource = cartitems;
+                        rptrCartProducts.DataBind();
+
+                        divPriceDetails.Visible = true;
+
+                        spanCartTotal.InnerText = CartTotal.ToString();
+                        spanDiscount.InnerText = "Rs. " + Discount.ToString();
+                        Total = CartTotal - Discount;
+                        spanTotal.InnerText = "Rs. " + Total.ToString();
+
 
                     }
 
-                    rptrCartProducts.DataSource = cartitems;
-                    rptrCartProducts.DataBind();
-                 
-                    divPriceDetails.Visible = true;
+                    else
+                    {
+                        //TODO Show Empty Cart
+                        h2NoItems.InnerText = "Your Shopping Cart is Empty";
+                        divPriceDetails.Visible = false;
 
-                    spanCartTotal.InnerText = CartTotal.ToString();
-                    spanDiscount.InnerText = "Rs. " + Discount.ToString();
-                    Total = CartTotal - Discount;
-                    spanTotal.InnerText = "Rs. " + Total.ToString();
-
-
+                    }
                 }
-
                 else
                 {
                     //TODO Show Empty Cart
                     h2NoItems.InnerText = "Your Shopping Cart is Empty";
                     divPriceDetails.Visible = false;
 
+
                 }
-            }
-            else
-            {
-                //TODO Show Empty Cart
-                h2NoItems.InnerText = "Your Shopping Cart is Empty";
-                divPriceDetails.Visible = false;
-
-
-            }
-
         }
         protected void btnRemoveItem_Click(object sender, EventArgs e)
         {
-            string CookiePID = Request.Cookies["OrderID"]["ProductID"].Split('=')[0];
-            string CookieQuantity = Request.Cookies["OrderID"]["Quantity"].Split('=')[0];
-            string CookieSize = Request.Cookies["OrderID"]["Size"].Split('=')[0];
+            Int64 cId = getCId();
+            string CookiePID = Request.Cookies["OrderID" + cId.ToString()]["ProductID"].Split('=')[0];
+            string CookieQuantity = Request.Cookies["OrderID"+cId.ToString()]["Quantity"].Split('=')[0];
+            string CookieSize = Request.Cookies["OrderID" + cId.ToString()]["Size"].Split('=')[0];
             LinkButton btn = (LinkButton)sender;
             string PID = btn.CommandArgument;
             List<String> CookiePIDList = CookiePID.Split(',').Select(i => i.Trim()).Where(i => i != string.Empty).ToList();
@@ -121,7 +142,7 @@ namespace BrandBox.com
 
             if (CookiePIDUpdated == "")
             {
-                HttpCookie CartProducts = Request.Cookies["OrderID"];
+                HttpCookie CartProducts = Request.Cookies["OrderID"+ cId.ToString()];
                 CartProducts.Values["ProductID"] = null;
                 CartProducts.Values["Quantity"] = null;
                 CartProducts.Values["Size"] = null;
@@ -131,7 +152,7 @@ namespace BrandBox.com
             }
             else
             {
-                HttpCookie CartProducts = Request.Cookies["OrderID"];
+                HttpCookie CartProducts = Request.Cookies["OrderID" + cId.ToString()];
                 CartProducts.Values["ProductID"] = CookiePIDUpdated;
                 CartProducts.Values["Quantity"] = CookieQntyUpdated;
                 CartProducts.Values["Size"] = CookieSizeUpdated;
