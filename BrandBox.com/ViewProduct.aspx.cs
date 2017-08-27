@@ -25,9 +25,10 @@ namespace BrandBox.com
                     if (Session["vendor"] != null)
                         Response.Redirect("~/MyProducts.aspx");
                     else
+                    {
                         BindProductDetails();
-                    
-                  
+                        BindNewProducts();
+                    }
                 }
             }
             else
@@ -142,7 +143,17 @@ namespace BrandBox.com
             rptrImages.DataSource = DetProduct;
             rptrImages.DataBind();
         }
-        
+        private void BindNewProducts()
+        {
+            Int64 ProductID = Convert.ToInt64(Request.QueryString["ProductCode"]);
+            DataTable newProducts = new DataTable();
+            SqlCommand cmd = new SqlCommand("SELECT TOP 6  ProductName,ProductPrice,ImageData,ProductCode FROM   PDetails ORDER BY ProductCode DESC");
+     
+            newProducts = access.SelectFromDatabase(cmd);
+
+            newproductsRptr.DataSource = newProducts;
+            newproductsRptr.DataBind();
+        }
         protected void AddCart(object sender,System.EventArgs e)
         {
             string x=string.Empty;

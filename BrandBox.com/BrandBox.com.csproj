@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\AboutUs.css" />
+    <Content Include="css\LatestProductCarousel.css" />
     <Content Include="css\productStyle.css" />
     <Content Include="css\sideBar.css" />
     <Content Include="css\sweetalert.css" />

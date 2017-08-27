@@ -1,5 +1,8 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/web.master" AutoEventWireup="true" CodeBehind="EditProduct.aspx.cs" Inherits="BrandBox.com.WebForm7" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/web.master" AutoEventWireup="true" Inherits="BrandBox.com.WebForm7" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+     <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,700&subset=latin-ext" rel="stylesheet">
+    
+    <link rel="stylesheet" type="text/css" href="css/LatestProductCarousel.css" />
      <style>
        .pic-size {
              width:320px;
@@ -107,21 +110,53 @@
                                                     </div>
                                                    </div> 
                                                 </div>
+                                 </div>
+                       </div>
+                </div>
+    </section>
+    
+    <!--Item slider text-->
+<div class="container"style="margin-top:40px">
+  <div class="row" id="slider-text">
+    <div class="col-md-6" >
+      <h2>NEW COLLECTION</h2>
+    </div>
+  </div>
+</div>
 
+<!-- Item slider-->
+<div class="container-fluid" style="margin:30px 0">
 
-                                          </div>
-                                          
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12">
+      <div class="carousel carousel-showmanymoveone slide" id="itemslider">
+        <div class="carousel-inner">
+            <asp:Repeater runat="server" ID="newproductsRptr">
+                <ItemTemplate>
+                  <div class="item active">
+                    <div class="col-xs-12 col-sm-6 col-md-2">
+                      <a href="#">
+                      <a href="ViewProduct.aspx?ProductCode=<%# Eval("ProductCode") %>"><asp:Image ID="Image1" runat="server"  CssClass="img-responsive center-block" width="150px" Height="200px" ImageUrl='<%#BrandBox.com.Accessible.GetImage(Eval("ImageData")) %>' /></a>
+                      <h4 class="text-center"><%#Eval("ProductName") %></h4>
+                      <h5 class="text-center"><%#Eval("ProductPrice") %>PKR</h5>
+                    </div>
+                  </div>
+                 </ItemTemplate>
+                </asp:Repeater>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Item slider end-->
 
-                                </div>
-
-                          
-                          </section>
        <script>
-          
+         
                function ShowHideDiv(chkBox) {
                    var dvqnty = document.getElementByClassName("productQntyDiv");
                     dvqnty.style.display = chkBox.checked ? "block" : "none";
-        }
+           }
+               
     </script>
 
 </asp:Content>

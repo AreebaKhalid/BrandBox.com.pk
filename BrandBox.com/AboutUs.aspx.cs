@@ -20,7 +20,9 @@ namespace BrandBox.com
         {
             
             BrandRepeater();
-            
+            BindNewProducts();
+
+
         }
 
         protected void Signup_Now(object sender, EventArgs e)
@@ -36,13 +38,23 @@ namespace BrandBox.com
         private void BrandRepeater()
         {
             
-            SqlCommand cmd = new SqlCommand("select * from Vendor");
+            SqlCommand cmd = new SqlCommand("Select TOP 3 ImageData from Vendor ORDER BY VendorId DESC");
             brandData = access.SelectFromDatabase(cmd);
 
             BrandRptr.DataSource = brandData;
             BrandRptr.DataBind();
         }
+        private void BindNewProducts()
+        {
+            Int64 ProductID = Convert.ToInt64(Request.QueryString["ProductCode"]);
+            DataTable newProducts = new DataTable();
+            SqlCommand cmd = new SqlCommand("SELECT TOP 6  ProductName,ProductPrice,ImageData,ProductCode FROM   PDetails ORDER BY ProductCode DESC");
 
-       
+            newProducts = access.SelectFromDatabase(cmd);
+
+            newproductsRptr.DataSource = newProducts;
+            newproductsRptr.DataBind();
+        }
+
     }
 }
