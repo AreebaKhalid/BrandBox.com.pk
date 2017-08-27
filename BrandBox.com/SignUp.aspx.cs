@@ -10,7 +10,6 @@ using System.Data.Common;
 using System.Drawing;
 using System.IO;
 using System.Data;
-using System.Net.Mail;
 
 namespace BrandBox.com
 {
@@ -73,6 +72,11 @@ namespace BrandBox.com
                 VEmailErrorMessage.Text = "Email address not available.";
                 VEmailErrorMessage.ForeColor = Color.Red;
             }
+            else if (access.checkEmail(vendorEmail.Text, 'c'))
+            {
+                VEmailErrorMessage.Text = "You have already signed in as Customer";
+                VEmailErrorMessage.ForeColor = Color.Red;
+            }
             else if (access.checkBrandName(vendorName.Text))
             {
                 VNameErrorMessage.Text = "This brand name has already been registered.";
@@ -86,7 +90,7 @@ namespace BrandBox.com
                 Byte[] bytes = br.ReadBytes((Int32)fs.Length);
 
                 string randomVCode = access.genCode();
-                sendMsg(vendorEmail.Text, vendorName.Text, vendorPassword.Text, randomVCode);
+                Accessible.sendMsg(vendorEmail.Text, vendorName.Text, vendorPassword.Text, randomVCode);
 
 
                 String CS = ConfigurationManager.ConnectionStrings["BrandBoxDatabaseConnectionString"].ConnectionString.ToString();
@@ -115,56 +119,12 @@ namespace BrandBox.com
                     cmd2.Parameters.AddWithValue("@VerificationCode", randomVCode);
                     cmd2.ExecuteNonQuery();
 
-                    
 
-                    Response.Redirect("~/Activation.aspx");
+
+                    Response.Redirect("/Activation.aspx?rurl=notVerifiedVendor");
 
                 }
             }           
-        }
-        //Send Mail
-        public static void sendMsg(string Email, string User, string Pass, string random)
-        {
-
-            SmtpClient smtp = new SmtpClient();
-            smtp.Host = "smtp.gmail.com";
-            smtp.Port = 587;
-            smtp.Credentials = new System.Net.NetworkCredential("brandbox.com.pk@gmail.com", "AreebaYamna");
-            smtp.EnableSsl = true;
-
-            MailMessage msg = new MailMessage();
-            msg.Subject = "Account Verification";
-            msg.Body = "Hello " + User + "Thanks for Registering in BrandBox...\n Your Account Details are given below:";
-            msg.Body += "<tr>";
-            msg.Body += "<td>User Name :" + User + "</td>";
-            msg.Body += "</tr>";
-            msg.Body += "<tr>";
-            msg.Body += "<td>Password :" + Pass + "</td>";
-            msg.Body += "</tr>";
-            msg.Body += "<tr>";
-            msg.Body += "<td>Activation Number :" + random + "</td>";
-            msg.Body += "</tr>";
-
-            msg.Body += "<tr>";
-            msg.Body += "<td>Thanking</td><td>Team BrandBox</td>";
-            msg.Body += "</tr>";
-
-            string toAddress = Email; // Add Recepient address
-            msg.To.Add(toAddress);
-
-            string fromAddress = "\"BrandBox.com.pk \" <brandbox.com.pk@gmail.com>";
-            msg.From = new MailAddress(fromAddress);
-            msg.IsBodyHtml = true;
-
-            try
-            {
-                smtp.Send(msg);
-
-            }
-            catch
-            {
-                throw;
-            }
         }
     }
 }

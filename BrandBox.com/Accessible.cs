@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Web;
+using System.Net.Mail;
 
 namespace BrandBox.com
 {
@@ -14,6 +15,50 @@ namespace BrandBox.com
         public static string GetImage(object img)
         {
             return "data:image/jpg;base64," + Convert.ToBase64String((byte[])img);
+        }
+        //Send Mail
+        public static void sendMsg(string Email, string User, string Pass, string random)
+        {
+
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = "smtp.gmail.com";
+            smtp.Port = 587;
+            smtp.Credentials = new System.Net.NetworkCredential("brandbox.com.pk@gmail.com", "AreebaYamna");
+            smtp.EnableSsl = true;
+
+            MailMessage msg = new MailMessage();
+            msg.Subject = "Account Verification";
+            msg.Body = "Hello " + User + "Thanks for Registering in BrandBox...\n Your Account Details are given below:";
+            msg.Body += "<tr>";
+            msg.Body += "<td>User Name :" + User + "</td>";
+            msg.Body += "</tr>";
+            msg.Body += "<tr>";
+            msg.Body += "<td>Password :" + Pass + "</td>";
+            msg.Body += "</tr>";
+            msg.Body += "<tr>";
+            msg.Body += "<td>Activation Number :" + random + "</td>";
+            msg.Body += "</tr>";
+
+            msg.Body += "<tr>";
+            msg.Body += "<td>Thanking</td><td>Team BrandBox</td>";
+            msg.Body += "</tr>";
+
+            string toAddress = Email; // Add Recepient address
+            msg.To.Add(toAddress);
+
+            string fromAddress = "\"BrandBox.com.pk \" <brandbox.com.pk@gmail.com>";
+            msg.From = new MailAddress(fromAddress);
+            msg.IsBodyHtml = true;
+
+            try
+            {
+                smtp.Send(msg);
+
+            }
+            catch
+            {
+                throw;
+            }
         }
         public String genCode()
         {
@@ -47,12 +92,24 @@ namespace BrandBox.com
                 return false;
 
         }
-        public bool checkifAlreadyVerified(string email)
+        public bool checkifAlreadyVerified(string email,char t)
         {
             DataTable dt = new DataTable();
-            SqlCommand cmd = new SqlCommand("SELECT VerifiedEmail FROM Vendor WHERE VendorEmail=@Email");
-            cmd.Parameters.AddWithValue("@Email", email);
-            dt = SelectFromDatabase(cmd);
+            SqlCommand cmd;
+            if (t == 'v')
+            {
+                cmd = new SqlCommand("SELECT VerifiedEmail FROM Vendor WHERE VendorEmail=@Email");
+                cmd.Parameters.AddWithValue("@Email", email);
+                dt = SelectFromDatabase(cmd);
+            }
+            else if(t=='c')
+            {
+                cmd = new SqlCommand("SELECT VerifiedEmail FROM CustomerDetails WHERE CustomerEmailAddress=@Email");
+                cmd.Parameters.AddWithValue("@Email", email);
+                dt = SelectFromDatabase(cmd);
+            }
+           
+            
             if (dt.Rows.Count > 0)
             {
                 foreach (DataRow dr in dt.Rows)

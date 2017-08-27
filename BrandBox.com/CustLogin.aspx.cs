@@ -31,6 +31,8 @@ namespace BrandBox.com
                 dt = access.SelectFromDatabase(cmd);
                 if (dt.Rows.Count != 0)
                 {
+                if (access.checkifAlreadyVerified(email.Text, 'c'))
+                {
                     Session["Customer"] = email.Text;
                     if(Request.QueryString["rurl"]!=null)
                         {                
@@ -46,6 +48,12 @@ namespace BrandBox.com
  
                         }
                     Session.RemoveAll();
+                }
+
+                else
+                {
+                    Response.Redirect("/Activation.aspx?rurl=notVerifiedCust");
+                }
                 }
                 else
                 {

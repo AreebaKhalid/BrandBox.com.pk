@@ -46,7 +46,7 @@ namespace BrandBox.com
                 sda.Fill(dt);
                 if (dt.Rows.Count != 0)
                 {
-                    if (access.checkifAlreadyVerified(email.Text))
+                    if (access.checkifAlreadyVerified(email.Text,'v'))
                     { 
                         vid = Convert.ToInt32(dt.Rows[0]["VendorId"]);
                         if (RememberMeCheckBox.Checked)
@@ -72,7 +72,7 @@ namespace BrandBox.com
 
                     else
                     {
-                        Response.Redirect("/Activation.aspx?rurl=notVerified");
+                        Response.Redirect("/Activation.aspx?rurl=notVerifiedVendor");
                     }
                 }
                 else

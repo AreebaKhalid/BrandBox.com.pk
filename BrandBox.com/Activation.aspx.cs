@@ -29,17 +29,51 @@ namespace BrandBox.com
         }
         protected void btnVerify_Click(object sender, EventArgs e)
         {
-            if (access.checkEmail(email.Text, 'v'))
+            if(Request.QueryString["rurl"]=="notVerifiedVendor")
             {
-                if (!(access.checkifAlreadyVerified(email.Text)))
+                verification('v');  
+            }
+            else if(Request.QueryString["rurl"] == "notVerifiedCust")
+            {
+                verification('c');
+            }
+            else
+            {
+                if (access.checkEmail(email.Text, 'c'))
+                {
+                    verification('c');
+                }
+                else if(access.checkEmail(email.Text, 'v'))
+                {
+                    verification('v');
+                }
+                else
+                {
+                    ErrorMessage.ForeColor = Color.Red;
+                    ErrorMessage.Text = "Incorrect Email";
+                }
+                    
+                
+            }
+
+        }
+        private void verification(char type)
+        {
+
+            if (access.checkEmail(email.Text, type))
+            {
+                if (!(access.checkifAlreadyVerified(email.Text, type)))
                 {
                     if (code.Text != "")
                     {
 
-                        if (CheckCode(code.Text, email.Text))
+                        if (CheckCode(code.Text, email.Text, type))
                         {
-                            updateTable(email.Text);
-                            Response.Redirect("~/Login.aspx");
+                            updateTable(email.Text, type);
+                            if(type=='v')
+                                Response.Redirect("~/Login.aspx");
+                            else if(type=='c')
+                                Response.Redirect("~/CustLogin.aspx");
                         }
                         else
                         {
@@ -60,7 +94,7 @@ namespace BrandBox.com
                     ErrorMessage.ForeColor = Color.Red;
                     ErrorMessage.Text = "You have already verified";
                 }
-              
+
             }
 
             else
@@ -68,30 +102,56 @@ namespace BrandBox.com
                 ErrorMessage.ForeColor = Color.Red;
                 ErrorMessage.Text = "Incorrect Email";
             }
+        }        
 
-        }
-
-        
-
-        public void updateTable(string email)
+        public void updateTable(string email,char t)
         {
             
             using (SqlConnection con = new SqlConnection(CS))
             {
+                SqlCommand cmd;
                 con.Open();
-                SqlCommand cmd = new SqlCommand("updateVendorVerification",con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@VendorEmail", email);
-                cmd.Parameters.AddWithValue("@VerifiedEmail", 1);
-                cmd.ExecuteNonQuery();
+                if(t=='v')
+                {
+                    cmd = new SqlCommand("updateVendorVerification", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@VendorEmail", email);
+                    cmd.Parameters.AddWithValue("@VerifiedEmail", 1);
+                    cmd.ExecuteNonQuery();
+                }
+                
+                else if(t=='c')
+                {
+
+                    cmd = new SqlCommand("updateCustomerVerification", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@CustomerEmailAddress", email);
+                    cmd.Parameters.AddWithValue("@VerifiedEmail", 1);
+                    cmd.ExecuteNonQuery();
+                }
+               
+               
+                
             }
         }
-        public bool CheckCode(string code, string email)
+        public bool CheckCode(string code, string email,char t)
         {
             DataTable dt = new DataTable();
-            SqlCommand cmd = new SqlCommand("SELECT VerificationCode FROM Vendor WHERE VendorEmail=@Email");
-            cmd.Parameters.AddWithValue("@Email", email);
-            dt = access.SelectFromDatabase(cmd);
+            SqlCommand cmd;
+            if (t== 'v')
+            {
+                cmd = new SqlCommand("SELECT VerificationCode FROM Vendor WHERE VendorEmail=@Email");
+                cmd.Parameters.AddWithValue("@Email", email);
+                dt = access.SelectFromDatabase(cmd);
+            }
+                
+            else if(t=='c')
+            {
+                cmd = new SqlCommand("SELECT VerificationCode FROM CustomerDetails WHERE CustomerEmailAddress=@Email");
+                cmd.Parameters.AddWithValue("@Email", email);
+                dt = access.SelectFromDatabase(cmd);
+            }
+
             if (dt.Rows.Count > 0)
             {
                 foreach(DataRow dr in dt.Rows)
