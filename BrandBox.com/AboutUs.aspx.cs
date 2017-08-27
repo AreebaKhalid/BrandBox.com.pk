@@ -28,7 +28,11 @@ namespace BrandBox.com
             Response.Redirect("SignUp.aspx");
         }
 
-        
+        protected void Shop_Now(object sender, EventArgs e)
+        {
+            Response.Redirect("AllProducts.aspx");
+        }
+
         private void BrandRepeater()
         {
             

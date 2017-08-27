@@ -14,8 +14,20 @@ namespace BrandBox.com
         Accessible access = new Accessible();
         protected void Page_Load(object sender, EventArgs e)
         {
-            BindAllCategoryRptr();
-            BindAllProductsRptr();
+            if(!IsPostBack)
+            {
+                if (Session["vendor"] != null)
+                {
+                    Response.Redirect("~/MyProducts.aspx");
+                }
+                else
+                {
+
+                    BindAllCategoryRptr();
+                    BindAllProductsRptr();
+                }
+            }
+           
         }
         private void BindAllProductsRptr()
         {

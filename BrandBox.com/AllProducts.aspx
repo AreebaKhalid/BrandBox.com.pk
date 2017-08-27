@@ -33,8 +33,8 @@
                 <ItemTemplate>
                     <div class="col-md-4">
                         <div class="product-item">
-                            <div class="pi-img-wrapper">
-                                <asp:Image runat="server" ID="img" alt="image" CssClass="img-responsive zoom" ImageUrl='<%# BrandBox.com.Accessible.GetImage(Eval("ImageData")) %>' />    
+                            <div class="pi-img-wrapper" style="height: 250px;width:250px;">
+                                <asp:Image runat="server" ID="img" alt="image" Height="250px" Width="250px" CssClass="img-responsive zoom" ImageUrl='<%# BrandBox.com.Accessible.GetImage(Eval("ImageData")) %>' />    
                                 <div>
                                   <a href="#" class="btn">Zoom</a>
                                   <a href="ViewProduct.aspx?ProductCode=<%# Eval("ProductCode") %>" class="btn">View</a>
@@ -42,7 +42,7 @@
                             </div>
                             <h3><a href="shop-item.html"></a><%# Eval("ProductName") %></h3>
                             <div class="pi-price"><%# Eval("ProductPrice") %></div>
-                            <a href="ViewProduct.aspx?ProductCode=<%# Eval("ProductCode") %>" class="btn add2cart">Add to cart</a>
+                           
                         </div>
                     </div>
               </ItemTemplate>

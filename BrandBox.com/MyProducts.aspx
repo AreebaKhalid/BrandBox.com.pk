@@ -1,11 +1,32 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/web.master" AutoEventWireup="true" CodeBehind="MyProducts.aspx.cs" Inherits="BrandBox.com.WebForm5" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <style>
+        .btnAdd{
+           font-weight: 500 !important;
+	font-size: 15px  !important;
+	text-transform: uppercase;
+	margin-bottom: 10px;
+	color: #f4511e ;
+	background: transparent;
+    transition: background .2s ease-in-out, border .2s ease-in-out;
+	border: 2px solid #f4511e ;
+       }
+       .btnAdd:hover{
+           
+	background-color: #f4511e !important;
+	color: #fff !important;
+	border: 2px solid #eb7b20  !important;
+       }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
      <div class="container">
         <div class =" row" style="margin:50px 0">
-            <h1> My Products </h1>
+            <h1  id="h1noOfItems" runat="server"></h1>
             <asp:Label runat="server" ID="lblDel"></asp:Label>
+            <a href="AddProduct.aspx" class = "btn btnAdd" role = "button">
+                 <i class="fa fa-plus" aria-hidden="true">Add Products</i>
+            </a>
         </div>
         <div class="row">
             <asp:Repeater ID="MyProductsRptr" runat="server" onitemcommand="Repeater_ItemCommand">
@@ -18,8 +39,8 @@
                 <ItemTemplate>
                     <div class="col-md-4">
                         <div class="product-item">
-                            <div class="pi-img-wrapper">
-                                <asp:Image runat="server" ID="img" alt="image" CssClass="img-responsive zoom" ImageUrl='<%# BrandBox.com.Accessible.GetImage(Eval("ImageData")) %>' />    
+                            <div class="pi-img-wrapper" style="height: 250px;width:250px;">
+                                <asp:Image runat="server" ID="img" alt="image" Height="250px" Width="250px" CssClass="img-responsive zoom" ImageUrl='<%# BrandBox.com.Accessible.GetImage(Eval("ImageData")) %>' />    
                                 <div>
                                   <a href="#" class="btn">Zoom</a>
                                   <a href="#" class="btn">View</a>
@@ -37,9 +58,10 @@
                </table>
               </FooterTemplate>
             </asp:Repeater>
+              
 
         </div>
-
+         
      </div>
     <script>
         function deletealert(ctl, event) {

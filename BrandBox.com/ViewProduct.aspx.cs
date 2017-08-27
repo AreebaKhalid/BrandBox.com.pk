@@ -22,8 +22,10 @@ namespace BrandBox.com
             {
                 if (!IsPostBack)
                 {
-                    
-                    BindProductDetails();
+                    if (Session["vendor"] != null)
+                        Response.Redirect("~/MyProducts.aspx");
+                    else
+                        BindProductDetails();
                     
                   
                 }
@@ -84,7 +86,10 @@ namespace BrandBox.com
             }
             else
             {
-                Response.Redirect("/CustLogin.aspx?rurl=view");
+                if (Session["vendor"] != null)
+                    Response.Redirect("~/MyProducts.aspx");
+                else
+                    Response.Redirect("/CustLogin.aspx?rurl=view");
                
             }
         }

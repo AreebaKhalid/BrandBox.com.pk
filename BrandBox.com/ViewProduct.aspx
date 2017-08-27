@@ -58,7 +58,7 @@
                                <ItemTemplate>
                               <div class = " col-xs-12 col-sm-offset-1 col-sm-6 col-md-offset-1 col-md-6 pic-size " style="height: 400px;width:530px;">
                                  <div class = "thumbnail">
-                                    <asp:Image ID="Image1" runat="server" alt="image" Height="330px" Width="250px"  class="img-responsive zoom"   ImageUrl='<%#BrandBox.com.Accessible.GetImage(Eval("ImageData")) %>' />
+                                    <asp:Image ID="Image1" runat="server" alt="image" Height="330px" Width="330px"  CssClass="img-responsive zoom"   ImageUrl='<%#BrandBox.com.Accessible.GetImage(Eval("ImageData")) %>' />
                                  </div>
                                  
                                  

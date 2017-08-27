@@ -56,184 +56,208 @@ namespace BrandBox.com
 
         protected void updateDetail(String size)
         {
-            using (SqlConnection con = new SqlConnection(CS))
+            if(Session["vendor"]!=null)
             {
-                con.Open();
-                SqlCommand cmd2 = new SqlCommand("proceditProduct", con);
+                using (SqlConnection con = new SqlConnection(CS))
+                {
+                    con.Open();
+                    SqlCommand cmd2 = new SqlCommand("proceditProduct", con);
 
-                cmd2.CommandType = CommandType.StoredProcedure;
-                if (size.ToLower().Trim().Equals("small"))
-                    cmd2.Parameters.AddWithValue("@ProductQnty", SproductQnty.Text);
-                else if (size.ToLower().Trim().Equals("medium"))
-                    cmd2.Parameters.AddWithValue("@ProductQnty", MproductQnty.Text);
-                else if (size.ToLower().Trim().Equals("large"))
-                    cmd2.Parameters.AddWithValue("@ProductQnty", LproductQnty.Text);
+                    cmd2.CommandType = CommandType.StoredProcedure;
+                    if (size.ToLower().Trim().Equals("small"))
+                        cmd2.Parameters.AddWithValue("@ProductQnty", SproductQnty.Text);
+                    else if (size.ToLower().Trim().Equals("medium"))
+                        cmd2.Parameters.AddWithValue("@ProductQnty", MproductQnty.Text);
+                    else if (size.ToLower().Trim().Equals("large"))
+                        cmd2.Parameters.AddWithValue("@ProductQnty", LproductQnty.Text);
 
-                cmd2.Parameters.AddWithValue("@ProductCode", Request.QueryString["ProductCode"].ToString());
-                cmd2.Parameters.AddWithValue("ProductSize", size);
+                    cmd2.Parameters.AddWithValue("@ProductCode", Request.QueryString["ProductCode"].ToString());
+                    cmd2.Parameters.AddWithValue("ProductSize", size);
 
-                cmd2.ExecuteNonQuery();
+                    cmd2.ExecuteNonQuery();
+                }
             }
         }
 
         protected void addDetail(Int64 ProductFK, String size,char s)
         {
-            using (SqlConnection con = new SqlConnection(CS))
+            if(Session["vendor"]!=null)
             {
-                con.Open();
-                SqlCommand cmd2 = new SqlCommand("INSERT INTO Product(ProductQnty,ProductSize,ProductCode) VALUES(@ProductQnty,@ProductSize,@ProductCode)", con);
+                using (SqlConnection con = new SqlConnection(CS))
+                {
+                    con.Open();
+                    SqlCommand cmd2 = new SqlCommand("INSERT INTO Product(ProductQnty,ProductSize,ProductCode) VALUES(@ProductQnty,@ProductSize,@ProductCode)", con);
 
-                if (s=='s')
-                    cmd2.Parameters.AddWithValue("@ProductQnty", SproductQnty.Text);
-                else if (s == 'm')
-                    cmd2.Parameters.AddWithValue("@ProductQnty", MproductQnty.Text);
-                else if (s == 'l')
-                    cmd2.Parameters.AddWithValue("@ProductQnty", LproductQnty.Text);
+                    if (s == 's')
+                        cmd2.Parameters.AddWithValue("@ProductQnty", SproductQnty.Text);
+                    else if (s == 'm')
+                        cmd2.Parameters.AddWithValue("@ProductQnty", MproductQnty.Text);
+                    else if (s == 'l')
+                        cmd2.Parameters.AddWithValue("@ProductQnty", LproductQnty.Text);
 
-                cmd2.Parameters.AddWithValue("@ProductSize", size);
-                cmd2.Parameters.AddWithValue("@ProductCode", ProductFK);
+                    cmd2.Parameters.AddWithValue("@ProductSize", size);
+                    cmd2.Parameters.AddWithValue("@ProductCode", ProductFK);
 
-                cmd2.ExecuteNonQuery();
+                    cmd2.ExecuteNonQuery();
+                }
             }
+            
         }
 
         protected bool checkingForPUpdate(int n)
         {
-            SqlCommand cmd2 = new SqlCommand(" SELECT * FROM Product where ProductCode=@ProductCode and ProductSize=@Size");
-            cmd2.Parameters.AddWithValue("@ProductCode", Request.QueryString["ProductCode"].ToString());
-            cmd2.Parameters.AddWithValue("@Size", size[n]);
+            if(Session["vendor"]!=null)
+            {
+                SqlCommand cmd2 = new SqlCommand(" SELECT * FROM Product where ProductCode=@ProductCode and ProductSize=@Size");
+                cmd2.Parameters.AddWithValue("@ProductCode", Request.QueryString["ProductCode"].ToString());
+                cmd2.Parameters.AddWithValue("@Size", size[n]);
 
-            DataTable productDetailData = access.SelectFromDatabase(cmd2);
-            if (productDetailData.Rows.Count > 0)
-                return true;
-            else
-                return false;
+                DataTable productDetailData = access.SelectFromDatabase(cmd2);
+                if (productDetailData.Rows.Count > 0)
+                    return true;
+                else
+                    return false;
+            }
+            return false;
         }
 
         private void AddProduct()
         {
-            checkImage();
-
-            if (contenttype != String.Empty && currentVendorId != 0 && validateCheckbox())
+            if (Session["vendor"] != null)
             {
-                Stream fs = ProductImageFileUpload.PostedFile.InputStream;
-                BinaryReader br = new BinaryReader(fs);
-                Byte[] bytes = br.ReadBytes((Int32)fs.Length);
+                checkImage();
 
-                using (SqlConnection con = new SqlConnection(CS))
+                if (contenttype != String.Empty && currentVendorId != 0 && validateCheckbox())
                 {
-                    con.Open();
+                    Stream fs = ProductImageFileUpload.PostedFile.InputStream;
+                    BinaryReader br = new BinaryReader(fs);
+                    Byte[] bytes = br.ReadBytes((Int32)fs.Length);
 
-                    SqlCommand cmd = new SqlCommand("INSERT INTO PDetails(VendorId,ProductPrice,ProductName," +
-                        "ProductDetails,CategoryId,Gender,ImageContentType,ImageData) VALUES(@VendorId,@ProductPrice," +
-                        "@ProductName,@ProductDetails,@PCID,@Gender,@ImageContentType,@ImageData);" +
-                        " SELECT SCOPE_IDENTITY()", con);
-                    cmd.Parameters.AddWithValue("@VendorId", currentVendorId);
-                    cmd.Parameters.AddWithValue("@ProductPrice", productPrice.Text);
-                    cmd.Parameters.AddWithValue("@ProductName", productName.Text);
-                    cmd.Parameters.AddWithValue("@ProductDetails", productDetails.Text);
-                    cmd.Parameters.AddWithValue("@PCID", Convert.ToInt32(productCategory.SelectedItem.Value));
-                    cmd.Parameters.AddWithValue("@Gender", ddlGender.SelectedItem.Text);
-                    cmd.Parameters.Add("@ImageContentType", SqlDbType.VarChar).Value = contenttype;
-                    cmd.Parameters.Add("@ImageData", SqlDbType.Binary).Value = bytes;
+                    using (SqlConnection con = new SqlConnection(CS))
+                    {
+                        con.Open();
 
-                    Int64 ProductFK = Convert.ToInt64(cmd.ExecuteScalar());
+                        SqlCommand cmd = new SqlCommand("INSERT INTO PDetails(VendorId,ProductPrice,ProductName," +
+                            "ProductDetails,CategoryId,Gender,ImageContentType,ImageData) VALUES(@VendorId,@ProductPrice," +
+                            "@ProductName,@ProductDetails,@PCID,@Gender,@ImageContentType,@ImageData);" +
+                            " SELECT SCOPE_IDENTITY()", con);
+                        cmd.Parameters.AddWithValue("@VendorId", currentVendorId);
+                        cmd.Parameters.AddWithValue("@ProductPrice", productPrice.Text);
+                        cmd.Parameters.AddWithValue("@ProductName", productName.Text);
+                        cmd.Parameters.AddWithValue("@ProductDetails", productDetails.Text);
+                        cmd.Parameters.AddWithValue("@PCID", Convert.ToInt32(productCategory.SelectedItem.Value));
+                        cmd.Parameters.AddWithValue("@Gender", ddlGender.SelectedItem.Text);
+                        cmd.Parameters.Add("@ImageContentType", SqlDbType.VarChar).Value = contenttype;
+                        cmd.Parameters.Add("@ImageData", SqlDbType.Binary).Value = bytes;
 
-                    if (chkSmall.Checked)
-                        addDetail(ProductFK, size[0], 's');
+                        Int64 ProductFK = Convert.ToInt64(cmd.ExecuteScalar());
 
-                    if (chkMedium.Checked)
-                        addDetail(ProductFK, size[1], 'm');
-                    if (chkLarge.Checked)
-                        addDetail(ProductFK, size[2], 'l');
+                        if (chkSmall.Checked)
+                            addDetail(ProductFK, size[0], 's');
 
-                    Response.Redirect("~/AboutUs.aspx#signup");
+                        if (chkMedium.Checked)
+                            addDetail(ProductFK, size[1], 'm');
+                        if (chkLarge.Checked)
+                            addDetail(ProductFK, size[2], 'l');
 
+                        Response.Redirect("~/AboutUs.aspx#signup");
+
+                    }
                 }
-            }
+            } 
         }
 
         private void UpdateProduct()
         {
-            checkImage();
-
-            if (contenttype != String.Empty && currentVendorId != 0 && validateCheckbox())
+            if (Session["vendor"] != null)
             {
-                Stream fs = ProductImageFileUpload.PostedFile.InputStream;
-                BinaryReader br = new BinaryReader(fs);
-                Byte[] bytes = br.ReadBytes((Int32)fs.Length);
+                checkImage();
 
-                using (SqlConnection con = new SqlConnection(CS))
+                if (contenttype != String.Empty && currentVendorId != 0 && validateCheckbox())
                 {
-                    con.Open();
+                    Stream fs = ProductImageFileUpload.PostedFile.InputStream;
+                    BinaryReader br = new BinaryReader(fs);
+                    Byte[] bytes = br.ReadBytes((Int32)fs.Length);
 
-                    SqlCommand cmd = new SqlCommand("procUpdateProducts", con);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@VendorId", currentVendorId);
-                    cmd.Parameters.AddWithValue("@ProductPrice", productPrice.Text);
-                    cmd.Parameters.AddWithValue("@ProductName", productName.Text);
-                    cmd.Parameters.AddWithValue("@ProductDetails", productDetails.Text);
-                    cmd.Parameters.AddWithValue("@CategoryId", Convert.ToInt32(productCategory.SelectedItem.Value));
-                    cmd.Parameters.AddWithValue("@Gender", ddlGender.SelectedItem.Text);
-                    cmd.Parameters.Add("@ImageContentType", SqlDbType.VarChar).Value = contenttype;
-                    cmd.Parameters.Add("@ImageData", SqlDbType.Binary).Value = bytes;
-                    cmd.Parameters.AddWithValue("@ProductCode", Convert.ToInt64(Request.QueryString["ProductCode"]));
-
-                    cmd.ExecuteNonQuery();
-
-                    if (chkSmall.Checked)
+                    using (SqlConnection con = new SqlConnection(CS))
                     {
-                        if (checkingForPUpdate(0))
-                            updateDetail(size[0]);
+                        con.Open();
+
+                        SqlCommand cmd = new SqlCommand("procUpdateProducts", con);
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@VendorId", currentVendorId);
+                        cmd.Parameters.AddWithValue("@ProductPrice", productPrice.Text);
+                        cmd.Parameters.AddWithValue("@ProductName", productName.Text);
+                        cmd.Parameters.AddWithValue("@ProductDetails", productDetails.Text);
+                        cmd.Parameters.AddWithValue("@CategoryId", Convert.ToInt32(productCategory.SelectedItem.Value));
+                        cmd.Parameters.AddWithValue("@Gender", ddlGender.SelectedItem.Text);
+                        cmd.Parameters.Add("@ImageContentType", SqlDbType.VarChar).Value = contenttype;
+                        cmd.Parameters.Add("@ImageData", SqlDbType.Binary).Value = bytes;
+                        cmd.Parameters.AddWithValue("@ProductCode", Convert.ToInt64(Request.QueryString["ProductCode"]));
+
+                        cmd.ExecuteNonQuery();
+
+                        if (chkSmall.Checked)
+                        {
+                            if (checkingForPUpdate(0))
+                                updateDetail(size[0]);
+                            else
+                                addDetail(Convert.ToInt64(Request.QueryString["ProductCode"]), size[0], 's');
+                        }
                         else
-                            addDetail(Convert.ToInt64(Request.QueryString["ProductCode"]), size[0], 's');
-                    }
-                    else
-                        if (checkingForPUpdate(0))
-                        access.AddAndDelInDatabase("delete from Product where ProductCode=" + Request.QueryString["ProductCode"].ToString() + " and ProductSize='" + size[0] + "'");
+                            if (checkingForPUpdate(0))
+                            access.AddAndDelInDatabase("delete from Product where ProductCode=" + Request.QueryString["ProductCode"].ToString() + " and ProductSize='" + size[0] + "'");
 
-                    if (chkMedium.Checked)
-                    {
-                        if (checkingForPUpdate(1))
-                            updateDetail(size[1]);
+                        if (chkMedium.Checked)
+                        {
+                            if (checkingForPUpdate(1))
+                                updateDetail(size[1]);
+                            else
+                                addDetail(Convert.ToInt64(Request.QueryString["ProductCode"]), size[1], 'm');
+                        }
                         else
-                            addDetail(Convert.ToInt64(Request.QueryString["ProductCode"]), size[1], 'm');
-                    }
-                    else
-                        if (checkingForPUpdate(1))
-                        access.AddAndDelInDatabase("delete from Product where ProductCode=" + Request.QueryString["ProductCode"].ToString() + " and ProductSize='" + size[1] + "'");
+                            if (checkingForPUpdate(1))
+                            access.AddAndDelInDatabase("delete from Product where ProductCode=" + Request.QueryString["ProductCode"].ToString() + " and ProductSize='" + size[1] + "'");
 
-                    if (chkLarge.Checked)
-                    {
-                        if (checkingForPUpdate(2))
-                            updateDetail(size[2]);
+                        if (chkLarge.Checked)
+                        {
+                            if (checkingForPUpdate(2))
+                                updateDetail(size[2]);
+                            else
+                                addDetail(Convert.ToInt64(Request.QueryString["ProductCode"]), size[2], 'l');
+                        }
                         else
-                            addDetail(Convert.ToInt64(Request.QueryString["ProductCode"]), size[2], 'l');
+                            if (checkingForPUpdate(2))
+                        {
+                            access.AddAndDelInDatabase("delete from Product where ProductCode = " + Request.QueryString["ProductCode"].ToString() + " AND ProductSize = '" + size[2] + "'");
+                        }
+
+                        // Session["pid"] = null;
+
+                        Response.Redirect("~/AboutUs.aspx#signup");
+
                     }
-                    else
-                        if (checkingForPUpdate(2))
-                    {
-                        access.AddAndDelInDatabase("delete from Product where ProductCode = " + Request.QueryString["ProductCode"].ToString() + " AND ProductSize = '" + size[2] + "'");
-                    }
-
-                   // Session["pid"] = null;
-
-                    Response.Redirect("~/AboutUs.aspx#signup");
-
                 }
-            }
 
+            }
 
         }
 
         protected void CreateProducts(object sender, EventArgs e)
         {
+            if (Session["vendor"] != null)
+            {
+                if (Request.QueryString["ProductCode"] == null)
+                    AddProduct();
 
-            if(Request.QueryString["ProductCode"] == null)
-               AddProduct();
-            
+                else
+                    UpdateProduct();
+            }
             else
-               UpdateProduct();
+            {
+                Response.Redirect("~/SignUp.aspx");
+            }
+                
         }       
 
         private void BindCategoryRptr()
@@ -256,55 +280,59 @@ namespace BrandBox.com
 
         public void editProduct(String id)
         {
-            DataTable productData = new DataTable();
-            SqlCommand cmd = new SqlCommand(" SELECT * FROM PDetails where ProductCode=" + id);
-            productData = access.SelectFromDatabase(cmd);
-            if (productData.Rows.Count > 0)
+             if (Session["vendor"] != null)
             {
-                foreach (DataRow row in productData.Rows)
+                DataTable productData = new DataTable();
+                SqlCommand cmd = new SqlCommand(" SELECT * FROM PDetails where ProductCode=" + id);
+                productData = access.SelectFromDatabase(cmd);
+                if (productData.Rows.Count > 0)
                 {
-                    productPrice.Text = "";
-                    productName.Text = row["ProductName"].ToString();
-                    productCategory.SelectedValue = row["CategoryId"].ToString();
-
-                    if (row["Gender"].ToString().ToLower().Trim().Equals("male"))
-                        ddlGender.SelectedValue = 1.ToString();
-                    else if(row["Gender"].ToString().ToLower().Trim().Equals("female"))
-                        ddlGender.SelectedValue = 2.ToString();
-                    else if(row["Gender"].ToString().ToLower().Trim().Equals("children"))
-                        ddlGender.SelectedValue = 3.ToString();
-
-                    productDetails.Text = row["ProductDetails"].ToString();
-
-                    SqlCommand cmd2 = new SqlCommand(" SELECT * FROM Product where ProductCode=" + id);
-                    DataTable productDetailData = access.SelectFromDatabase(cmd2);
-                    if(productDetailData.Rows.Count > 0)
+                    foreach (DataRow row in productData.Rows)
                     {
-                        foreach(DataRow d in productDetailData.Rows)
-                        {
-                            if(d["ProductSize"].ToString().ToLower().Trim().Equals(size[2].ToLower()))
-                            {
-                                chkLarge.Checked = true;
-                                LproductQnty.Enabled = true;
-                                LproductQnty.Text = d["ProductQnty"].ToString();
-                            }
-                            else if(d["ProductSize"].ToString().ToLower().Trim().Equals(size[1].ToLower()))
-                            {
-                                chkMedium.Checked = true;
-                                MproductQnty.Enabled = true;
-                                MproductQnty.Text = d["ProductQnty"].ToString();
+                        productPrice.Text = "";
+                        productName.Text = row["ProductName"].ToString();
+                        productCategory.SelectedValue = row["CategoryId"].ToString();
 
-                            }
-                            else if(d["ProductSize"].ToString().ToLower().Trim().Equals(size[0].ToLower()))
+                        if (row["Gender"].ToString().ToLower().Trim().Equals("male"))
+                            ddlGender.SelectedValue = 1.ToString();
+                        else if (row["Gender"].ToString().ToLower().Trim().Equals("female"))
+                            ddlGender.SelectedValue = 2.ToString();
+                        else if (row["Gender"].ToString().ToLower().Trim().Equals("children"))
+                            ddlGender.SelectedValue = 3.ToString();
+
+                        productDetails.Text = row["ProductDetails"].ToString();
+
+                        SqlCommand cmd2 = new SqlCommand(" SELECT * FROM Product where ProductCode=" + id);
+                        DataTable productDetailData = access.SelectFromDatabase(cmd2);
+                        if (productDetailData.Rows.Count > 0)
+                        {
+                            foreach (DataRow d in productDetailData.Rows)
                             {
-                                chkSmall.Checked = true;
-                                SproductQnty.Enabled = true;
-                                SproductQnty.Text = d["ProductQnty"].ToString();
+                                if (d["ProductSize"].ToString().ToLower().Trim().Equals(size[2].ToLower()))
+                                {
+                                    chkLarge.Checked = true;
+                                    LproductQnty.Enabled = true;
+                                    LproductQnty.Text = d["ProductQnty"].ToString();
+                                }
+                                else if (d["ProductSize"].ToString().ToLower().Trim().Equals(size[1].ToLower()))
+                                {
+                                    chkMedium.Checked = true;
+                                    MproductQnty.Enabled = true;
+                                    MproductQnty.Text = d["ProductQnty"].ToString();
+
+                                }
+                                else if (d["ProductSize"].ToString().ToLower().Trim().Equals(size[0].ToLower()))
+                                {
+                                    chkSmall.Checked = true;
+                                    SproductQnty.Enabled = true;
+                                    SproductQnty.Text = d["ProductQnty"].ToString();
+                                }
                             }
-                        }    
+                        }
                     }
                 }
-            }         
+            }
+                  
         }
 
         protected void small_CheckedChanged(object sender, EventArgs e)

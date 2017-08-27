@@ -52,7 +52,7 @@
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-left">
-          <li class="active"><a href="/AboutUs.aspx#brandbox">About Us</a></li>
+          <li><a href="/AboutUs.aspx#brandbox">About Us</a></li>
             <% if (Session["vendor"] == null && Session["Customer"] == null) { %>
                     <li><a href="/AboutUs.aspx#brands">Brands</a></li>
                      <li><a href="/AllProducts.aspx">Products</a></li>

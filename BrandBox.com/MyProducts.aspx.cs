@@ -43,8 +43,19 @@ namespace BrandBox.com
             cmd.Parameters.AddWithValue("@VId", currentVendorId);
             categoryData = access.SelectFromDatabase(cmd);
 
-            MyProductsRptr.DataSource = categoryData;
-            MyProductsRptr.DataBind();
+            if (categoryData.Rows.Count > 0)
+            {
+                h1noOfItems.InnerText = "My Products";
+                MyProductsRptr.DataSource = categoryData;
+                MyProductsRptr.DataBind();
+            }
+            else
+            {
+                h1noOfItems.InnerText = "You have not added any product till now";
+            }
+            
+
+           
         }
 
      

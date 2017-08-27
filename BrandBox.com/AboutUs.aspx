@@ -23,7 +23,7 @@
         <div class="carousel-caption">
           <h3 class="wow bounceInLeft"><b>Brand Box</b></h3>
           <p class="wow bounceInRight">Where you find all the brands !</p>
-          <button type="button" class="btn btnCustom wow fadeInUp">Shop Now</button>
+          <button type="button" class="btn btnCustom wow fadeInUp" onclick="Shop_Now">Shop Now</button>
         </div>
       </div>
 
@@ -42,7 +42,7 @@
         <div class="carousel-caption">
           <h3 class="wow bounceInLeft" data-wow-delay="0.8s"><b>BrandBox</b></h3>
           <p class="wow bounceInRight" data-wow-delay="0.8s">Popular Brands are here!</p>
-          <button type="button" class="btn btnCustom wow fadeInUp" data-wow-delay="0.8s">Shop Now</button>
+          <button type="button" class="btn btnCustom wow fadeInUp" data-wow-delay="0.8s" onclick="Shop_Now">Shop Now</button>
         </div>
       </div>
   
@@ -206,48 +206,34 @@
 <div id="footer" class="footer">
   <div class="container">
     <div class="row">
-      <div class="col-lg-3 col-md-3">
+      <div class="col-lg-4 col-md-4">
         <h4 class="wow fadeInUp">Contact Us</h4>
         <p>
           <i class="fa fa-home" aria-hidden="true"></i>  111 Main Street, Washington DC, 222222
         </p>
         <p>
-        <i class="fa fa-envelope" aria-hidden="true"></i> info@media.com
+        <i class="fa fa-envelope" aria-hidden="true"></i> BrandBox.com.pk@gmail.com
         </p>
         <p>
           <i class="fa fa-phone" aria-hidden="true"></i> +1 222 222 2222
         </p>
         <p>
-          <i class="fa fa-globe" aria-hidden="true"></i> www.media.com
+          <a href="AboutUs.aspx" style="color:#cccccc"><i class="fa fa-globe" aria-hidden="true"></i> www.brandbox.com.pk</a>
         </p>
       </div>
-      <div class="col-md-3 col-lg-3">
+      <div class="col-md-4 col-lg-4">
         <h4 class="wow fadeInUp">Cusomer Care</h4>
-        <p>Shop</p>
-        <p>My Account</p>
-        <p>Shopping Cart</p>
+        <a  style="color:#cccccc" href="AllProducts.aspx"><p>Shop</p></a>
+        <a  style="color:#cccccc" href="CustLogin.aspx"><p>My Account</p></a>
+        <a  style="color:#cccccc" href="Cart.aspx"><p>Shopping Cart</p></a>
       </div>
-       <div class="col-lg-3 col-md-3">
-         <h4 class="wow fadeInUp">About</h4>
-         <p>
-           <i class="fa fa-square-o" aria-hidden="true"></i> About Us
-         </p>
-         <p>
-           <i class="fa fa-square-o" aria-hidden="true"></i> Privacy
-         </p>
-         <p>
-           <i class="fa fa-square-o" aria-hidden="true"></i> Term & Condition
-         </p>
-       </div>
        
-        <div class="col-lg-3 col-md-3">
+       
+        <div class="col-lg-4 col-md-4">
           <h4 class="wow fadeInUp">Stay in touch</h4>
           <i class="social fa fa-facebook" aria-hidden="true"></i>
           <i class="social fa fa-twitter" aria-hidden="true"></i>
-          <i class="social fa fa-linkedin" aria-hidden="true"></i>
-          <i class="social fa fa-pinterest" aria-hidden="true"></i>
-          <i class="social fa fa-youtube" aria-hidden="true"></i>
-          <i class="social fa fa-github" aria-hidden="true"></i><br>
+          <a  style="color:#cccccc" href="http://github.com/areebakhalid/BrandBox.com.pk"><i class="social fa fa-github" aria-hidden="true"></i></a><br>
         </div>
     </div>
   </div>
