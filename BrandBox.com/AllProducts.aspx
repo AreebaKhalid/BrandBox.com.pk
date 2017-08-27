@@ -5,7 +5,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div id="sideNavigation" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <asp:LinkButton runat="server" OnItemCommand="BindAllProductsRptr" >All</asp:LinkButton>
+        <asp:LinkButton runat="server" OnClick="All_Click" >All</asp:LinkButton>
         <asp:Repeater ID="AllProductsRptr" runat="server" OnItemCommand="AllProductsRptr_ItemCommand"> 
             <ItemTemplate>
                 <asp:LinkButton runat="server" CommandArgument='<%#Eval("PCID") %>'><%# Eval("ProductCatName") %></asp:LinkButton>
@@ -19,7 +19,7 @@
 
     <div class="container">
         <div class =" row" style="margin:50px 0">
-            <h1> My Products </h1>
+            <h1 id="h1noOfItems" runat="server"> </h1>
             <asp:Label runat="server" ID="lblDel"></asp:Label>
         </div>
         <div class="row">
