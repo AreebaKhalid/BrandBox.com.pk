@@ -190,7 +190,27 @@ namespace BrandBox.com
                     {
                         Response.Redirect("~/CustLogin.aspx");
                     }
-                    else AddToCart(qnty,x);
+                    else
+                    {
+                        SqlCommand cmd = new SqlCommand("SELECT ProductQnty FROM Product Where ProductCode='" + Request.QueryString["ProductCode"] + "' AND ProductSize='" + x + "'");
+                        DataTable qnt = new DataTable();
+                        qnt = access.SelectFromDatabase(cmd);
+                        foreach(DataRow rows in qnt.Rows)
+                        {
+                            if (Convert.ToInt64(qnty) > Convert.ToInt64(rows["ProductQnty"]))
+                            {
+                                lblErr.Text = "Sorry ! We have only " + rows["ProductQnty"] + " left.";
+                                lblErr.ForeColor = Color.Red;
+                            }
+                            else
+                            {
+                                AddToCart(qnty, x);
+                            }
+                        }
+                        
+                    }
+
+                    
                       
                 }
             }

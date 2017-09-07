@@ -76,7 +76,7 @@
 
                   
                   <div class="form-group">
-                      <asp:Button ID="Submit" Text="SUBMIT" CssClass="btn btn-success btn-block" ValidationGroup="Group1" runat="server" OnClientClick="deletealert(this, event);" OnClick="SignUpSuccessful" />
+                      <asp:Button ID="Submit" Text="SUBMIT" CssClass="btn btn-success btn-block" ValidationGroup="Group1" runat="server" OnClick="SignUpSuccessful" />
                   </div>
                 </form>
 
@@ -99,36 +99,5 @@
         <asp:LinkButton style="color:#f4511e" Text="Login." PostBackUrl="~/Login.aspx" runat="server"/> 
 	</div>    
   </div>
-    <script>
-        function deletealert(ctl, event) {
-            // STORE HREF ATTRIBUTE OF LINK CTL (THIS) BUTTON
-            var defaultAction = $(ctl).prop("href");
-            // CANCEL DEFAULT LINK BEHAVIOUR
-            event.preventDefault();
-            swal({
-                title: "Are you sure?",
-                text: "You will not be able to recover this imaginary file!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Yes, delete it!",
-                cancelButtonText: "Cancel!",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            },
-                function (isConfirm) {
-                    if (isConfirm) {
-                        swal({ title: "Deleted!", text: "Your product has been deleted.", type: "success", confirmButtonText: "OK!", closeOnConfirm: false },
-                            function () {
-                                // RESUME THE DEFAULT LINK ACTION
-                               window.location.href = defaultAction;
-                                return true;
-                            });
-                    } else {
-                        swal("Cancelled", "Your product is not deleted! ", "error");
-                        return false;
-                    }
-                });
-        }
-    </script>
+
 </asp:Content>

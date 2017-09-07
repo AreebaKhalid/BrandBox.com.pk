@@ -23,7 +23,7 @@
                 <div class="col-md-3">
                     <asp:TextBox runat="server" id="productPrice" CssClass="form-control" placeholder="Product Price" />
                     <asp:RequiredFieldValidator runat="server" id="reqPrice" ValidationGroup="Group1" controltovalidate="productPrice" CssClass="text-danger" errormessage="This field cannot be blank." Display="Dynamic" />
-                    <asp:RegularExpressionValidator ID="RegularExpressionValidator1" ValidationGroup="Group1" runat="server" ControlToValidate="productPrice" CssClass="text-danger" ErrorMessage="Please enter a valid price." Display="Dynamic"  ValidationExpression="^\d+$"></asp:RegularExpressionValidator>         
+                    <asp:RegularExpressionValidator ID="RegularExpressionValidator1" ValidationGroup="Group1" runat="server" ControlToValidate="productPrice" CssClass="text-danger" ErrorMessage="Please enter a valid price." Display="Dynamic"  ValidationExpression="((\d+)((\.\d{1,2})?))$"></asp:RegularExpressionValidator>         
                 </div>
             </div>
 

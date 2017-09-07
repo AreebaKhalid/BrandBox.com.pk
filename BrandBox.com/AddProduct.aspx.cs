@@ -289,7 +289,7 @@ namespace BrandBox.com
                 {
                     foreach (DataRow row in productData.Rows)
                     {
-                        productPrice.Text = "";
+                        productPrice.Text = row["ProductPrice"].ToString();
                         productName.Text = row["ProductName"].ToString();
                         productCategory.SelectedValue = row["CategoryId"].ToString();
 

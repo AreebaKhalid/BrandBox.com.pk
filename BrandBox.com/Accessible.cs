@@ -23,7 +23,7 @@ namespace BrandBox.com
             SmtpClient smtp = new SmtpClient();
             smtp.Host = "smtp.gmail.com";
             smtp.Port = 587;
-            smtp.Credentials = new System.Net.NetworkCredential("brandbox.com.pk@gmail.com", "AreebaYamna");
+            smtp.Credentials = new System.Net.NetworkCredential("brandbox.com.pk@gmail.com", "passYamnaAreeba");
             smtp.EnableSsl = true;
 
             MailMessage msg = new MailMessage();
@@ -38,6 +38,42 @@ namespace BrandBox.com
             msg.Body += "<tr>";
             msg.Body += "<td>Activation Number :" + random + "</td>";
             msg.Body += "</tr>";
+
+            msg.Body += "<tr>";
+            msg.Body += "<td>Thanking</td><td>Team BrandBox</td>";
+            msg.Body += "</tr>";
+
+            string toAddress = Email; // Add Recepient address
+            msg.To.Add(toAddress);
+
+            string fromAddress = "\"BrandBox.com.pk \" <brandbox.com.pk@gmail.com>";
+            msg.From = new MailAddress(fromAddress);
+            msg.IsBodyHtml = true;
+
+            try
+            {
+                smtp.Send(msg);
+
+            }
+            catch
+            {
+                throw;
+            }
+        }
+        public static void sendOrderToCustomer(string Email, string OrderId,string Name)
+        {
+
+            SmtpClient smtp = new SmtpClient();
+            smtp.Host = "smtp.gmail.com";
+            smtp.Port = 587;
+            smtp.Credentials = new System.Net.NetworkCredential("brandbox.com.pk@gmail.com", "passYamnaAreeba");
+            smtp.EnableSsl = true;
+
+            MailMessage msg = new MailMessage();
+            msg.Subject = "Order Details";
+            msg.Body = "Hello "+Name + " Thanks for buying from BrandBox...\n Your Order Id is given below:";
+            msg.Body += "<tr>";
+            msg.Body += "<td>Order ID :" + OrderId + "</td>";
 
             msg.Body += "<tr>";
             msg.Body += "<td>Thanking</td><td>Team BrandBox</td>";

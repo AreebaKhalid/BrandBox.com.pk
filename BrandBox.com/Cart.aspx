@@ -21,6 +21,7 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <asp:Label runat="server" ID="msg"></asp:Label>
     <div class="jumbotron">
         <div class="container">
             <div class="row">
@@ -50,7 +51,7 @@
                                   
                                         <h4 class="media-heading"><%#Eval("ProductName") %></h4>
                                         <div class="text-center">
-                                        <asp:Image ID="Image1" runat="server" alt="image"   ImageUrl='<%#BrandBox.com.Accessible.GetImage(Eval("ImageData")) %>' />
+                                        <asp:Image ID="Image1" runat="server" alt="image" style="height:100px;width:100px"  ImageUrl='<%#BrandBox.com.Accessible.GetImage(Eval("ImageData")) %>' />
                                         </div>
                                         </div>
                                         </div>
@@ -88,10 +89,8 @@
                         </a></td>
                                                                               
                         <td>
+                       <asp:LinkButton runat="server" CssClass="btn btnCart" OnClick="checkOut_Click"><i class="fa fa-shopping-cart"> Checkout</i></asp:LinkButton>
                        
-                        <a href="Checkout.aspx?ProductID=<%# Eval("OrderID") %>" class = "btn btnCart" role = "button">
-                                 <i class="fa fa-shopping-cart"> Checkout</i>
-                              </a>
                         
                         </td>
  

@@ -13,6 +13,15 @@ namespace BrandBox.com {
     public partial class WebForm10 {
         
         /// <summary>
+        /// msg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label msg;
+        
+        /// <summary>
         /// h2NoItems control.
         /// </summary>
         /// <remarks>

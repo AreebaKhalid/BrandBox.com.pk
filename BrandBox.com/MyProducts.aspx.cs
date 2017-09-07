@@ -89,6 +89,7 @@ namespace BrandBox.com
                 {
                     lblDel.Text = "Record Deleted Successfully";
                     lblDel.ForeColor = System.Drawing.Color.Green;
+                    Response.Redirect(Request.RawUrl);
                     BindMyProductsRptr();
                 }
             }
