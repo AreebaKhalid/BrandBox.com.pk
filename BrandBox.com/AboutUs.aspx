@@ -22,7 +22,7 @@
     <div class="carousel-inner">
 
       <div class="item active">
-        <img src="images\coverImages\1.jpg" style="width:100%;">
+        <img src="images\coverImages\4.jpg" style="width:100%;">
         <div class="carousel-caption">
           <h3 class="wow bounceInLeft"><b>Brand Box</b></h3>
           <p class="wow bounceInRight">Where you find all the brands !</p>
@@ -31,7 +31,7 @@
       </div>
 
       <div class="item">
-        <img src="images\coverImages\4.jpg"  style="width:100%;">
+        <img src="images\coverImages\1.jpg"  style="width:100%;">
         <div class="carousel-caption">
           <h3 class="wow bounceInLeft" data-wow-delay="0.8s"><b>BrandBox</b></h3>
           <p class="wow bounceInRight" data-wow-delay="0.8s">Because every month deserve to be awsimely styled!<br>Want to add your brand for maximum benefit!</p>
@@ -82,13 +82,13 @@
     <!-- Wrapper for slides -->
     <div class="carousel-inner" role="listbox">
       <div class="item active">
-        <h4>"This company is the best. I am so happy with the result!"<br><span>Michael Roe, Vice President, Comment Box</span></h4>
+        <h4>"One of the best websites to shop online. Simple and easy to use!!"<br><span> Sarah Khan ,Karachi</span></h4>
       </div>
       <div class="item">
-        <h4>"One word... WOW!!"<br><span>John Doe, Salesman, Rep Inc</span></h4>
+        <h4>"Offers best dresses within budget. "<br><span>Sheryar Ali,Lahore.</span></h4>
       </div>
       <div class="item">
-        <h4>"Could I... BE any more happy with this company?"<br><span>Chandler Bing, Actor, FriendsAlot</span></h4>
+        <h4>"Every dress I bought from BrandBox is of expected quality. love them!"<br><span>Beenish,Peshawar</span></h4>
       </div>
       <div class="item">
         <h4>"Just received my shoes, and they are perfectly amazing. Will definitely shop again and also recommend to other."<br><span>KHANSA RIAZ</span></h4>
@@ -183,7 +183,12 @@
   <div class="container">
     <div class="row">
      <h2 class="wow fadeInUp">Who we are</h2>
-    <p class="wow fadeInUp">ahha aha kosgde www d did s dsdsosoda jsuwqdiwu djoisq dauaudwa diud wwi wwiq wuw wuw wugebo eywbo fowtyyw wibcle wy whwi wjwwuwe eu qyui huj qgwh awoh hau uenn eheuenk anjq qnaj wuaan ajka dio siw  ixn sjs oepe </p>
+    <p class="wow fadeInUp">BrandBox, as the name suggests is an online shopping platform which
+        let customers to buy dresses of all the age groups and genders from various popular brands 
+        available across the country from home making shopping an easy and relaxing experience.
+        Along with this we offer brands to share their products on this website thus helping small
+        and less popular brands to get noticed in the market. BrandBox privileges the personalization
+        and security of its users above all. </p>
         
   </div>
 </div>
@@ -195,56 +200,44 @@
   <div class="container">
     <div class="row">
       <h2 class="wow fadeInUp">Meet our team</h2>
-      <p class="wow fadeInUp" data-wow-delay="0.4s">Lorem Ipsum passages, and more recently with desktop publishing software</p>
-      <div class="col-lg-4 col-md-4 wow fadeInLeft" data-wow-delay="2s">
+        <p class="wow fadeInUp" data-wow-delay="0.4s">We have some amazing and skillful developers who are always ready to give their best.</p>
+        <div class="col-lg-2 col-md-2"> </div>
+        <div class="col-lg-4 col-md-4 wow fadeInLeft" data-wow-delay="2s">
         <img src="images/teams/team-1.jpg" class="img-circle">
-        <h4>John Doe</h4>
-        <b>CEO and Founder</b>
-        <p>Lorem Ipsum passages, and more recently with desktop publishing software</p>
-        <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-        <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-        <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-        <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+        <h4>Yamna Wasi</h4>
+        <b>CEO</b>
+        <a href="https://www.facebook.com/yamna.wasi?ref=br_rs"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+        <a href="https://pk.linkedin.com/in/yamna-wasi-36138ab7"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
       </div>
       <div class="col-lg-4 col-md-64 wow fadeInLeft" data-wow-delay="1.6s">
         <img src="images/teams/team-2.jpg" class="img-circle">
-        <h4>John Doe</h4>
-        <b>CEO and Founder</b>
-        <p>Lorem Ipsum passages, and more recently with desktop publishing software</p>
-        <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-        <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-        <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-        <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+        <h4>Areeba Khalid</h4>
+        <b>Founder</b>
+        <a href="https://www.facebook.com/syeda.khalid.7"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+        <a href="https://twitter.com/SyedaaAreeba"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+        <a href="https://www.linkedin.com/in/syeda-areeba-khalid-69aa09b7/"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
       </div>
-      <div class="col-lg-4 col-md-4 wow fadeInLeft" data-wow-delay="1.2s">
-        <img src="images/teams/team-3.jpg" class="img-circle">
-        <h4>John Doe</h4>
-        <b>CEO and Founder</b>
-        <p>Lorem Ipsum passages, and more recently with desktop publishing software</p>
-        <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-        <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-        <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-        <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
-      </div>
+        <div class="col-lg-2 col-md-2"> </div>
+
     </div>
   </div>
 </div>
 
 <!-- End Team -->
              <!--footer -->
-<div id="footer" class="footer">
+<div id="foter" class="footer">
   <div class="container">
     <div class="row">
       <div class="col-lg-4 col-md-4">
         <h4 class="wow fadeInUp">Contact Us</h4>
         <p>
-          <i class="fa fa-home" aria-hidden="true"></i>  111 Main Street, Washington DC, 222222
+          <i class="fa fa-home" aria-hidden="true"></i> BrandBox Pvt Ltd, 7th Floor, Shahnaz Arcade, Shaheed-e-Millat Road, Karachi, Pakistan
         </p>
         <p>
         <i class="fa fa-envelope" aria-hidden="true"></i> BrandBox.com.pk@gmail.com
         </p>
         <p>
-          <i class="fa fa-phone" aria-hidden="true"></i> +1 222 222 2222
+          <i class="fa fa-phone" aria-hidden="true"></i> +92-21-111-143-327
         </p>
         <p>
           <a href="AboutUs.aspx" style="color:#cccccc"><i class="fa fa-globe" aria-hidden="true"></i> www.brandbox.com.pk</a>
@@ -260,8 +253,8 @@
        
         <div class="col-lg-4 col-md-4">
           <h4 class="wow fadeInUp">Stay in touch</h4>
-          <i class="social fa fa-facebook" aria-hidden="true"></i>
-          <i class="social fa fa-twitter" aria-hidden="true"></i>
+          <a  style="color:#cccccc" href="https://www.facebook.com/BrandBox-1405840389514945"><i class="social fa fa-facebook" aria-hidden="true"></i></a>
+          <a  style="color:#cccccc" href="https://twitter.com/BrandBoxDotCom"><i class="social fa fa-twitter" aria-hidden="true"></i>
           <a  style="color:#cccccc" href="http://github.com/areebakhalid/BrandBox.com.pk"><i class="social fa fa-github" aria-hidden="true"></i></a><br>
         </div>
     </div>

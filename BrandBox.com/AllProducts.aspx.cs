@@ -48,8 +48,8 @@ namespace BrandBox.com
             else
             {
 
-               // string gender = Request.QueryString["type"].Trim('#');
-                h1noOfItems.InnerText = "My Products else"+gender;
+                string gender = Request.QueryString["type"].Trim('#');
+                h1noOfItems.InnerText = "My Products";
                 SqlCommand cmd = new SqlCommand("SELECT ProductPrice,ImageData,ProductName,ProductCode From PDetails where Gender=@gender");
                 cmd.Parameters.AddWithValue("@gender", gender);
                 categoryData = access.SelectFromDatabase(cmd);
