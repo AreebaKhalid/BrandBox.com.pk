@@ -46,10 +46,6 @@
                         </div>
                     </div>
               </ItemTemplate>
-              <FooterTemplate>
-                    </tbody>
-               </table>
-              </FooterTemplate>
             </asp:Repeater>
     <script>
         function openNav() {

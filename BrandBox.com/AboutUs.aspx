@@ -205,14 +205,14 @@
         <div class="col-lg-4 col-md-4 wow fadeInLeft" data-wow-delay="2s">
         <img src="images/teams/team-1.jpg" class="img-circle">
         <h4>Yamna Wasi</h4>
-        <b>CEO</b>
+        <b>CEO</b><br />
         <a href="https://www.facebook.com/yamna.wasi?ref=br_rs"><i class="fa fa-facebook" aria-hidden="true"></i></a>
         <a href="https://pk.linkedin.com/in/yamna-wasi-36138ab7"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
       </div>
       <div class="col-lg-4 col-md-64 wow fadeInLeft" data-wow-delay="1.6s">
         <img src="images/teams/team-2.jpg" class="img-circle">
         <h4>Areeba Khalid</h4>
-        <b>Founder</b>
+        <b>Founder</b><br />
         <a href="https://www.facebook.com/syeda.khalid.7"><i class="fa fa-facebook" aria-hidden="true"></i></a>
         <a href="https://twitter.com/SyedaaAreeba"><i class="fa fa-twitter" aria-hidden="true"></i></a>
         <a href="https://www.linkedin.com/in/syeda-areeba-khalid-69aa09b7/"><i class="fa fa-linkedin" aria-hidden="true"></i></a>

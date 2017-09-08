@@ -13,15 +13,6 @@ namespace BrandBox.com {
     public partial class WebForm10 {
         
         /// <summary>
-        /// msg control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label msg;
-        
-        /// <summary>
         /// h2NoItems control.
         /// </summary>
         /// <remarks>
@@ -49,24 +40,6 @@ namespace BrandBox.com {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divPriceDetails;
         
         /// <summary>
-        /// spanCartTotal control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanCartTotal;
-        
-        /// <summary>
-        /// spanDiscount control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanDiscount;
-        
-        /// <summary>
         /// spanTotal control.
         /// </summary>
         /// <remarks>
@@ -74,5 +47,14 @@ namespace BrandBox.com {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanTotal;
+        
+        /// <summary>
+        /// msg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label msg;
     }
 }

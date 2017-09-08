@@ -160,7 +160,7 @@ namespace BrandBox.com
                         if (chkLarge.Checked)
                             addDetail(ProductFK, size[2], 'l');
 
-                        Response.Redirect("~/AboutUs.aspx#signup");
+                        Response.Redirect("~/MyProducts.aspx");
 
                     }
                 }
@@ -234,7 +234,7 @@ namespace BrandBox.com
 
                         // Session["pid"] = null;
 
-                        Response.Redirect("~/AboutUs.aspx#signup");
+                        Response.Redirect("~/MyProducts.aspx");
 
                     }
                 }

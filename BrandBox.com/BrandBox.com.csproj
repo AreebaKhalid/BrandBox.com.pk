@@ -140,6 +140,7 @@
     <Content Include="CustSignup.aspx" />
     <Content Include="Cart.aspx" />
     <Content Include="Activation.aspx" />
+    <Content Include="CustomerBill.aspx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -290,6 +291,13 @@
     </Compile>
     <Compile Include="Activation.aspx.designer.cs">
       <DependentUpon>Activation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerBill.aspx.cs">
+      <DependentUpon>CustomerBill.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CustomerBill.aspx.designer.cs">
+      <DependentUpon>CustomerBill.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

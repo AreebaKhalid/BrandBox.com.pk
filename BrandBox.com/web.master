@@ -54,14 +54,15 @@
         <ul class="nav navbar-nav navbar-left">
           <li><a href="/AboutUs.aspx#brandbox">About Us</a></li>
             <% if (Session["vendor"] == null && Session["Customer"] == null) { %>
-                    <li><a href="/AboutUs.aspx#brands">Brands</a></li>
+                    <li><a href="/AboutUs.aspx#brands">Brands</a></li><% }
+              if ((Session["Customer"] == null || Session["Customer"] != null)&& Session["vendor"]==null) { %>
                     <li class="'dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-plus" aria-hidden="true"></i> Products</a>
                         <ul class="dropdown-menu" style="background-color:#222222">
                                     <li><a href="/AllProducts.aspx?type=All">All Products</a></li>
                                     <li><a href="/AllProducts.aspx?type=Male">Male</a></li>
                                     <li><a href="/AllProducts.aspx?type=Female">Female</a></li>
-                                    <li><a href="/AllProducts.aspx?type=Child">Children</a></li>
+                                    <li><a href="/AllProducts.aspx?type=Children">Children</a></li>
                         </ul>
                     </li>
                     <li><a href="/AboutUs.aspx#team">Team</a></li>

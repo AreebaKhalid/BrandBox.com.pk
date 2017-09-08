@@ -96,6 +96,8 @@ namespace BrandBox.com
                 throw;
             }
         }
+
+
         public String genCode()
         {
             var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

@@ -21,7 +21,6 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <asp:Label runat="server" ID="msg"></asp:Label>
     <div class="jumbotron">
         <div class="container">
             <div class="row">
@@ -33,7 +32,7 @@
                                 <th>Quantity</th>
                                 <th>Size</th>
                                 <th></th>
-                                <th class="text-center">Price</th>
+                                <th class="text-center">Price of Single Product</th>
                                 <th></th>
                                 <th> </th>
                             </tr>
@@ -75,8 +74,8 @@
                         <td>   </td>
                         <td>   </td>
                         <td>   </td>
-                        <td><h5>Subtotal</h5><br/><h5>Discount</h5><h3>Total</h3></td>
-                        <td class="text-right"><h5 id="spanCartTotal" runat="server"></h5><br/><h5 id="spanDiscount" runat="server"></h5><h3 id="spanTotal" runat="server"></h3></td>
+                        <td><h3>Total</h3></td>
+                        <td class="text-right"><h3 id="spanTotal" runat="server"></h3></td>
                     </tr>
                     <tr>
                         <td>   </td>
@@ -103,5 +102,6 @@
     </div>
 </div>
 </div>
+    <asp:Label runat="server" ID="msg"></asp:Label>
 
 </asp:Content>

@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using BrandBox.com;
+using System.Drawing;
 
 namespace BrandBox.com
 {
@@ -86,8 +87,6 @@ namespace BrandBox.com
 
                     DataTable det = new DataTable();
                     Int64 CartTotal = 0;
-                    Int64 Total = 0;
-                    Int64 Discount = 0;
                     for (int i = 0; i < CookieDataArray.Length; i++)
                     {
                         string ProductID = CookieDataArray[i].ToString().Split('-')[0];
@@ -100,7 +99,7 @@ namespace BrandBox.com
                         cartitems.Rows[i]["ProductSize"] = CookieSizeArray[i].ToString().Split('-')[0];
 
                         CartTotal += Convert.ToInt64(cartitems.Rows[i]["ProductPrice"]) * Convert.ToInt64(cartitems.Rows[i]["ProductQnty"]);
-                        Discount = (CartTotal * 10) / 100;
+               
 
                     }
 
@@ -109,10 +108,8 @@ namespace BrandBox.com
 
                     divPriceDetails.Visible = true;
 
-                    spanCartTotal.InnerText = CartTotal.ToString();
-                    spanDiscount.InnerText = "Rs. " + Discount.ToString();
-                    Total = CartTotal - Discount;
-                    spanTotal.InnerText = "Rs. " + Total.ToString();
+                    
+                    spanTotal.InnerText = "Rs. " + CartTotal.ToString(); ;
 
 
                 }
@@ -160,6 +157,8 @@ namespace BrandBox.com
             {
                 deleteCookie();
 
+                Response.Redirect(Request.RawUrl);
+
             }
             else
             {
@@ -169,6 +168,9 @@ namespace BrandBox.com
                 CartProducts.Values["Size"] = CookieSizeUpdated;
                 CartProducts.Expires = DateTime.Now.AddDays(30);
                 Response.Cookies.Add(CartProducts);
+
+
+                Response.Redirect(Request.RawUrl);
 
             }
             Response.Redirect("~/Cart.aspx");
@@ -198,9 +200,9 @@ namespace BrandBox.com
                 List<String> CookieSizeList = CookieSize.Split(',').Select(i => i.Trim()).Where(i => i != string.Empty).ToList();
 
 
-
-                for (int i = 0; i < CookiePIDList.Count; i++)
+                for (int i = 0; i < CookiePIDList.Count() ; i++)
                 {
+
                     SqlCommand cmd2 = new SqlCommand("INSERT INTO OrderDetails(ProductCode,OrderQnty,OrderSize,OrderTotalPrice,OrderID) VALUES(@ProductCode,@OrderQnty,@OrderSize,@OrderTotalPrice,@OrderID)", con);
                     cmd2.Parameters.AddWithValue("@ProductCode", CookiePIDList.ElementAt(i));
                     cmd2.Parameters.AddWithValue("@OrderQnty", CookieQuantityList.ElementAt(i));
@@ -221,13 +223,17 @@ namespace BrandBox.com
 
                     if (x > 0)
                     {
-                        addCustomerpayment(cId.ToString(),OrderId.ToString());
+                        
                         subtractItems(CookiePIDList.ElementAt(i), CookieQuantityList.ElementAt(i), CookieSizeList.ElementAt(i));
-                        Accessible.sendOrderToCustomer(Session["Customer"].ToString(), OrderId.ToString(), getUserName());
-                       deleteCookie();
                     }
 
                 }
+                addCustomerpayment(cId.ToString(), OrderId.ToString());
+                addVendorPayment(OrderId.ToString());
+                Accessible.sendOrderToCustomer(Session["Customer"].ToString(), OrderId.ToString(), getUserName());
+                deleteCookie();
+                Response.Redirect("~/CustomerBill.aspx?OrderID=" + OrderId);
+
 
             }
 
@@ -244,7 +250,6 @@ namespace BrandBox.com
             Response.Cookies.Add(CartProducts);
 
 
-            Response.Redirect(Request.RawUrl);
         }
         private void addCustomerpayment(string CustId,string orderID)
         {
@@ -266,11 +271,12 @@ namespace BrandBox.com
             using (SqlConnection con = new SqlConnection(CS))
             {
                 con.Open();
-              
-                SqlCommand cmd2 = new SqlCommand("Update CustomerPayment set CTotalPayment=@totalPay, OrderId=@OrderId WHERE CustomerID=" + CustId, con);
+                SqlCommand cmd2 = new SqlCommand("INSERT INTO CustomerPayment(CTotalPayment,CustomerID,OrderId) VALUES(@TotalPay,@CustomerID,@OrderId)", con);
+
+                //SqlCommand cmd2 = new SqlCommand("Update CustomerPayment set CTotalPayment=@totalPay, OrderId=@OrderId WHERE CustomerID=" + CustId, con);
                 cmd2.Parameters.AddWithValue("@TotalPay", totalPay);
                 cmd2.Parameters.AddWithValue("@OrderId", orderID);
-
+                cmd2.Parameters.AddWithValue("@CustomerID", getCId());
 
                 cmd2.ExecuteNonQuery();
 
@@ -296,6 +302,61 @@ namespace BrandBox.com
                 cmd.ExecuteNonQuery();
 
             }
+        }
+
+        private void UpdateVendorPayment(double VTotalPayment, double VProfit,string VPaymentNo)
+        {
+
+            using (SqlConnection con = new SqlConnection(CS))
+            {
+                con.Open();
+
+                SqlCommand cmd5 = new SqlCommand("Update VendorPayment set VTotalPayment = @totalPay, VProfit = @profit WHERE VPaymentNo = " + VPaymentNo, con);
+                cmd5.Parameters.AddWithValue("@totalPay", VTotalPayment);
+                cmd5.Parameters.AddWithValue("@profit", VProfit);
+
+
+                cmd5.ExecuteNonQuery();
+
+            }
+        }
+
+        private void addVendorPayment(string orderID)
+        {
+           
+            DataTable products = new DataTable();
+            SqlCommand cmd = new SqlCommand("Select ProductCode,OrderTotalPrice from OrderDetails where OrderID=" + orderID);
+            products = access.SelectFromDatabase(cmd);
+
+            foreach(DataRow rows in products.Rows)
+            {
+                DataTable dt = new DataTable();
+                string PId = rows["ProductCode"].ToString();
+                double totPrice = double.Parse(rows["OrderTotalPrice"].ToString());
+                SqlCommand cmd2 = new SqlCommand("Select VendorId from PDetails where ProductCode=" + PId);
+                dt = access.SelectFromDatabase(cmd2);
+                if(dt.Rows.Count > 0)
+                {
+                    DataTable VendorMon = new DataTable();
+                    SqlCommand cmd4 = new SqlCommand("Select v.VPaymentNo,v.VTotalPayment, v.VProfit From VendorPayment v JOIN  Vendor b ON v.VPaymentNo=b.VPaymentNo AND b.VendorId=" + dt.Rows[0]["VendorId"]);
+                    VendorMon = access.SelectFromDatabase(cmd4);
+                    foreach(DataRow drows in VendorMon.Rows)
+                    {
+                        double VTotalPayment = double.Parse(drows["VTotalPayment"].ToString());
+                        double VProfit =double.Parse(drows["VProfit"].ToString());
+
+                        VTotalPayment += totPrice;
+                        VProfit += VTotalPayment * 0.2;
+
+                        UpdateVendorPayment(VTotalPayment, VProfit,drows["VPaymentNo"].ToString());
+                       
+
+                    }
+
+                }
+
+            }
+
         }
     }
 }

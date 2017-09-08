@@ -63,14 +63,7 @@ namespace BrandBox.com
                     cmd.Parameters.AddWithValue("@VerifiedEmail", 0);
                     cmd.Parameters.AddWithValue("@VerificationCode", randomVCode);
 
-                    int CustId = Convert.ToInt32(cmd.ExecuteScalar());
-                   
-
-                    SqlCommand cmd2 = new SqlCommand("INSERT INTO CustomerPayment(CTotalPayment,CustomerID) VALUES(@CTotalPayment,@CustomerID)", con);
-                    cmd2.Parameters.AddWithValue("@CTotalPayment",0);
-                    cmd2.Parameters.AddWithValue("@CustomerID",CustId);    
-
-                    cmd2.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();
 
 
                     Response.Redirect("/Activation.aspx?rurl=notVerifiedCust");
